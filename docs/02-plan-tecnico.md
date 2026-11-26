@@ -1,7 +1,12 @@
 # Plan técnico de la App 2
 
-Este documento explica cómo construir lo que pide la especificación, qué partes conviene
-recortar y por qué. Donde se aparta de la propuesta original, lo dice abiertamente.
+Cómo construir lo que pide la especificación, qué conviene recortar y por qué. Donde se aparta
+de la propuesta original, lo dice abiertamente.
+
+> **Aviso de vigencia.** Las secciones 2, 5 y 8 de la primera versión de este documento quedaron
+> desfasadas el 26 de noviembre, cuando las pruebas demostraron que varias suposiciones eran
+> falsas. Están sustituidas por **[09 · Pipeline de análisis](09-pipeline-analisis.md)**, que es
+> el procedimiento vigente. Aquí se conserva solo lo que sigue siendo cierto.
 
 ---
 
@@ -10,224 +15,146 @@ recortar y por qué. Donde se aparta de la propuesta original, lo dice abiertame
 La especificación dice que la App 1 "entrega el video resumen narrado" y que la App 2
 "rehace solo las partes con X". Esas dos frases no pueden cumplirse a la vez.
 
-Si lo que llega es un archivo MP4 terminado, para cambiar dos minutos de narración hay que
-volver a generar la voz y volver a renderizar todo, porque dentro del MP4 ya no existen el
-guion, los tiempos ni los clips por separado: existe una sola imagen con un solo audio pegado.
+Si lo que llega es un MP4 terminado, para cambiar dos minutos de narración hay que regenerar
+la voz y volver a renderizar todo, porque dentro del MP4 ya no existen el guion, los tiempos
+ni los clips por separado: existe una sola imagen con un solo audio pegado.
 
-**Entonces la App 1 no debe entregar solo un video, sino un proyecto.** Una carpeta con:
+**La App 1 no debe entregar solo un video, sino un proyecto.** Una carpeta con:
 
 | Contenido | Para qué sirve |
 |---|---|
-| `guion.json` — frases, con tiempo de inicio y fin, y la escena a la que pertenecen | Permite reescribir una frase sin tocar las demás |
-| `clips/` — los fragmentos de video ya recortados | Permite rearmar solo el tramo cambiado |
-| `narracion/` — un archivo de audio por frase, no uno solo | Permite regenerar una frase y dejar el resto intacto |
-| `proyecto.json` — qué clip va con qué frase y en qué orden | Es la receta para volver a armar el video |
+| `guion.json` — frases, con tiempo de inicio y fin, y su escena | Reescribir una frase sin tocar las demás |
+| `clips/` — los fragmentos de video ya recortados | Rearmar solo el tramo cambiado |
+| `narracion/` — un archivo de audio por frase, no uno solo | Regenerar una frase y dejar el resto intacto |
+| `proyecto.json` — qué clip va con qué frase y en qué orden | La receta para volver a armar el video |
 
 Con eso, cambiar el lote 7 significa regenerar siete u ocho frases y volver a pegar dos
-minutos de video, no veinte. Es la diferencia entre esperar un minuto y esperar media hora.
+minutos, no veinte. La diferencia entre esperar un minuto y esperar media hora.
 
-Esto encaja con algo que ya se pidió para la App 1: poder editar partes del diálogo al final
-y regenerar solo los pasos necesarios. Es el mismo cambio, y conviene hacerlo una sola vez.
+Encaja con algo que ya se pidió para la App 1: poder editar diálogos al final y regenerar solo
+lo necesario. Es el mismo cambio, y conviene hacerlo una vez.
 
 **Mientras la App 1 no exporte el proyecto, la App 2 no puede funcionar como se planteó.**
 Es la primera tarea, antes de cualquier agente.
 
 ---
 
-## 2. Qué se automatiza y qué no
+## 2. Qué se automatiza
 
-La propuesta pide analizar once dimensiones de cada video. No todas cuestan lo mismo ni
-valen lo mismo, y tratarlas por igual es lo que haría que este proyecto no termine nunca.
-
-### Se automatiza (barato y útil)
-
-| Dimensión | Cómo | Coste real |
-|---|---|---|
-| Narración completa con tiempos | Transcripción automática del audio | Minutos por video |
-| Tono, energía, pausas | Se mide del propio audio: volumen, velocidad de habla, duración de silencios | Automático |
-| Cortes y duración de plano | Detección de cambio de escena sobre el video | Automático |
-| Ritmo | Se calcula: palabras por minuto, cortes por minuto, silencios por minuto | Automático |
-| Estructura de la trama | El modelo lee la transcripción y marca gancho, desarrollo, giro y cierre | Una consulta por video |
-| Chistes | El modelo los localiza en la transcripción y los clasifica | Una consulta por video |
-
-Estas seis cubren el guion, la narración y el ritmo: es decir, casi todo lo que decide si un
-resumen aburre o no.
-
-### Se hace a mano al principio (caro y de poco retorno)
-
-Transiciones, acercamientos, imágenes congeladas, textos en pantalla, memes y stickers.
-
-Detectar eso automáticamente obliga a pasar un modelo de visión por miles de fotogramas de
-cada video: semanas de trabajo, lento y propenso a errores. Y el resultado final cabe en
-media página: "un meme cada cuarenta segundos, de dos segundos, abajo a la derecha".
-
-Ese mismo dato se obtiene viendo cinco videos con un cronómetro y llenando un formulario,
-en una tarde. **Se empieza así.** Si más adelante hace falta precisión, se automatiza
-entonces, con el proyecto ya funcionando.
+**Sustituida.** La primera versión sostenía que el análisis visual costaba semanas y debía
+hacerse a mano. Es falso, y quedó demostrado. Ver
+**[09 · Pipeline de análisis](09-pipeline-analisis.md)**.
 
 ---
 
 ## 3. Cuántos videos y de qué canal
 
-La especificación habla de treinta videos de dos canales. Dos correcciones:
+La especificación habla de treinta videos de dos canales. Dos correcciones, ambas en pie:
 
-**Treinta son demasiados para empezar.** Entre cinco y ocho videos del mismo canal ya
-muestran el patrón: la duración de plano, la densidad de información, cada cuánto entra un
-chiste. Del noveno en adelante se repite lo mismo. Treinta videos solo tienen sentido para
-afinar, cuando ya exista un manual que funcione.
+**Treinta son demasiados para empezar.** Entre cinco y ocho del mismo canal ya muestran el
+patrón: duración de plano, densidad de información, cada cuánto entra un chiste. Del noveno en
+adelante se repite. Treinta solo tiene sentido para afinar un manual que ya funcione.
 
-**Mezclar dos canales desde el principio promedia los dos estilos y no deja ninguno.**
-@enminutos y @AsíPaso no narran igual; si el manual sale de los dos a la vez, el resultado
-no suena a ninguno de los dos, suena a promedio. Conviene elegir uno como base, lograr que
-el canal funcione con ese estilo, y después tomar del otro lo que falte.
+**Mezclar dos canales promedia los dos estilos y no deja ninguno.** Si el manual sale de los
+dos a la vez, el resultado no suena a ninguno: suena a promedio.
 
-**Decisión pendiente de Jhon: con cuál de los dos canales se empieza.**
+**Decidido:** se empieza con **@AsíPaso**. Del otro se tomará lo que falte más adelante.
 
 ---
 
 ## 4. Sobre las condiciones de YouTube
 
-La especificación ya señala que hay que revisar esto, y conviene ser claro.
+Aprender el estilo no es el problema. "Cortan cada dos segundos y medio", "meten un chiste cada
+cuarenta segundos" son hechos sobre cómo se edita, y los hechos no son de nadie.
 
-Aprender el estilo no es el problema. "Cortan cada dos segundos y medio", "meten un chiste
-cada cuarenta segundos", "abren con una pregunta" son hechos sobre cómo se edita, y los
-hechos no son propiedad de nadie. Un manual de estilo con esas medidas es legítimo, y el
-plan de guardar solo el conocimiento y borrar las copias es el enfoque correcto.
+El problema era el paso de **descargar**. Y ese paso ya no hace falta para los videos de
+referencia: Gemini acepta el enlace de YouTube directamente y lee el video sin que nada se
+copie a ningún disco.
 
-El problema es el paso de **descargar** los videos. Las condiciones de servicio de YouTube
-no permiten descargar contenido fuera de las funciones que la propia plataforma ofrece, y
-eso no cambia según para qué se vaya a usar el archivo.
-
-Rutas más seguras, en orden:
-
-1. **Analizar viendo.** Los datos visuales se llenan a mano, como ya se dijo arriba. Para la
-   narración, los subtítulos que YouTube muestra públicamente se pueden leer sin descargar
-   el video.
-2. **Usar material propio.** Los resúmenes que la App 1 ya generó sirven para medir el
-   contraste: qué tiene el canal de referencia que el propio no tiene.
-3. **Pedir permiso.** Son dos canales; un mensaje preguntando si permiten un análisis de
-   estilo es gratis y resuelve el asunto de raíz.
-
-Lo que no conviene es montar la descarga dentro de la aplicación y que quede como una
-función permanente del producto.
+Para el análisis visual detallado, donde Claude mira los fotogramas, el archivo sí tiene que
+estar accesible. Ahí la vía limpia son **los videos propios de la App 1**, que ya están en el
+disco de Jhon y son suyos. Es además donde ese análisis más vale, porque sirve para comparar
+su resultado contra las medidas del canal de referencia.
 
 ---
 
-## 5. Los agentes: de seis a tres
+## 5. Los agentes
 
-Seis agentes suenan ordenados, pero cada paso intermedio es un sitio donde el resultado se
-degrada: el Editor no sabe por qué el Guionista puso una pausa, el de Memes no sabe de qué
-se ríe el chiste. Y los modelos locales de Ollama que caben en un equipo normal (7 u 8 mil
-millones de parámetros) no escriben comedia en español lo bastante bien como para que
-dividir el trabajo en seis partes mejore nada.
-
-Tres papeles bastan:
-
-| Papel | Qué hace | Con qué |
-|---|---|---|
-| **Analista** | Lee los videos de referencia y produce las fichas y el manual. Se ejecuta una vez, no en cada video. | Transcripción + modelo de lenguaje |
-| **Guionista** | Reescribe el guion lote por lote aplicando el manual y los gustos aprendidos. Decide también dónde va un meme y dónde una pausa, porque eso es parte de escribir el chiste. | Gemini (nivel gratuito) |
-| **Revisor** | Comprueba que el lote reescrito encaje con el anterior y el siguiente, que no se repitan chistes y que no haya humor en escenas tristes. | Ollama, local, es suficiente |
-
-El montaje —cortar, pegar, poner el meme en pantalla, mezclar el audio— no necesita un
-agente. Es un programa que ejecuta las instrucciones que dejó el Guionista. Un modelo de
-lenguaje ahí solo añade errores.
+**Sustituida.** Bajaron de seis a tres, y de tres a dos. Ver
+**[09 · Pipeline de análisis](09-pipeline-analisis.md)**.
 
 ---
 
 ## 6. La revisión por lotes
 
-Esta parte de la propuesta es la más acertada y la más barata de construir. Marcar check o X
-es más rápido que explicar con palabras lo que está mal, y evita la conversación que no se
-quiere tener.
+La parte más acertada de la propuesta y la más barata de construir. Marcar ✓ o ✗ es más rápido
+que explicar con palabras lo que está mal, y evita la conversación que no se quiere tener.
 
-Cómo funciona por dentro:
-
-1. El resumen se parte en lotes de dos minutos, cortando en cambio de escena, nunca a mitad
-   de frase.
+1. El resumen se parte en lotes de dos minutos, cortando en cambio de escena, nunca a mitad de
+   frase.
 2. Cada lote se muestra con su video, su narración y su texto.
-3. Check lo congela: ese lote no se vuelve a tocar.
-4. X lo marca para rehacer. El comentario es opcional.
-5. Al rehacer un lote, el Guionista recibe también la última frase del lote anterior y la
-   primera del siguiente, para que el empalme no se note.
-6. Vuelve solo ese lote. Los demás siguen con check.
+3. ✓ lo congela: no se vuelve a tocar.
+4. ✗ lo marca para rehacer. El comentario es opcional.
+5. Al rehacer, el guionista recibe la última frase del lote anterior y la primera del siguiente,
+   para que el empalme no se note.
+6. Vuelve solo ese lote.
 
 ### Los gustos se guardan en un archivo, no en un modelo
 
-Cada X con comentario es un ejemplo de lo que no gusta. Cada check, de lo que sí. Eso se
-acumula en un archivo de texto que el Guionista lee al principio de cada trabajo:
+Cada ✗ con comentario es un ejemplo de lo que no gusta; cada ✓, de lo que sí. Se acumulan en un
+archivo que el guionista lee antes de escribir:
 
 ```
 PREFERENCIAS APRENDIDAS
 - Rechazado: chistes que explican el chiste → cortar antes del remate
 - Rechazado: "y es aquí donde todo cambia" → muletilla, prohibida
 - Aprobado: preguntas directas al espectador en el gancho
-- Aprobado: cortar la frase y retomarla después del clip
 ```
 
-Esto es lo más valioso de todo el proyecto y lo más fácil de hacer. Después de treinta lotes
-revisados, ese archivo describe el estilo propio de Jhon mejor que el manual sacado de otros
-canales. Y no hay que reentrenar nada: es un archivo que crece.
+Es lo más valioso del proyecto y lo más fácil de hacer. Después de treinta lotes revisados, ese
+archivo describe el estilo propio de Jhon mejor que el manual sacado de otros canales. Y no hay
+que reentrenar nada: es un archivo que crece.
 
 ---
 
 ## 7. Lo que sí y lo que no se puede prometer
 
-La especificación pide "el mismo estilo y calidad que los videos estudiados" y añade que el
-parecido exacto no está garantizado. Esa reserva es correcta, y conviene precisarla, porque
-marca dónde conviene gastar el esfuerzo.
+**Se transfiere bien** —son medidas, y una medida se copia: duración de plano, cortes por
+minuto, palabras por minuto, dónde va el gancho, cuánta información por minuto, cada cuánto
+entra un chiste, cuándo callar, cómo cerrar.
 
-**Se transfiere bien** —son medidas, y una medida se copia:
-duración de plano, cortes por minuto, palabras por minuto, dónde va el gancho, cuánta
-información por minuto, cada cuánto entra un chiste, cuándo callar, cómo cerrar.
-Esto es la mitad de la sensación de "está bien editado", y es alcanzable.
+**Se transfiere a medias:** el vocabulario y el tipo de frase. El modelo imita el registro con
+bastante fidelidad si el manual tiene ejemplos suficientes.
 
-**Se transfiere a medias:** el vocabulario y el tipo de frase. El modelo imita el registro
-con bastante fidelidad si el manual tiene ejemplos suficientes.
+**No se transfiere:** que el chiste dé risa, y que la voz lo diga en el momento exacto. Eso no
+es una regla que se extraiga de un video, es talento de quien escribe y de quien narra.
 
-**No se transfiere:** que el chiste dé risa, y que la voz lo diga en el momento exacto. Eso
-no es una regla que se extraiga de un video, es talento de quien escribe y de quien narra.
-Un manual puede decir "aquí va un chiste de dos segundos sobre lo absurdo de la escena";
-que ese chiste sea bueno depende del modelo que lo escriba y del criterio de Jhon al marcar
-la X.
-
-Por eso el circuito de check y X importa más que el análisis de los treinta videos: el
-análisis da la estructura, la revisión da la gracia.
+Por eso el circuito de ✓ y ✗ importa más que el análisis de los treinta videos: el análisis da
+la estructura, la revisión da la gracia.
 
 ---
 
 ## 8. Herramientas
 
-Todas gratuitas, según la regla del proyecto.
-
-| Función | Herramienta | Nota |
-|---|---|---|
-| Transcripción con tiempos | faster-whisper | Local, gratis, buena en español |
-| Detección de cortes | ffmpeg | Ya se usa en la App 1 |
-| Medición de audio | librosa | Volumen, velocidad, silencios |
-| Guion y análisis | Gemini, nivel gratuito | Ya se usa en la App 1 |
-| Revisión y continuidad | Ollama, local | Tarea sencilla, modelo pequeño basta |
-| Narración | Gemini TTS | Ver `03-voces.md` |
-| Montaje | ffmpeg | Sin modelos de por medio |
-| Ventana de la aplicación | La misma base que la App 1 | Un solo instalador a mantener |
+**Sustituida.** Ver **[09 · Pipeline de análisis](09-pipeline-analisis.md)**.
 
 ---
 
 ## 9. Orden de trabajo
 
-Sigue el orden que planteó Jhon, con la corrección del punto 1 delante.
-
-| # | Paso | Resultado comprobable |
+| # | Paso | Estado |
 |---|---|---|
-| 0 | La App 1 exporta el proyecto, no solo el MP4 | Una carpeta con guion, clips y audio por frase |
-| 1 | Elegir las 4 voces | `03-voces.md` cerrado, con las 4 decididas |
-| 2 | Analizar un video y revisar su ficha | Una ficha completa que Jhon valide |
-| 3 | Escribir el manual de estilo con ese video | Media página de reglas medibles |
-| 4 | Reeditar 2 minutos de un resumen propio | Un video de 2 minutos comparable con la referencia |
-| 5 | Decidir si convence | Sigue adelante, o se ajusta el enfoque |
-| 6 | Construir la aplicación completa | Instalador con revisión por lotes |
-| 7 | Completar hasta 8 videos del canal base | Manual afinado |
+| 0 | La App 1 exporta el proyecto, no solo el MP4 | **Pendiente. Bloquea la revisión por lotes** |
+| 1 | Elegir las 4 voces | Aplazado por decisión de Jhon |
+| 2 | Validar que el análisis da detalle real, no resumen | **Hecho.** 60 entradas de 60, ver [07](07-resultado-prueba.md) |
+| 3 | Elegir canal base | **Hecho.** @AsíPaso |
+| 4 | Primer borrador del manual de estilo | **Hecho**, con lo verificado separado de lo supuesto, ver [08](08-manual-estilo-asipaso.md) |
+| 5 | Montar las herramientas de análisis | **Hecho.** letmewatch verificado; Local Whisper pendiente de conectar |
+| 6 | Analizar un video entero con el pipeline de [09](09-pipeline-analisis.md) | Pendiente: falta el archivo en una carpeta conectada |
+| 7 | Reeditar 2 minutos de un resumen propio | Pendiente |
+| 8 | Decidir si convence | Pendiente |
+| 9 | Construir la aplicación completa | Pendiente |
 
-Los pasos 2 a 4 son la prueba que decide el proyecto. Hasta tenerla, no conviene escribir
-la aplicación entera: si los dos minutos no se parecen a lo que se busca, lo que hay que
-cambiar es el enfoque, no la interfaz.
+Los pasos 6 y 7 son la prueba que decide el proyecto. Hasta tenerla, no conviene escribir la
+aplicación entera: si los dos minutos no se parecen a lo que se busca, lo que hay que cambiar
+es el enfoque, no la interfaz.
