@@ -1,111 +1,98 @@
 # Voces
 
-Requisitos de la especificación: no locales, expresivas, gratuitas, con derecho a usarlas en
-el canal, y un catálogo final de máximo cuatro.
+Requisitos: expresiva, carismática, que conecte, gratuita, con derecho a usarla en el canal,
+y un catálogo final de máximo cuatro.
 
-El requisito que elimina más opciones no es la calidad: es el derecho de uso. Muchos
-servicios regalan voces excelentes y prohíben publicarlas en un canal monetizado.
+## Corrección del enfoque
 
----
+La primera versión de este documento proponía **elegir** voces de un catálogo (Charon, Puck,
+Orus). Estaba mal planteado. Esas son voces de stock: correctas, neutras y olvidables, y por
+eso el resultado sonaba a lector automático y no a narrador.
 
-## 1. Comparación de motores
+Lo que hace falta es lo contrario: **diseñar el personaje de voz describiéndolo con palabras**
+—edad, timbre, textura, acento, carácter, manías al hablar— y dejar que el modelo lo
+construya. Es una función que ya existe en varias herramientas y se llama *voice design*.
+La descripción es la mitad del resultado; la otra mitad es la nota de actuación.
 
-| Motor | Gratis al mes | Expresividad en español | ¿Se puede monetizar? | Veredicto |
-|---|---|---|---|---|
-| **Gemini TTS** (AI Studio / API) | Sin cargo en el nivel gratuito | **Alta.** El tono se dirige escribiendo una instrucción: "bájale la voz como si contaras un secreto" | Sí. No hay cláusula que lo prohíba, y Google no reclama propiedad sobre lo generado | **Elegido** |
-| Google Cloud TTS — Chirp 3 HD | 1 millón de caracteres | Media-alta, pero sin dirección por instrucción | Sí, dentro del límite | Respaldo |
-| Google Cloud TTS — WaveNet | 4 millones de caracteres | Media | Sí, dentro del límite | Respaldo barato |
-| Azure Speech, nivel F0 | 500 000 caracteres | Alta, con estilos por etiqueta | **No.** El derecho de uso de la salida está reservado al nivel de pago; el gratuito es para evaluar | Descartado |
-| edge-tts (voces de Edge) | Sin límite práctico | Alta. Dalia y Jorge son el estándar de hecho en canales en español | **No con certeza.** Microsoft no publica ningún documento que conceda redistribución comercial | Solo para comparar |
-| ElevenLabs, plan gratuito | ~10 000 caracteres | Muy alta | **No.** El plan gratuito excluye uso comercial | Descartado |
-| Kokoro-82M | Ilimitado | Media | Sí, licencia Apache 2.0 | Descartado: es local |
-| Coqui XTTS v2 | Ilimitado | Alta, con clonación | **No.** La licencia excluye el uso comercial | Descartado |
-| Piper | Ilimitado | Baja | Según la voz | Ya probado: poco expresivo |
-
-### Por qué Gemini TTS
-
-1. **Es el único que resuelve el requisito del "tono de voz según la escena".** En los demás
-   motores se elige una voz y se acepta como suene. En Gemini el tono se escribe: la misma
-   voz narra un giro de guion con suspenso y una escena triste con la voz baja, porque se le
-   indica con una frase. La especificación pide exactamente eso.
-2. **Ya se usa en la App 1.** Una sola cuenta, una sola clave, un solo sitio donde fallar.
-3. **No es local**, que era el requisito explícito.
-4. **El límite por petición encaja con los lotes de 2 minutos.** Cada petición admite unos
-   8 000 tokens de entrada y hasta cerca de once minutos de audio: un lote de dos minutos
-   entra entero y sobra margen. La arquitectura de lotes y el límite del motor coinciden sin
-   forzar nada.
-5. **Admite marcas dentro del texto** del tipo `[susurra]`, `[con emoción]`, `[muy lento]`,
-   que el Guionista puede dejar escritas en el guion para que la voz las obedezca.
-
-### Nota sobre las voces de Edge
-
-Dalia y Jorge son, con diferencia, las mejores voces gratuitas de español latino, y están en
-casi todos los canales de resúmenes. Tentador, pero el derecho de uso no está concedido por
-escrito y el canal va a estar monetizado. Sirven para comparar y para calibrar el oído,
-nunca para el video final.
+Los diez personajes diseñados están en la hoja de diseño de voz, con la descripción lista
+para pegar.
 
 ---
 
-## 2. Las 10 candidatas
+## 1. Dónde diseñar y escuchar (gratis)
 
-Cada una es una **voz más una instrucción de actuación**, no una voz suelta. La instrucción
-es la mitad del resultado.
-
-Se escuchan en la cabina de voces y se marcan con check o X. De las aprobadas salen las
-cuatro del catálogo.
-
-| # | Papel | Voz | Para qué escena |
-|---|---|---|---|
-| 01 | Intriga fría | Charon | Aperturas y ganchos |
-| 02 | Energía TikTok | Puck | Vertical, primeros segundos |
-| 03 | Cómico seco | Zubenelgenubi | Comedias, escenas absurdas |
-| 04 | Cine grave | Algenib | Thriller, terror, tráiler |
-| 05 | Cercana cálida | Sulafat | Drama, romance, animación |
-| 06 | Confidente | Enceladus | Giros y avisos al espectador |
-| 07 | Acelerado informativo | Iapetus | Tramos de contexto y datos |
-| 08 | Dramático contenido | Achernar | Escenas tristes y finales |
-| 09 | Amigo exagerado | Fenrir | Narrador que reacciona |
-| 10 | Neutro latino | Orus | Voz base del canal |
-
-Las instrucciones completas de cada una están en la cabina de voces, con botón para copiarlas.
-
----
-
-## 3. Qué cuatro conviene elegir
-
-Una recomendación para cuando llegue el momento de decidir, sujeta a lo que Jhon escuche.
-
-Un catálogo de cuatro funciona mejor si cubre cuatro registros distintos, no cuatro variantes
-del mismo:
-
-| Puesto | Función | Candidata natural |
+| Herramienta | Qué da | Derecho a monetizar |
 |---|---|---|
-| 1 | Voz base del canal, la que más se usa | 10 — Neutro latino |
-| 2 | Para ganchos y giros | 01 — Intriga fría, o 06 — Confidente |
-| 3 | Para comedia | 03 — Cómico seco, o 09 — Amigo exagerado |
-| 4 | Para escenas tristes y finales | 08 — Dramático contenido |
+| **Speechma** — empezar aquí | Diseño por descripción, sin cuenta ni tarjeta, español, hasta 1000 caracteres por generación | Gratis; conviene revisar sus términos antes de publicar |
+| **ElevenLabs Voice Design v3** | El diseñador más expresivo que existe hoy; admite marcas como `[susurra]`, `[se ríe]`, `[suspira]` | **No** en el plan gratuito. Sirve para decidir el personaje, no para el video |
+| **Fish Audio Voice Design** | Voz nueva desde una descripción en unos 15 segundos | Generación gratis durante su lanzamiento; confirmar estado |
 
-Dos voces muy parecidas gastan un puesto del catálogo sin añadir nada: si dos aprobadas
-suenan casi igual, conviene quedarse con una y usar el puesto libre para un registro que
-falte.
+El orden importa: Speechma para saber en un minuto si el camino sirve, ElevenLabs para oír
+el techo de calidad, Fish Audio como punto medio.
+
+---
+
+## 2. El motor de producción
+
+Aquí está la tensión real del proyecto: **los motores más carismáticos no regalan el derecho
+a monetizar, y los que lo regalan no eran expresivos.** Hasta ahora.
+
+| Motor | Gratis | Expresividad | ¿Monetizable gratis? | Veredicto |
+|---|---|---|---|---|
+| **Qwen3-TTS** | Sí, siempre | Alta: control de emoción, diseño de voz y clonación | **Sí.** Licencia Apache 2.0 | **Elegido** |
+| Gemini TTS | Sí, nivel gratuito | Alta: el tono se dirige por instrucción escrita | Sí, sin cláusula que lo prohíba | Alternativa en nube |
+| Hume Octave 2 | Nivel gratuito limitado | La más alta del mercado en emoción: gana la mayoría de las comparaciones a ciegas | No en la práctica, es de pago | Descartado por la regla de gratuidad |
+| ElevenLabs v3 | Plan gratuito | Muy alta | No, el plan gratuito excluye uso comercial | Solo para diseñar |
+| Google Cloud TTS Chirp 3 HD | 1 millón de caracteres al mes | Media-alta, sin dirección por instrucción | Sí, dentro del límite | Respaldo |
+| Azure Speech F0 | 500 000 caracteres | Alta | No: el derecho de uso está reservado al nivel de pago | Descartado |
+| edge-tts | Sin límite práctico | Alta | No consta por escrito | Descartado |
+| Piper | Sí | Baja | Según la voz | Ya probado: es el problema, no la solución |
+
+### Por qué Qwen3-TTS
+
+1. Es el único que cumple las tres condiciones a la vez: gratis para siempre, expresivo con
+   control de emoción, y con licencia Apache 2.0, que permite publicar y monetizar sin pedir
+   permiso a nadie.
+2. Incluye **diseño de voz**, que es justo lo que este proyecto necesita.
+3. Tiene el español entre sus idiomas, y está entrenado sobre más de cinco millones de horas
+   de habla.
+
+### Sobre el requisito de "nada local"
+
+Ese requisito venía de una experiencia concreta: Piper suena mal. La conclusión correcta no
+es que lo local suene mal, es que **Piper** suena mal. Qwen3-TTS también corre en el equipo
+y está en otra categoría.
+
+Si aun así se prefiere la nube, la opción es Gemini TTS, que ya se usa en la App 1 y dirige
+el tono por instrucción escrita. Pierde el diseño de voz, pero gana en comodidad.
+
+---
+
+## 3. El catálogo de cuatro
+
+Funciona mejor si cubre cuatro registros distintos, no cuatro variantes del mismo. Una voz
+base que lleve el peso, una para ganchos y giros, una para comedia, y una para escenas
+tristes. Dos personajes que suenen parecido gastan un puesto sin añadir nada.
 
 ---
 
 ## 4. Estado
 
-- [x] Motores comparados y derechos verificados
-- [x] Diez candidatas preparadas con su instrucción
-- [ ] Jhon las escucha y marca check o X
+- [x] Enfoque corregido: diseñar, no elegir
+- [x] Herramientas de diseño gratuitas identificadas y verificadas
+- [x] Motor de producción decidido: Qwen3-TTS, con Gemini TTS como alternativa
+- [x] Diez personajes descritos
+- [ ] Jhon los escucha y marca cuáles conectan
 - [ ] Catálogo de cuatro cerrado
 
 ---
 
 ## Fuentes
 
-- Documentación de Gemini-TTS, Google Cloud — dirección del estilo por instrucción en
-  lenguaje natural y límites por petición.
-- Página de precios de la API de Gemini — nivel gratuito.
-- Términos de producto de Microsoft — derechos de uso de la salida de voces neuronales
-  reservados al nivel de pago.
-- Microsoft Q&A — ausencia de documentación que conceda uso comercial a edge-tts.
-- Página de precios de Google Cloud Text-to-Speech — asignaciones mensuales gratuitas.
+- Páginas oficiales de Voice Design de ElevenLabs, Fish Audio y Speechma — funcionamiento,
+  gratuidad y límites.
+- Términos del plan gratuito de ElevenLabs — exclusión del uso comercial.
+- Comparativas de modelos TTS de 2026 — Qwen3-TTS con licencia Apache, control de emoción y
+  diseño de voz; Hume Octave 2 como referencia de expresividad.
+- Documentación de Gemini-TTS — dirección del estilo por instrucción en lenguaje natural.
+- Términos de producto de Microsoft — derechos de salida reservados al nivel de pago.
