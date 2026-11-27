@@ -1,0 +1,61 @@
+name: Banco de pruebas
+
+# Corre en los servidores gratuitos de GitHub las pruebas que necesitan modelos de IA.
+# Que se prueba lo decide el archivo pruebas/banco/correr.sh (se cambia sin tocar este archivo).
+# Los resultados quedan en la rama "resultados", carpeta corridas/<fecha>.
+on:
+  push:
+    paths:
+      - "pruebas/pedido.txt"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency: banco-pruebas
+
+jobs:
+  probar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Recuperar modelos ya descargados
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.ollama/models
+            ~/.cache/pip
+            ~/modelos
+          key: banco-${{ hashFiles('pruebas/banco/modelos.txt') }}-${{ github.run_id }}
+          restore-keys: |
+            banco-${{ hashFiles('pruebas/banco/modelos.txt') }}-
+            banco-
+
+      - name: Correr el pedido
+        continue-on-error: true
+        run: |
+          mkdir -p salida
+          bash pruebas/banco/correr.sh 2>&1 | tee salida/registro.txt
+
+      - name: Guardar resultados en la rama resultados
+        if: always()
+        run: |
+          git config user.name "banco-pruebas"
+          git config user.email "banco-pruebas@users.noreply.github.com"
+          CARPETA="corridas/$(date -u +%Y%m%d-%H%M%S)"
+          mkdir -p /tmp/salida && cp -r salida/. /tmp/salida/ || true
+          git fetch origin resultados || true
+          if git rev-parse --verify origin/resultados >/dev/null 2>&1; then
+            git checkout -B resultados origin/resultados
+          else
+            git checkout --orphan resultados && git rm -rf . >/dev/null
+          fi
+          mkdir -p "$CARPETA" && cp -r /tmp/salida/. "$CARPETA"/ || true
+          echo "$CARPETA" > ULTIMA.txt
+          git add -A && git commit -m "Resultados $CARPETA" && git push origin resultados
