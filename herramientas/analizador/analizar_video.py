@@ -32,7 +32,9 @@ SILENCIO_DB = -35        # por debajo de esto se considera silencio
 SILENCIO_MIN = 0.30      # segundos mínimos para contar un silencio
 FPS_MUESTRA = 2          # fotogramas por segundo que se extraen para elegir el de cada plano
 TROZO_MAX_S = 18.0       # Whisper descarta lo que pase de 30 s: ningún trozo puede acercarse
-PLANO_MIN_FOTOGRAMAS = 5  # el detector ignora planos más cortos; los cortes relámpago de los ganchos duran ~6
+PLANO_LARGO_S = 6.0      # planos más largos que esto se revisan de nuevo si son oscuros
+BRILLO_OSCURO = 30       # brillo medio (0–255) por debajo del cual un plano se considera oscuro
+PLANO_MIN_FOTOGRAMAS = 5 # el detector ignora planos más cortos; los cortes relámpago de los ganchos duran ~6
 TOKENS_POR_SEGUNDO = 15  # techo de texto por segundo de audio (el valor por defecto, 6, se queda corto)
 MINIATURA = (400, 225)
 COLUMNAS, FILAS = 5, 8   # 40 planos por hoja como máximo
@@ -85,6 +87,45 @@ def etapa_info(video, out):
     return info
 
 
+def brillo(video, t):
+    """Brillo medio (0–255) de un fotograma reducido."""
+    import numpy as np
+    r = subprocess.run(["ffmpeg", "-loglevel", "error", "-ss", str(t), "-i", str(video), "-frames:v", "1",
+                        "-vf", "scale=64:36,format=gray", "-f", "rawvideo", "-"], capture_output=True)
+    a = np.frombuffer(r.stdout, np.uint8)
+    return float(a.mean()) if a.size else 255.0
+
+
+def segunda_pasada_oscuros(video, cortes, dur):
+    """En escenas de noche el detector general no ve los cortes: todo es casi negro.
+    Los planos largos y oscuros se vuelven a revisar con un detector más sensible.
+    Solo en oscuros: en planos claros ese detector confunde fundidos y fondos animados con cortes."""
+    from scenedetect import open_video, SceneManager
+    from scenedetect.detectors import ContentDetector
+    todos = sorted(cortes)
+    nuevos = []
+    # Dos vueltas: la segunda, más sensible, solo sobre lo que siga largo y oscuro tras la primera.
+    for umbral in (10, 8):
+        bordes = [0.0] + todos + [dur]
+        vuelta = []
+        for a, b in zip(bordes[:-1], bordes[1:]):
+            if b - a <= PLANO_LARGO_S or brillo(video, (a + b) / 2) >= BRILLO_OSCURO:
+                continue
+            vid = open_video(str(video))
+            vid.seek(a)
+            sm = SceneManager()
+            sm.auto_downscale = True
+            sm.add_detector(ContentDetector(threshold=umbral, min_scene_len=8))
+            sm.detect_scenes(vid, end_time=b)
+            vuelta += [round(s[0].seconds, 2) for s in sm.get_scene_list()[1:]
+                       if a + 0.3 < s[0].seconds < b - 0.3]
+        if not vuelta:
+            break
+        nuevos += vuelta
+        todos = sorted(set(todos) | set(vuelta))
+    return nuevos
+
+
 def etapa_cortes(video, out, dur):
     p = out / "cortes.json"
     if p.exists():
@@ -103,6 +144,10 @@ def etapa_cortes(video, out, dur):
         sm.detect_scenes(vid)
         cortes = sorted({round(s[0].seconds, 2) for s in sm.get_scene_list()[1:]})
         detector = "PySceneDetect AdaptiveDetector"
+        extra = segunda_pasada_oscuros(video, cortes, dur)
+        if extra:
+            cortes = sorted(set(cortes) | set(extra))
+            detector += f" + segunda pasada en planos oscuros ({len(extra)} cortes)"
     except ImportError:
         r = run(["ffmpeg", "-hide_banner", "-i", str(video), "-an",
                  "-vf", f"scale=320:-2,select='gt(scene,{UMBRAL_CORTE})',showinfo",
