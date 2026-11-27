@@ -64,6 +64,18 @@ Lo que hace graciosa a la rata (a Jhon le encanta su personalidad, también en e
   poco a poco como el gato del primer clip, ya arranca en el máximo.
 - **El contraste:** el otro personaje responde corto y sin emoción («sorry…»), y eso remata el chiste.
 
-Idea para nosotros: los arranques de la rata sirven como modelo para los **doblajes en broma** de los personajes
-quejones y para los momentos en que el narrador se indigna con un personaje. Pendiente decidir con Jhon si esta
-personalidad la toma el mismo gato o si habrá un segundo personaje.
+## Decisión (27-11-2026): un solo personaje con dos registros
+
+Un solo personaje, el gato. Tiene dos formas de hablar:
+
+1. **Narrando:** la personalidad tranquila del gato del primer clip.
+2. **Cuando algo le da rabia:** la personalidad de la rata, que reclama a gritos y suelta la grosería.
+
+La rata no aparece en todo el video: **se usa solo cuando tiene sentido**. El guion tiene que elegir los momentos
+que de verdad dan rabia al público. Ejemplos que dio Jhon:
+
+- cuando el villano hace algo que indigna;
+- cuando una mujer hipócrita engaña a su marido: «¡vieja pu—!».
+
+Regla para el guion: antes de cada arranque debe haber un motivo claro en la película (traición, abuso, mentira,
+algo muy tonto). Sin motivo, el gato sigue narrando tranquilo.
