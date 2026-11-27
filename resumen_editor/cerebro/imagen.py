@@ -139,6 +139,21 @@ def resumen(vistas: list[dict], tomas: list[dict]) -> dict:
     for _, s in superpuestos:
         lugares[s["lugar"]] = lugares.get(s["lugar"], 0) + 1
     apariciones = [n for n, s in superpuestos if "personaje" in s["que"].lower() or "mascota" in s["que"].lower()]
-    return {"proporcion_por_tipo": {k: round(v / total, 3) for k, v in por_tipo.items()},
+    # planos completos del personaje del canal: tramos seguidos de tomas de ese tipo
+    tipo_n = {v["n"]: v["tipo"] for v in vistas}
+    insertos, actual = [], None
+    for t in tomas:
+        if tipo_n.get(t["n"]) == "personaje_del_canal":
+            actual = [t["inicio"], t["fin"]] if actual is None else [actual[0], t["fin"]]
+        elif actual is not None:
+            insertos.append(actual)
+            actual = None
+    if actual is not None:
+        insertos.append(actual)
+    largo = sorted(b - a for a, b in insertos)
+    minutos = max((tomas[-1]["fin"] if tomas else 0) / 60, 1e-6)
+    return {"insertos_personaje": {"por_minuto": round(len(insertos) / minutos, 2),
+                                   "duracion_mediana_s": round(largo[len(largo) // 2], 2) if largo else None},
+            "proporcion_por_tipo": {k: round(v / total, 3) for k, v in por_tipo.items()},
             "superpuestos": len(superpuestos), "lugares_superpuestos": lugares,
             "tomas_con_personaje_del_canal": len(apariciones)}
