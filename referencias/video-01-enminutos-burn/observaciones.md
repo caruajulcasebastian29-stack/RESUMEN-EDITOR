@@ -45,6 +45,12 @@ el detector corregido.
 - **Ningún plano pasa de 5,6 s.**
 - **Cierre.** El incendio final en planos de 1–2 s.
 
+## Sonido: pausas regulares del narrador
+
+- El narrador **se calla 25 veces, cada 54 s aproximadamente, durante 1,1 s** (01:06, 02:04, 02:54, 03:48…).
+- En esas pausas solo queda el fondo, a unos **-32 dB**, unos **12 dB por debajo de la voz** (-20,5 dB).
+- Los candidatos a clip de reacción de 05:39 y 06:38 coinciden con dos de estas pausas: por eso salían marcados.
+
 ## Transcripción
 
 - Hecha con Whisper turbo, en trozos de 18 s como máximo y con el límite de texto por segundo ampliado.

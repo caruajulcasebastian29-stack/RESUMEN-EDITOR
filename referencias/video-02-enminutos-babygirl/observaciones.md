@@ -13,6 +13,7 @@ añadieron al afinar el detector.
 - Ojo: el detector de cortes antiguo solo encontraba 223 planos en este video, porque la imagen apagada
   engaña a un umbral fijo. Por eso se cambió de detector.
 - **Ningún silencio** de más de 0,3 s en todo el video; volumen medio -20,7 dBFS
+- A diferencia de los videos 1 y 3, **no tiene pausas regulares** del narrador: la voz va de corrido.
 
 ## Lo que hay en pantalla
 
