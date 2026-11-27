@@ -1,0 +1,111 @@
+{
+  "personaje": {
+    "especie": "mapache",
+    "nombre": null,
+    "descripcion": "Mapache gris, gordito y desaliñado, cejas negras gruesas, ojos amarillos medio cerrados con ojeras, sonrisa torcida, polo blanco sin mangas gastado con manchas de grasa de taller, fósforo en la boca.",
+    "acento": "mezcla panameño-peruano de barrio",
+    "voz": "ronca, arrastrada, grave, con confianza; interesante para el oyente"
+  },
+  "registros": {
+    "narrando": {
+      "uso": "por defecto, casi todo el video",
+      "tono": "tranquilo, en confianza, como contándole la película a un pata en la esquina",
+      "emocion_voz": "relajado, sarcástico suave"
+    },
+    "rata": {
+      "uso": "solo cuando la película da rabia",
+      "motivos_validos": [
+        "villano abusivo",
+        "traición",
+        "infidelidad o hipocresía",
+        "mentira descarada",
+        "personaje muy tonto"
+      ],
+      "estructura": [
+        "bajar la voz",
+        "lista de lo que pasó, acelerando",
+        "remate con grosería cortada"
+      ],
+      "por_video": {
+        "min": 2,
+        "max": 3
+      },
+      "emocion_voz": "indignado, reclamando a gritos, exagerado"
+    },
+    "frustrado": {
+      "uso": "cuando un personaje hace algo tonto, lento o evidente; es el puente entre la calma y el modo rata",
+      "tono": "incrédulo, suspira, se repite («no, no, no…»), hace preguntas al aire («¿en serio, causa?»), acelera al final",
+      "emocion_voz": "cansado que se va calentando",
+      "por_minuto_max": 1.5
+    }
+  },
+  "groserias": {
+    "forma": "cortada a la mitad con sonido encima",
+    "ejemplos": [
+      "¡vieja pu—!",
+      "¡puta ma—!",
+      "estoy hasta la pin—"
+    ],
+    "minimo_segundos_entre": 120,
+    "prohibido_en": [
+      "título",
+      "miniatura"
+    ],
+    "cuando": "solo si la escena realmente lo pide (villano abusivo, traición, alguien muy tonto) y nunca como relleno"
+  },
+  "eufemismos": {
+    "sexo": "el delicioso",
+    "morir": "desvivir"
+  },
+  "ritmo": {
+    "palabras_por_minuto": [
+      180,
+      200
+    ],
+    "pausa_respiro_cada_s": [
+      60,
+      70
+    ],
+    "pausa_respiro_dur_s": [
+      1.0,
+      2.0
+    ],
+    "variacion": {
+      "lenta": "para explicar algo importante, antes de un remate o en escenas tristes o de misterio",
+      "normal": "la mayor parte de la narración",
+      "rapida": "en listas de cosas que salen mal, en acción y cuando se frustra",
+      "pausa_antes_del_remate_s": 0.35
+    }
+  },
+  "gancho": {
+    "duracion_s": [
+      20,
+      35
+    ],
+    "plantilla": [
+      "premisa en segunda persona o resumen corto",
+      "«hoy vamos a…» + tarjeta de título",
+      "«o más conocida como…» + título en broma",
+      "«todo empieza con…»"
+    ],
+    "comedias": "presentar al reparto por lo que el público conoce de ellos"
+  },
+  "cierre": "frase corta propia del mapache + pedido de like breve; nada de otros canales",
+  "prohibido": [
+    "explicar el chiste",
+    "muletillas: «y es aquí donde todo cambia», «se menciona que»",
+    "chistes en escenas tristes",
+    "mencionar otros canales o videos"
+  ],
+  "marcas_guion": {
+    "[rata]": "inicio del modo rata",
+    "[/rata]": "fin del modo rata",
+    "[groseria: texto—]": "grosería cortada; la app corta la voz y pone el sonido",
+    "[tarjeta: TEXTO]": "tarjeta amarilla de tiempo",
+    "[lugar: TEXTO]": "tarjeta de lugar",
+    "[rotulo: NOMBRE]": "rótulo de presentación de personaje",
+    "[censura]": "sticker del mapache sobre la imagen",
+    "[gesto: emoción]": "el mapache aparece en la esquina con esa emoción",
+    "[pausa]": "pausa de respiro"
+  }
+}

@@ -1,0 +1,40 @@
+{
+ "frases_autopromocion": [
+  "suscr",
+  "campanita",
+  "deja tu like",
+  "dale like",
+  "link en la descripción",
+  "enlace en la descripción",
+  "aquí en el canal",
+  "mi otro canal",
+  "dándole click",
+  "dale click",
+  "membresía",
+  "auspicia",
+  "tu marca",
+  "nos vemos en el próximo",
+  "hasta pronto",
+  "gracias por tu apoyo",
+  "comenta y",
+  "coméntame",
+  "en los comentarios",
+  "nuevo miembro",
+  "únete"
+ ],
+ "pantalla_final": {
+  "buscar_ultimos_s": 60,
+  "plano_estatico_min_s": 5
+ },
+ "logo": {
+  "esquinas": [
+   "arriba_derecha",
+   "abajo_derecha",
+   "arriba_izquierda",
+   "abajo_izquierda"
+  ],
+  "tam_rel": 0.22,
+  "variacion_max": 6.0,
+  "muestras": 120
+ }
+}
