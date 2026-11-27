@@ -2,7 +2,7 @@
 
 Canal: **@EnMinutos** (marca «EN MINUTOS» arriba a la derecha en todo el video).
 Película: *La Adolescente* (Francia, 1979), así la nombra el narrador.
-Revisadas las 27 hojas de fotogramas, un fotograma por cada uno de los 594 planos.
+Revisadas las 27 hojas de fotogramas, un fotograma por cada uno de los 596 planos.
 
 > **Nota sobre el contenido.** La historia gira en torno a una niña y el despertar sexual, y el gancho del
 > narrador lo presenta en esos términos. Aquí solo se registra la técnica de edición; no se describe la trama.
@@ -12,7 +12,7 @@ Revisadas las 27 hojas de fotogramas, un fotograma por cada uno de los 594 plano
 ## Medidas
 
 - 26:09 de duración, 640×360
-- 594 planos, **22,7 cortes por minuto**; plano medio 2,6 s (mediana 2,1 s; de 0,2 s a 13,6 s)
+- 596 planos, **22,7 cortes por minuto**; plano medio 2,6 s (mediana 2,1 s; de 0,2 s a 13,6 s)
 - 5269 palabras, **201 por minuto**; hay voz el 97 % del tiempo
 - Volumen medio -17,4 dBFS (unos 3 dB más fuerte que los videos 1 y 2)
 
@@ -32,7 +32,7 @@ Revisadas las 27 hojas de fotogramas, un fotograma por cada uno de los 594 plano
 |---|---|---|
 | Lista de miembros | 00:26 y 25:39 | Captura de la lista de miembros de YouTube, único material ajeno a la película |
 | Difuminado total | 15:20–15:41 | Toda la imagen difuminada durante 21 s (6 planos seguidos), para ocultar una escena |
-| Fundido encadenado | 19:38 | Un fundido de unos 0,5 s; no se puede saber si es de la película o del editor |
+| Fundidos | 02:31, 08:10 y 19:38 | Dos fundidos encadenados (02:31 y 19:38) y un fundido a blanco (08:10). No se puede saber si son de la película o del editor |
 | Plano de la luna | 09:14, 16:41, 16:45, 22:03, 23:47 | Se repite para marcar que pasa la noche |
 
 ## Lo que NO hay

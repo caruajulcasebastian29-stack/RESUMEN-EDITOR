@@ -8,7 +8,7 @@ añadieron al afinar el detector.
 ## Medidas
 
 - 22:13 de duración, 640×360
-- 655 planos, **29,4 cortes por minuto**; plano medio 2,0 s (mediana 1,9 s; de 0,2 s a 10,4 s)
+- 670 planos, **30,1 cortes por minuto**; plano medio 2,0 s (mediana 1,9 s; de 0,2 s a 7,1 s)
 - 4652 palabras, **209 por minuto**; el narrador habla el 100 % del tiempo
 - Ojo: el detector de cortes antiguo solo encontraba 223 planos en este video, porque la imagen apagada
   engaña a un umbral fijo. Por eso se cambió de detector.
@@ -30,7 +30,7 @@ añadieron al afinar el detector.
 
 ## Lo que NO hay
 
-- **Ni un solo clip de reacción, meme ni sticker.** Ninguna imagen ajena a la película en los 655 planos.
+- **Ni un solo clip de reacción, meme ni sticker.** Ninguna imagen ajena a la película en los 670 planos.
   El único candidato del detector (00:03) es parte del gancho, con diálogo de la película.
 - No hay rótulos con el nombre de cada personaje (el video 1 sí los tenía).
 - No aparece el narrador en cámara.
@@ -47,8 +47,8 @@ añadieron al afinar el detector.
 
 ## Montaje
 
-- Ritmo parejo: entre 23 y 34 cortes por minuto (los más bajos, 23–25, en los minutos 16, 17 y 20).
-- Planos largos solo en escenas oscuras: 10,4 s (19:58), 8,8 s (16:09), 7,6 s (00:31), 7,1 s (08:58).
+- Ritmo parejo: entre 25 y 35 cortes por minuto.
+- Ningún plano pasa de 7,1 s. Los que antes salían de 8 a 10 s eran escenas muy oscuras con cortes que el detector general no veía; la segunda pasada en planos oscuros los separa.
 - Pocos cortes relámpago: 6 planos de menos de 0,4 s en todo el video (el video 1 tiene 17).
 - Solo cortes directos, sin transiciones.
 
