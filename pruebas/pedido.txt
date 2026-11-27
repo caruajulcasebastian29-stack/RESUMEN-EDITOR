@@ -1,1 +1,1 @@
-verificar-entorno 3
+comparar-vision 1
