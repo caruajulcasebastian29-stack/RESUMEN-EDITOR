@@ -31,6 +31,7 @@ UMBRAL_CORTE = 0.30      # sensibilidad de la detección de cambio de escena
 SILENCIO_DB = -35        # por debajo de esto se considera silencio
 SILENCIO_MIN = 0.30      # segundos mínimos para contar un silencio
 FPS_MUESTRA = 2          # fotogramas por segundo que se extraen para elegir el de cada plano
+TROZO_MAX_S = 18.0       # Whisper descarta lo que pase de 30 s: ningún trozo puede acercarse
 MINIATURA = (400, 225)
 COLUMNAS, FILAS = 5, 8   # 40 planos por hoja como máximo
 
@@ -217,7 +218,38 @@ def etapa_transcripcion(wav, out, idioma):
             vaciar()
         vad.flush()
         vaciar()
+
+        # Whisper solo procesa los primeros 30 s de cada trozo y descarta el resto en
+        # silencio. En una narración seguida el detector de voz entrega tramos de un
+        # minuto, así que aquí se parten por el punto más callado, para no cortar palabras.
+        import numpy as np
+        partidos = []
+        for ini, fin in tramos:
+            if fin - ini <= TROZO_MAX_S:
+                partidos.append([ini, fin])
+                continue
+            n = int(math.ceil((fin - ini) / TROZO_MAX_S))
+            paso = (fin - ini) / n
+            bordes = [ini]
+            for k in range(1, n):
+                obj = ini + k * paso
+                # ventana de medio segundo alrededor del punto teórico de corte
+                a0, b0 = max(ini, obj - 0.5), min(fin, obj + 0.5)
+                tr = a[int(a0 * sr):int(b0 * sr)]
+                if len(tr) >= 320:
+                    marco = 160  # 10 ms
+                    nm = len(tr) // marco
+                    en = [float(np.sqrt(np.mean(tr[i * marco:(i + 1) * marco] ** 2))) for i in range(nm)]
+                    obj = a0 + (en.index(min(en)) * marco) / sr
+                bordes.append(round(obj, 2))
+            bordes.append(fin)
+            partidos += [[bordes[i], bordes[i + 1]] for i in range(len(bordes) - 1)]
+        tramos = partidos
         guardar(seg_p, tramos)
+
+    largos = [t for t in tramos if t[1] - t[0] > 29]
+    if largos:
+        log(f"AVISO: {len(largos)} tramos pasan de 29 s y se truncarían.")
 
     hechos = leer(parcial) if parcial.exists() else []
     if len(hechos) < len(tramos):
