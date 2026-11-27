@@ -47,3 +47,23 @@ Las líneas que más funcionan:
 
 La voz que se elija debe poder **gritar, quejarse y cambiar de tono**, no solo leer parejo. Prueba pendiente:
 generar la frase del ratón y una lista de desgracias con varias voces gratuitas y que Jhon elija.
+
+## Segunda referencia: la rata (clip de @delta.ps3)
+
+Clip de TikTok de 32 s, «El doblaje latino de esta película fue inesperado y muy gracioso», otra escena de *Bad Cat*
+con doblaje en broma (acento que Jhon describe entre ecuatoriano y panameño). La rata va montada en la gaviota y le
+reclama sin parar. Copia en `D:\Copiloto-Civil3D\analisis\referencia-tono\`.
+
+Lo que hace graciosa a la rata (a Jhon le encanta su personalidad, también en el primer clip):
+
+- **Es la víctima que reclama a gritos.** Todo lo que le pasa es culpa del otro: «¿dónde estabas metido?»,
+  «estás jugando con mi vida», «te dije que me vinieras a buscar apenas te silbara».
+- **Detalla su sufrimiento con exageración:** «me estaban apaleando con una escoba».
+- **Adivina mal y acusa:** «te apuesto que estabas hablando de… y vainas».
+- **Habla a gritos todo el tiempo:** el volumen se mantiene casi parejo y alto (-25 a -30 dB) los 30 s; no sube
+  poco a poco como el gato del primer clip, ya arranca en el máximo.
+- **El contraste:** el otro personaje responde corto y sin emoción («sorry…»), y eso remata el chiste.
+
+Idea para nosotros: los arranques de la rata sirven como modelo para los **doblajes en broma** de los personajes
+quejones y para los momentos en que el narrador se indigna con un personaje. Pendiente decidir con Jhon si esta
+personalidad la toma el mismo gato o si habrá un segundo personaje.
