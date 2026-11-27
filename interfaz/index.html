@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Resumen Editor</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root { --fondo:#16171a; --panel:#202227; --borde:#30333a; --texto:#e9e9ec; --suave:#9a9ca5;
+          --amarillo:#ffd400; --verde:#3ecf6e; --rojo:#ff5a52; --azul:#5aa9ff; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:"Segoe UI",system-ui,sans-serif; background:var(--fondo); color:var(--texto); }
+  header { display:flex; align-items:center; gap:14px; padding:14px 24px; border-bottom:1px solid var(--borde); }
+  header h1 { font-size:18px; margin:0; letter-spacing:.3px; }
+  header h1 span { color:var(--amarillo); }
+  header .espacio { flex:1; }
+  button { background:var(--panel); color:var(--texto); border:1px solid var(--borde); border-radius:8px;
+           padding:8px 14px; font-size:14px; cursor:pointer; }
+  button:hover { border-color:var(--suave); }
+  button.principal { background:var(--amarillo); color:#111; border-color:var(--amarillo); font-weight:600; }
+  main { max-width:1100px; margin:0 auto; padding:24px; }
+  .panel { background:var(--panel); border:1px solid var(--borde); border-radius:12px; padding:18px; margin-bottom:18px; }
+  .panel h2 { font-size:15px; margin:0 0 12px; color:var(--suave); font-weight:600; text-transform:uppercase; letter-spacing:.6px; }
+  #soltar, .soltar { border:2px dashed var(--borde); border-radius:12px; padding:48px; text-align:center; color:var(--suave); cursor:pointer; }
+  #soltar.encima, .soltar.encima { border-color:var(--amarillo); color:var(--texto); }
+  .lista div { display:flex; justify-content:space-between; padding:10px 4px; border-bottom:1px solid var(--borde); cursor:pointer; }
+  .lista div:hover { color:var(--amarillo); }
+  .pasos { display:flex; gap:6px; margin-bottom:18px; }
+  .pasos div { flex:1; text-align:center; font-size:12px; padding:8px 4px; border-radius:8px; background:var(--panel);
+               border:1px solid var(--borde); color:var(--suave); }
+  .pasos div.hecho { color:var(--verde); border-color:#2a5e3d; }
+  .pasos div.actual { color:#111; background:var(--amarillo); border-color:var(--amarillo); font-weight:600; }
+  .barra { height:6px; background:var(--borde); border-radius:4px; overflow:hidden; margin-top:10px; }
+  .barra i { display:block; height:100%; background:var(--amarillo); width:0; transition:width .4s; }
+  .error { color:var(--rojo); }
+  .tramo { display:flex; gap:10px; align-items:center; padding:6px 0; font-size:14px; }
+  .tramo.off { opacity:.45; text-decoration:line-through; }
+  .frase { padding:7px 0; border-bottom:1px solid var(--borde); font-size:14px; line-height:1.5; }
+  .marca { display:inline-block; font-size:11px; padding:1px 7px; border-radius:10px; margin-right:4px; font-weight:600; }
+  .m-rata { background:var(--rojo); color:#fff; } .m-tarjeta,.m-lugar { background:var(--amarillo); color:#111; }
+  .m-rotulo { background:#ffb000; color:#111; } .m-censura { background:#b06bff; color:#fff; }
+  .m-gesto { background:var(--azul); color:#111; } .m-groseria { background:#ff2d7a; color:#fff; } .m-pausa { background:#555; }
+  .lotes { display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:14px; }
+  .lote { background:var(--fondo); border:1px solid var(--borde); border-radius:10px; padding:10px; }
+  .lote.ok { border-color:var(--verde); } .lote.rehacer { border-color:var(--rojo); }
+  .lote video { width:100%; border-radius:6px; background:#000; }
+  .lote .fila { display:flex; gap:8px; margin-top:8px; }
+  .lote input { flex:1; background:var(--panel); border:1px solid var(--borde); color:var(--texto); border-radius:6px; padding:6px; }
+  .ok-btn { color:var(--verde); } .x-btn { color:var(--rojo); }
+  dialog { background:var(--panel); color:var(--texto); border:1px solid var(--borde); border-radius:12px; width:420px; }
+  dialog label { display:block; margin:12px 0 4px; font-size:13px; color:var(--suave); }
+  dialog input, dialog select { width:100%; background:var(--fondo); border:1px solid var(--borde); color:var(--texto); border-radius:6px; padding:8px; }
+  .oculto { display:none; }
+  .aviso { color:var(--amarillo); font-size:13px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Resumen <span>Editor</span></h1>
+  <div class="espacio"></div>
+  <button id="btn-inicio">Proyectos</button>
+  <button id="btn-aprender">Aprender</button>
+  <button id="btn-ajustes">Ajustes</button>
+</header>
+
+<main>
+  <div class="panel oculto" id="salud" style="border-color:var(--rojo)"></div>
+  <!-- 1 · INICIO -->
+  <section id="vista-inicio">
+    <div class="panel">
+      <h2>Nuevo resumen</h2>
+      <div id="soltar">Arrastra aquí el resumen descargado (MP4)<br><small>o haz clic para elegirlo</small></div>
+      <input type="file" id="archivo" accept="video/*" class="oculto">
+      <div class="barra oculto" id="barra-subida"><i></i></div>
+    </div>
+    <div class="panel">
+      <h2>Proyectos</h2>
+      <div class="lista" id="lista"></div>
+    </div>
+  </section>
+
+  <!-- APRENDER · videos de referencia -->
+  <section id="vista-aprender" class="oculto">
+    <div class="panel">
+      <h2>Enseñarle un video de referencia</h2>
+      <p style="color:var(--suave);font-size:13px;margin-top:0">La app estudia cortes, transiciones, música, voz, narración, ganchos y el personaje del canal, y lo guarda en su memoria. Tarda: va lento pero seguro.</p>
+      <div id="soltar-ref" class="soltar">Arrastra aquí un resumen de otro canal (MP4)<br><small>o haz clic para elegirlo</small></div>
+      <input type="file" id="archivo-ref" accept="video/*" class="oculto">
+      <div id="estado-ref" style="margin-top:12px"></div>
+      <div class="barra"><i id="progreso-ref"></i></div>
+    </div>
+    <div class="panel"><h2>Lo que ha aprendido</h2><div id="manual"></div></div>
+    <div class="panel"><h2>Videos estudiados</h2><div id="fichas"></div></div>
+  </section>
+
+  <!-- 2–7 · PROYECTO -->
+  <section id="vista-proyecto" class="oculto">
+    <div class="pasos" id="pasos"></div>
+    <div class="panel">
+      <h2 id="titulo"></h2>
+      <div id="mensaje"></div>
+      <div class="barra"><i id="progreso"></i></div>
+      <p class="aviso" id="aviso"></p>
+      <p class="error" id="error"></p>
+      <button id="btn-continuar" class="oculto">Intentar de nuevo</button>
+    </div>
+    <div class="panel oculto" id="panel-diagnostico">
+      <h2>Lo que la app entendió y lo que corrige</h2>
+      <div id="pelicula"></div>
+      <div id="diagnostico"></div>
+      <div id="revision"></div>
+    </div>
+    <div class="panel oculto" id="panel-limpieza">
+      <h2>Lo que se quita del original</h2>
+      <div id="logo"></div>
+      <div id="tramos"></div>
+    </div>
+    <div class="panel oculto" id="panel-lotes">
+      <h2>Revisión por lotes</h2>
+      <p style="color:var(--suave);font-size:13px;margin-top:0">✓ congela el lote. ✗ lo rehace; el comentario es opcional. La app aprende de cada decisión.</p>
+      <div class="lotes" id="lotes"></div>
+      <p style="margin-top:16px">
+        <button class="principal" id="btn-rehacer">Rehacer los ✗</button>
+        <button id="btn-yt">Exportar para YouTube</button>
+        <button id="btn-tt">Exportar para TikTok</button>
+        <select id="partes" title="Partes para TikTok"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select>
+      </p>
+      <p id="exportado" class="aviso"></p>
+    </div>
+    <div class="panel oculto" id="panel-guion">
+      <h2>Guion del mapache</h2>
+      <div id="guion"></div>
+    </div>
+  </section>
+</main>
+
+<dialog id="dlg-ajustes">
+  <form method="dialog" id="form-ajustes">
+    <h3 style="margin-top:0">Ajustes</h3>
+    <label>Clave de Gemini (Google AI Studio, gratis)</label>
+    <input name="clave_gemini" id="clave" placeholder="Pega aquí tu clave">
+    <label>Voz (provisional hasta definir la del mapache)</label>
+    <select name="motor_voz"><option value="generica">Voz neuronal genérica (necesita internet)</option><option value="gemini">Gemini TTS (necesita clave)</option><option value="prueba">Voz de prueba sin internet</option></select>
+    <label>Acento de la voz genérica</label>
+    <select name="acento"><option value="peru">Peruano</option><option value="panama">Panameño</option><option value="mexico">Mexicano</option></select>
+    <label style="display:flex;gap:8px;align-items:center"><input type="checkbox" name="mostrar_mapache" value="true" style="width:auto"> Mostrar al mapache (aún sin animación final)</label>
+    <p style="margin-top:18px;text-align:right"><button value="cancel">Cancelar</button> <button class="principal" id="guardar-ajustes">Guardar</button></p>
+  </form>
+</dialog>
+
+<script>
+const PASOS = [["entender","Entender"],["limpieza","Limpieza"],["guion","Guion"],["voz","Voz"],
+               ["montaje","Montaje"],["revision","Autorrevisión"],["lotes","Tu revisión"]];
+const NOMBRE_PROBLEMA = {toma_larga:"tomas demasiado largas", negro:"pantallas negras", toma_repetida:"tomas repetidas",
+                         imagen_no_coincide:"tramos donde la imagen no coincide con lo que se dice"};
+let actual = null, temporizador = null;
+const $ = s => document.querySelector(s);
+const api = (url, opciones) => fetch(url, opciones).then(r => r.json());
+const mmss = s => `${String(Math.floor(s/60)).padStart(2,"0")}:${String(Math.floor(s%60)).padStart(2,"0")}`;
+const esc = t => String(t).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function mostrar(vista) {
+  $("#vista-inicio").classList.toggle("oculto", vista !== "inicio");
+  $("#vista-proyecto").classList.toggle("oculto", vista !== "proyecto");
+  $("#vista-aprender").classList.toggle("oculto", vista !== "aprender");
+}
+
+async function revisarSalud() {
+  const s = await api("/api/salud");
+  const avisos = [];
+  if (!s.ffmpeg) avisos.push("Falta FFmpeg. Vuelve a ejecutar el instalador.");
+  if (!s.ollama) avisos.push("Ollama no está abierto. Ábrelo desde el menú Inicio (o reinstala) y vuelve a esta ventana.");
+  else if (s.modelos_faltantes.length) avisos.push(`Faltan modelos de IA: ${s.modelos_faltantes.map(esc).join(", ")}. <button onclick="descargarModelos()">Descargarlos ahora</button>`);
+  $("#salud").innerHTML = avisos.join("<br>");
+  $("#salud").classList.toggle("oculto", !avisos.length);
+}
+async function descargarModelos() { await api("/api/salud/descargar", {method:"POST"}); abrirAprender(); }
+
+let tempRef = null;
+async function abrirAprender() {
+  actual = null; clearInterval(temporizador); mostrar("aprender");
+  clearInterval(tempRef); await pintarAprender(); tempRef = setInterval(pintarAprender, 3000);
+}
+async function pintarAprender() {
+  const d = await api("/api/referencias"), e = d.estado || {};
+  $("#estado-ref").innerHTML = e.error ? `<span class="error">${esc(e.error)}</span>` : esc(e.mensaje || "");
+  $("#progreso-ref").style.width = (e.progreso || 0) + "%";
+  const m = d.manual || {}, r = x => x ? `${x.mediana} <span style="color:var(--suave)">(${x.min}–${x.max})</span>` : "—";
+  $("#manual").innerHTML = m.videos_estudiados ? `
+    <div class="frase">Videos estudiados: <b>${m.videos_estudiados}</b></div>
+    <div class="frase">Cortes por minuto: ${r(m.cortes_por_minuto)} · duración típica de toma: ${r(m.duracion_toma_mediana)} s</div>
+    <div class="frase">Transiciones: ${Object.entries(m.transiciones||{}).map(([k,v])=>`${esc(k)} ${Math.round(v*100)} %`).join(" · ")}</div>
+    <div class="frase">Música bajo la voz: ${r(m.musica_bajo_voz_db)} dB · palabras por minuto: ${r(m.palabras_por_minuto)}</div>
+    <div class="frase">Chistes por minuto: ${r(m.chistes_por_minuto)} · la voz sube y baja: ${r(m.voz_rango_st)} semitonos</div>
+    <div class="frase">Recursos más usados: ${Object.entries(m.recursos_por_minuto||{}).slice(0,6).map(([k,v])=>`${esc(k)} (${v}/min)`).join(", ")}</div>`
+    : "<p style='color:var(--suave)'>Todavía no ha estudiado ningún video.</p>";
+  $("#fichas").innerHTML = (d.fichas||[]).map(f => `<div class="frase"><b>${esc(f.archivo)}</b> · ${Math.round(f.duracion/60)} min ·
+    ${f.tomas.cortes_por_minuto} cortes/min · ${f.narracion.palabras_por_minuto} palabras/min · ${f.ejemplos_en_memoria} ejemplos guardados
+    ${f.gancho ? `<br><span style="color:var(--suave)">Gancho: «${esc(f.gancho.frase)}»</span>` : ""}</div>`).join("");
+}
+function subirReferencia(archivo) {
+  const datos = new FormData(); datos.append("video", archivo);
+  fetch("/api/referencias", {method:"POST", body:datos}).then(pintarAprender);
+}
+
+async function cargarLista() {
+  const ps = await api("/api/proyectos");
+  $("#lista").innerHTML = ps.length ? "" : "<p style='color:var(--suave)'>Todavía no hay proyectos.</p>";
+  ps.forEach(p => {
+    const d = document.createElement("div");
+    d.innerHTML = `<span>${esc(p.nombre)}</span><span style="color:var(--suave)">${esc(p.mensaje||p.paso)}</span>`;
+    d.onclick = () => abrir(p.nombre);
+    $("#lista").appendChild(d);
+  });
+}
+
+function subir(archivo) {
+  const datos = new FormData(); datos.append("video", archivo);
+  const x = new XMLHttpRequest();
+  $("#barra-subida").classList.remove("oculto");
+  x.upload.onprogress = e => $("#barra-subida i").style.width = (100*e.loaded/e.total)+"%";
+  x.onload = () => { const r = JSON.parse(x.responseText); abrir(r.nombre); };
+  x.open("POST", "/api/proyectos"); x.send(datos);
+}
+
+function etiquetas(texto) {
+  return esc(texto).replace(/\[(\/?\w+)(?::\s*([^\]]*))?\]/g, (m, n, v) => {
+    const clase = "m-" + n.replace("/","");
+    return n.startsWith("/") ? "" : `<span class="marca ${clase}">${n}${v ? ": "+v : ""}</span>`;
+  });
+}
+
+async function abrir(nombre) {
+  actual = nombre; lotesPintados = ""; mostrar("proyecto"); $("#titulo").textContent = nombre;
+  clearInterval(temporizador); await refrescar(); temporizador = setInterval(refrescar, 2000);
+}
+
+let lotesPintados = "";
+async function refrescar() {
+  if (!actual) return;
+  const d = await api(`/api/proyectos/${encodeURIComponent(actual)}`);
+  const e = d.estado, idx = PASOS.findIndex(p => p[0] === e.paso);
+  $("#pasos").innerHTML = PASOS.map((p,i) => `<div class="${i<idx?"hecho":i===idx?"actual":""}">${p[1]}</div>`).join("");
+  $("#mensaje").textContent = e.mensaje || "";
+  $("#progreso").style.width = (e.progreso||0) + "%";
+  $("#aviso").textContent = [e.aviso, ...(e.avisos_guion||[])].filter(Boolean).join(" · ");
+  $("#error").textContent = e.error ? "Algo falló: " + e.error : "";
+  $("#btn-continuar").classList.toggle("oculto", !e.error);
+
+  if (d.pelicula || d.diagnostico) {
+    $("#panel-diagnostico").classList.remove("oculto");
+    const p = d.pelicula;
+    $("#pelicula").innerHTML = p ? `<div class="frase"><b>${esc(p.titulo_probable || "Película")}</b> · ${esc(p.genero)}<br>${esc(p.premisa)}</div>` : "";
+    const g = d.diagnostico;
+    $("#diagnostico").innerHTML = g ? `<div class="frase">Corrige: ${Object.entries(g.cuenta).map(([k,v])=>`${v} ${NOMBRE_PROBLEMA[k]||esc(k)}`).join(" · ") || "no encontró fallas"}${g.ritmo && g.ritmo.lento ? ` · ritmo lento (${g.ritmo.actual} cortes/min contra ${g.ritmo.referencia})` : ""}</div>` : "";
+    const rv = d.revision;
+    $("#revision").innerHTML = rv ? `<div class="frase">Resultado: ${rv.cortes_por_minuto} cortes/min (referencia ${rv.referencia_cortes_por_minuto ?? "—"}) · toma más larga ${rv.toma_mas_larga_s} s · ${Math.round(rv.duracion_s/60*10)/10} min</div>` : "";
+  }
+  if (d.limpieza) {
+    $("#panel-limpieza").classList.remove("oculto");
+    const l = d.limpieza.logo;
+    $("#logo").innerHTML = l ? `Logo del canal original detectado (${esc(l.esquina.replace("_"," "))}): se borra.` : "No se detectó logo fijo.";
+    $("#tramos").innerHTML = d.limpieza.excluidos.map((t,i) =>
+      `<div class="tramo ${t.desmarcado?"off":""}"><button onclick="alternar(${i})">${t.desmarcado?"Quitar":"Dejar"}</button>
+       <b>${mmss(t.inicio)}–${mmss(t.fin)}</b> <span style="color:var(--suave)">${esc(t.motivo)}</span></div>`).join("");
+  }
+  if (d.guion) {
+    $("#panel-guion").classList.remove("oculto");
+    $("#guion").innerHTML = d.guion.frases.map(f => `<div class="frase">${etiquetas(f.texto)}</div>`).join("");
+  }
+  if (d.lotes && d.lotes.length) {
+    $("#panel-lotes").classList.remove("oculto");
+    const firma = JSON.stringify(d.lotes);
+    if (firma !== lotesPintados) {
+      lotesPintados = firma;
+      $("#lotes").innerHTML = d.lotes.map(l => `
+        <div class="lote ${l.estado}">
+          <b>Lote ${l.n}</b> <span style="color:var(--suave)">${mmss(l.inicio)}–${mmss(l.inicio+l.dur)}</span>
+          <video controls preload="metadata" src="/api/proyectos/${encodeURIComponent(actual)}/archivo/trabajo/${l.archivo}?v=${Date.now()}"></video>
+          <div class="fila"><input id="c${l.n}" placeholder="Comentario (opcional)" value="${esc(l.comentario||"")}">
+          <button class="ok-btn" onclick="marcar(${l.n},true)">✓</button><button class="x-btn" onclick="marcar(${l.n},false)">✗</button></div>
+        </div>`).join("");
+    }
+  }
+}
+
+async function alternar(i) { await api(`/api/proyectos/${encodeURIComponent(actual)}/excluido/${i}`, {method:"POST"}); refrescar(); }
+async function marcar(n, ok) {
+  const datos = new FormData(); datos.append("ok", ok); datos.append("comentario", $("#c"+n).value);
+  await api(`/api/proyectos/${encodeURIComponent(actual)}/lotes/${n}`, {method:"POST", body:datos}); refrescar();
+}
+async function exportar(formato) {
+  const datos = new FormData(); datos.append("formato", formato); datos.append("partes", formato==="tiktok" ? $("#partes").value : 1);
+  $("#exportado").textContent = "Exportando…";
+  const r = await api(`/api/proyectos/${encodeURIComponent(actual)}/exportar`, {method:"POST", body:datos});
+  $("#exportado").textContent = "Listo: " + r.archivos.join(" · ");
+}
+
+$("#soltar").onclick = () => $("#archivo").click();
+$("#archivo").onchange = e => e.target.files[0] && subir(e.target.files[0]);
+["dragover","dragenter"].forEach(ev => $("#soltar").addEventListener(ev, e => { e.preventDefault(); $("#soltar").classList.add("encima"); }));
+["dragleave","drop"].forEach(ev => $("#soltar").addEventListener(ev, e => { e.preventDefault(); $("#soltar").classList.remove("encima"); }));
+$("#soltar").addEventListener("drop", e => e.dataTransfer.files[0] && subir(e.dataTransfer.files[0]));
+$("#btn-inicio").onclick = () => { actual = null; clearInterval(temporizador); clearInterval(tempRef); mostrar("inicio"); cargarLista(); };
+$("#btn-aprender").onclick = abrirAprender;
+$("#soltar-ref").onclick = () => $("#archivo-ref").click();
+$("#archivo-ref").onchange = e => e.target.files[0] && subirReferencia(e.target.files[0]);
+["dragover","dragenter"].forEach(ev => $("#soltar-ref").addEventListener(ev, e => { e.preventDefault(); $("#soltar-ref").classList.add("encima"); }));
+["dragleave","drop"].forEach(ev => $("#soltar-ref").addEventListener(ev, e => { e.preventDefault(); $("#soltar-ref").classList.remove("encima"); }));
+$("#soltar-ref").addEventListener("drop", e => e.dataTransfer.files[0] && subirReferencia(e.dataTransfer.files[0]));
+$("#btn-continuar").onclick = () => api(`/api/proyectos/${encodeURIComponent(actual)}/continuar`, {method:"POST"});
+$("#btn-rehacer").onclick = () => api(`/api/proyectos/${encodeURIComponent(actual)}/rehacer`, {method:"POST"});
+$("#btn-yt").onclick = () => exportar("youtube");
+$("#btn-tt").onclick = () => exportar("tiktok");
+$("#btn-ajustes").onclick = async () => {
+  const a = await api("/api/ajustes"); const f = $("#form-ajustes");
+  f.clave_gemini.value = a.clave_gemini; f.motor_voz.value = a.motor_voz; f.acento.value = a.acento;
+  f.mostrar_mapache.checked = !!a.mostrar_mapache;
+  $("#dlg-ajustes").showModal();
+};
+$("#guardar-ajustes").onclick = async e => {
+  e.preventDefault();
+  await api("/api/ajustes", {method:"POST", body:new FormData($("#form-ajustes"))});
+  $("#dlg-ajustes").close();
+};
+cargarLista(); revisarSalud(); setInterval(revisarSalud, 30000);
+</script>
+</body>
+</html>

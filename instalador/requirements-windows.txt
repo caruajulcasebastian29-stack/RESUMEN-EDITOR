@@ -1,0 +1,17 @@
+# Paquetes que van dentro del instalador de Windows (todos gratuitos).
+fastapi>=0.110
+uvicorn>=0.29
+python-multipart>=0.0.9
+pydantic>=2.6
+numpy>=1.26,<2.3
+pillow>=10.0
+soundfile>=0.12
+librosa>=0.10
+scenedetect[opencv]>=0.6.4
+sherpa-onnx>=1.10
+onnxruntime>=1.18
+audio-separator>=0.30
+transnetv2-pytorch>=1.0
+lancedb>=0.13
+edge-tts>=6.1
+ffmpeg-python>=0.2
