@@ -61,6 +61,10 @@ Detalle en `video-06-ferdan-vertigo/observaciones.md` y `video-07-ferdan-la-boca
 
 Detalle en `video-08-asipaso-mi-abuelo-es-un-peligro/observaciones.md`.
 
+## Tono elegido para nuestro narrador
+
+Ver `tono-del-narrador.md`: gato narrador, acento panameño-peruano, narración tranquila con estallidos y groserías cortadas.
+
 ## Cambios que se ven en @EnMinutos
 
 - Los videos 3, 4 y 5 añaden el mensaje de membresía al inicio y al final, con la lista de miembros en pantalla.
