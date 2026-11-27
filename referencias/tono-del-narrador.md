@@ -6,7 +6,11 @@ El clip es solo referencia de tono: no se usa su audio ni su imagen en nuestros 
 
 ## Decisiones tomadas
 
-- **Un solo narrador: el gato.** Rex y Max salen del proyecto.
+- **Un solo narrador.** Rex y Max salen del proyecto. **El personaje es un mapache** (antes se pensó en un gato).
+- **Diseño aprobado por Jhon (27-11-2026):** `personaje-aprobado.png` (8 vistas). Mapache gris, gordito,
+  cejas negras gruesas, ojos amarillos medio cerrados, sonrisa torcida, polo blanco sin mangas gastado con manchas
+  amarillentas de grasa y agujeros (de taller), fósforo en la boca. Sin gorra. Jhon decidió dejarlo así.
+- En rabia extrema: se agarra y estira el polo del pecho. Pendiente: hoja de expresiones.
 - **Cuerpo y cara:** gato robusto, panzón, desaliñado; cara de sinvergüenza cansado (ojeras, párpados caídos,
   sonrisa torcida con dientes chuecos). Tiene que tener cara de que la grosería le sale natural; nada tierno.
 - **Diseño propio:** inspirado en la actitud de Shero (*Bad Cat*), pero con otro color, otra cabeza y otras orejas,
