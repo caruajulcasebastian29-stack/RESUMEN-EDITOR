@@ -1,0 +1,229 @@
+== Maquina
+4
+               total        used        free      shared  buff/cache   available
+Mem:              15           0          14           0           0          14
+Swap:              2           0           2
+/dev/root       145G   58G   87G  40% /
+== FFmpeg
+
+Running kernel seems to be up-to-date.
+
+Restarting services...
+
+Service restarts being deferred:
+ systemctl restart hosted-compute-agent.service
+
+No containers need to be restarted.
+
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+ffmpeg version 8.0.1-3ubuntu2 Copyright (c) 2000-2025 the FFmpeg developers
+== Ollama
+{"version":"0.40.19"}
+== Descargando qwen3:4b-instruct
+success [K[?25h[?2026l
+NAME                 ID              SIZE      MODIFIED               
+qwen3:4b-instruct    0edcdef34593    2.5 GB    Less than a second ago    
+== Prueba de texto
+7.18 s
+Un resumen de película es una breve descripción que explica los eventos principales y la trama de una película.
+== Tarea
+dependencias ok
+Fetching 18 files:   0%|          | 0/18 [00:00<?, ?it/s]Fetching 18 files:   6%|▌         | 1/18 [00:00<00:15,  1.13it/s]Fetching 18 files:  17%|█▋        | 3/18 [00:00<00:04,  3.72it/s]Fetching 18 files:  28%|██▊       | 5/18 [00:01<00:04,  3.10it/s]Fetching 18 files:  33%|███▎      | 6/18 [00:02<00:03,  3.15it/s]Fetching 18 files:  39%|███▉      | 7/18 [00:02<00:04,  2.54it/s]Fetching 18 files:  50%|█████     | 9/18 [00:03<00:03,  2.76it/s]Fetching 18 files:  61%|██████    | 11/18 [00:04<00:02,  2.40it/s]Fetching 18 files:  67%|██████▋   | 12/18 [00:04<00:02,  2.79it/s]Fetching 18 files:  72%|███████▏  | 13/18 [00:05<00:02,  2.44it/s]Fetching 18 files:  78%|███████▊  | 14/18 [00:05<00:01,  2.66it/s]Fetching 18 files:  83%|████████▎ | 15/18 [00:05<00:01,  2.52it/s]Fetching 18 files:  94%|█████████▍| 17/18 [00:06<00:00,  2.60it/s]Fetching 18 files: 100%|██████████| 18/18 [00:08<00:00,  1.46it/s]Fetching 18 files: 100%|██████████| 18/18 [00:08<00:00,  2.21it/s]
+pesos listos
+parche CPU aplicado
+src/utils/dependencies/XPose/models/UniPose/ops/test.py
+== 01_frente con aggrieved.pkl
+Traceback (most recent call last):
+  File "/tmp/lp/inference_animals.py", line 66, in <module>
+    main()
+  File "/tmp/lp/inference_animals.py", line 56, in main
+    live_portrait_pipeline_animal = LivePortraitPipelineAnimal(
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/live_portrait_pipeline_animal.py", line 42, in __init__
+    self.cropper: Cropper = Cropper(crop_cfg=crop_cfg, image_type='animal_face', flag_use_half_precision=inference_cfg.flag_use_half_precision)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/utils/cropper.py", line 80, in __init__
+    self.animal_landmark_runner = AnimalLandmarkRunner(
+                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/utils/animal_landmark_runner.py", line 40, in __init__
+    raise ValueError("Could not load clip embeddings from file, please check your file path.")
+ValueError: Could not load clip embeddings from file, please check your file path.
+== 01_frente con open_lip.pkl
+Traceback (most recent call last):
+  File "/tmp/lp/inference_animals.py", line 66, in <module>
+    main()
+  File "/tmp/lp/inference_animals.py", line 56, in main
+    live_portrait_pipeline_animal = LivePortraitPipelineAnimal(
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/live_portrait_pipeline_animal.py", line 42, in __init__
+    self.cropper: Cropper = Cropper(crop_cfg=crop_cfg, image_type='animal_face', flag_use_half_precision=inference_cfg.flag_use_half_precision)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/utils/cropper.py", line 80, in __init__
+    self.animal_landmark_runner = AnimalLandmarkRunner(
+                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/utils/animal_landmark_runner.py", line 40, in __init__
+    raise ValueError("Could not load clip embeddings from file, please check your file path.")
+ValueError: Could not load clip embeddings from file, please check your file path.
+== 01_frente con d0.mp4
+Traceback (most recent call last):
+  File "/tmp/lp/inference_animals.py", line 66, in <module>
+    main()
+  File "/tmp/lp/inference_animals.py", line 56, in main
+    live_portrait_pipeline_animal = LivePortraitPipelineAnimal(
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/live_portrait_pipeline_animal.py", line 42, in __init__
+    self.cropper: Cropper = Cropper(crop_cfg=crop_cfg, image_type='animal_face', flag_use_half_precision=inference_cfg.flag_use_half_precision)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/utils/cropper.py", line 80, in __init__
+    self.animal_landmark_runner = AnimalLandmarkRunner(
+                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/utils/animal_landmark_runner.py", line 40, in __init__
+    raise ValueError("Could not load clip embeddings from file, please check your file path.")
+ValueError: Could not load clip embeddings from file, please check your file path.
+== 05_rostro_serio con aggrieved.pkl
+Traceback (most recent call last):
+  File "/tmp/lp/inference_animals.py", line 66, in <module>
+    main()
+  File "/tmp/lp/inference_animals.py", line 56, in main
+    live_portrait_pipeline_animal = LivePortraitPipelineAnimal(
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/live_portrait_pipeline_animal.py", line 42, in __init__
+    self.cropper: Cropper = Cropper(crop_cfg=crop_cfg, image_type='animal_face', flag_use_half_precision=inference_cfg.flag_use_half_precision)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/utils/cropper.py", line 80, in __init__
+    self.animal_landmark_runner = AnimalLandmarkRunner(
+                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/utils/animal_landmark_runner.py", line 40, in __init__
+    raise ValueError("Could not load clip embeddings from file, please check your file path.")
+ValueError: Could not load clip embeddings from file, please check your file path.
+== 05_rostro_serio con open_lip.pkl
+Traceback (most recent call last):
+  File "/tmp/lp/inference_animals.py", line 66, in <module>
+    main()
+  File "/tmp/lp/inference_animals.py", line 56, in main
+    live_portrait_pipeline_animal = LivePortraitPipelineAnimal(
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/live_portrait_pipeline_animal.py", line 42, in __init__
+    self.cropper: Cropper = Cropper(crop_cfg=crop_cfg, image_type='animal_face', flag_use_half_precision=inference_cfg.flag_use_half_precision)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/utils/cropper.py", line 80, in __init__
+    self.animal_landmark_runner = AnimalLandmarkRunner(
+                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/utils/animal_landmark_runner.py", line 40, in __init__
+    raise ValueError("Could not load clip embeddings from file, please check your file path.")
+ValueError: Could not load clip embeddings from file, please check your file path.
+== 05_rostro_serio con d0.mp4
+Traceback (most recent call last):
+  File "/tmp/lp/inference_animals.py", line 66, in <module>
+    main()
+  File "/tmp/lp/inference_animals.py", line 56, in main
+    live_portrait_pipeline_animal = LivePortraitPipelineAnimal(
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/live_portrait_pipeline_animal.py", line 42, in __init__
+    self.cropper: Cropper = Cropper(crop_cfg=crop_cfg, image_type='animal_face', flag_use_half_precision=inference_cfg.flag_use_half_precision)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/utils/cropper.py", line 80, in __init__
+    self.animal_landmark_runner = AnimalLandmarkRunner(
+                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/utils/animal_landmark_runner.py", line 40, in __init__
+    raise ValueError("Could not load clip embeddings from file, please check your file path.")
+ValueError: Could not load clip embeddings from file, please check your file path.
+== 11_explicando con aggrieved.pkl
+Traceback (most recent call last):
+  File "/tmp/lp/inference_animals.py", line 66, in <module>
+    main()
+  File "/tmp/lp/inference_animals.py", line 56, in main
+    live_portrait_pipeline_animal = LivePortraitPipelineAnimal(
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/live_portrait_pipeline_animal.py", line 42, in __init__
+    self.cropper: Cropper = Cropper(crop_cfg=crop_cfg, image_type='animal_face', flag_use_half_precision=inference_cfg.flag_use_half_precision)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/utils/cropper.py", line 80, in __init__
+    self.animal_landmark_runner = AnimalLandmarkRunner(
+                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/utils/animal_landmark_runner.py", line 40, in __init__
+    raise ValueError("Could not load clip embeddings from file, please check your file path.")
+ValueError: Could not load clip embeddings from file, please check your file path.
+== 11_explicando con open_lip.pkl
+Traceback (most recent call last):
+  File "/tmp/lp/inference_animals.py", line 66, in <module>
+    main()
+  File "/tmp/lp/inference_animals.py", line 56, in main
+    live_portrait_pipeline_animal = LivePortraitPipelineAnimal(
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/live_portrait_pipeline_animal.py", line 42, in __init__
+    self.cropper: Cropper = Cropper(crop_cfg=crop_cfg, image_type='animal_face', flag_use_half_precision=inference_cfg.flag_use_half_precision)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/utils/cropper.py", line 80, in __init__
+    self.animal_landmark_runner = AnimalLandmarkRunner(
+                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/utils/animal_landmark_runner.py", line 40, in __init__
+    raise ValueError("Could not load clip embeddings from file, please check your file path.")
+ValueError: Could not load clip embeddings from file, please check your file path.
+== 11_explicando con d0.mp4
+Traceback (most recent call last):
+  File "/tmp/lp/inference_animals.py", line 66, in <module>
+    main()
+  File "/tmp/lp/inference_animals.py", line 56, in main
+    live_portrait_pipeline_animal = LivePortraitPipelineAnimal(
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/live_portrait_pipeline_animal.py", line 42, in __init__
+    self.cropper: Cropper = Cropper(crop_cfg=crop_cfg, image_type='animal_face', flag_use_half_precision=inference_cfg.flag_use_half_precision)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/utils/cropper.py", line 80, in __init__
+    self.animal_landmark_runner = AnimalLandmarkRunner(
+                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/utils/animal_landmark_runner.py", line 40, in __init__
+    raise ValueError("Could not load clip embeddings from file, please check your file path.")
+ValueError: Could not load clip embeddings from file, please check your file path.
+== 09_furioso con aggrieved.pkl
+Traceback (most recent call last):
+  File "/tmp/lp/inference_animals.py", line 66, in <module>
+    main()
+  File "/tmp/lp/inference_animals.py", line 56, in main
+    live_portrait_pipeline_animal = LivePortraitPipelineAnimal(
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/live_portrait_pipeline_animal.py", line 42, in __init__
+    self.cropper: Cropper = Cropper(crop_cfg=crop_cfg, image_type='animal_face', flag_use_half_precision=inference_cfg.flag_use_half_precision)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/utils/cropper.py", line 80, in __init__
+    self.animal_landmark_runner = AnimalLandmarkRunner(
+                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/utils/animal_landmark_runner.py", line 40, in __init__
+    raise ValueError("Could not load clip embeddings from file, please check your file path.")
+ValueError: Could not load clip embeddings from file, please check your file path.
+== 09_furioso con open_lip.pkl
+Traceback (most recent call last):
+  File "/tmp/lp/inference_animals.py", line 66, in <module>
+    main()
+  File "/tmp/lp/inference_animals.py", line 56, in main
+    live_portrait_pipeline_animal = LivePortraitPipelineAnimal(
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/live_portrait_pipeline_animal.py", line 42, in __init__
+    self.cropper: Cropper = Cropper(crop_cfg=crop_cfg, image_type='animal_face', flag_use_half_precision=inference_cfg.flag_use_half_precision)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/utils/cropper.py", line 80, in __init__
+    self.animal_landmark_runner = AnimalLandmarkRunner(
+                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/utils/animal_landmark_runner.py", line 40, in __init__
+    raise ValueError("Could not load clip embeddings from file, please check your file path.")
+ValueError: Could not load clip embeddings from file, please check your file path.
+== 09_furioso con d0.mp4
+Traceback (most recent call last):
+  File "/tmp/lp/inference_animals.py", line 66, in <module>
+    main()
+  File "/tmp/lp/inference_animals.py", line 56, in main
+    live_portrait_pipeline_animal = LivePortraitPipelineAnimal(
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/live_portrait_pipeline_animal.py", line 42, in __init__
+    self.cropper: Cropper = Cropper(crop_cfg=crop_cfg, image_type='animal_face', flag_use_half_precision=inference_cfg.flag_use_half_precision)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/utils/cropper.py", line 80, in __init__
+    self.animal_landmark_runner = AnimalLandmarkRunner(
+                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/utils/animal_landmark_runner.py", line 40, in __init__
+    raise ValueError("Could not load clip embeddings from file, please check your file path.")
+ValueError: Could not load clip embeddings from file, please check your file path.
+== Fin
