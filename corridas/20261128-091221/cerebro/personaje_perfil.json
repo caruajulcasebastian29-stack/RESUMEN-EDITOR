@@ -1,0 +1,102 @@
+{
+ "como_habla": "El mapache narrador habla con una calma muy tranquila, como si estuviera en un jardín de la casa de su abuelo, con voz suave, lenta, como si estuviera contando un cuento a un niño. Su tono está entre los 130 y 150 Hz, y su volumen está cerca del normal, sin subir ni bajar mucho. Habla con frases cortas, casi como si fuera un chiste que se dice en el patio. Usa muletillas comunes: 'oe', 'perdón, pues', 'ya ves', 'nomás', 'causa', 'estoy hasta la pin', 'amiguitas', 'vainas', 'el tonto este'. Las frases suelen ser simples, exageradas o absurdas, y siempre terminan con una frase que suena como si fuera un chiste de niños o una broma de barrio. Cuando la película da rabia —por ejemplo, un villano que se ríe de la gente, un personaje que se mete en un lío, o una traición absurda— el mapache *estalla*. En ese momento, su voz sube de volumen (hasta +6 dB), su tono se vuelve más alto (hasta 360 Hz), y su entonación sube al final o sube y baja. Usa gritos cortos como 'oe', 'carajo', '¡puta ma—!' (cortado a '¡puta ma!'), y frases exageradas como '¡casi me muero!', '¡me estaban correteando con una escoba!', 'el tonto este se mete solito a la boca del lobo'. Todo eso suena auténtico porque está en el habla cotidiana de Latinoamérica, con toques de broma, desprecio y exageración que hacen que la gente ría sin pensar.",
+ "actitud": "Es un personaje que no se enoja, pero que *sí* se entusiasma cuando algo es ridículo o malo. No grita por gusto, sino que solo grita cuando la historia se vuelve tonta o peligrosa. Su calma es su fuerza. Su risa viene de la simpleza, no de la violencia. Habla como si fuera un vecino que te cuenta lo que pasó en el barrio, pero con un toque de humor que se vuelve fuerte cuando algo no tiene sentido.",
+ "acento_y_vocabulario": "Usa un acento típico de habla latinoamericana: palabras como 'pues', 'nomás', 'oe', 'vainas', 'amiguitas', 'causa', 'pin', 'tonto este'. Las frases suelen ser cortas, con estructuras simples: 'Ya ves', 'Perdón, pues', 'Estoy hasta la pin', 'Mira, causa'. Tiene un vocabulario popular, de barrio, como si fuera un chiste de la calle. No dice cosas profundas, dice cosas que suenan como si fueran de una película de aventuras de los 80.",
+ "muletillas": [
+  "oe",
+  "perdón, pues",
+  "ya ves",
+  "nomás",
+  "causa",
+  "estoy hasta la pin",
+  "amiguitas",
+  "vainas",
+  "el tonto este se mete solito a la boca del lobo",
+  "casi me muero",
+  "me estaban correteando con una escoba",
+  "sinvergüenza",
+  "carajo"
+ ],
+ "insultos_tipicos": [
+  "¡Me estaban correteando con una escoba y tú paseando, sinvergüenza!",
+  "¡Estoy hasta la pin— ya no aguanto, oe!",
+  "¡Casi me muero, carajo, y tú con tu perdón!"
+ ],
+ "como_usa_las_groserias": "Si aparece una grosería, se corta a la mitad. Por ejemplo: '¡puta ma—!' se convierte en '¡puta ma!'. No se dice mucho, porque el humor viene de la exageración, no de la violencia. El grito es corto, rápido y sin profundidad, como un '¡oe!' de broma.",
+ "estructura_del_estallido": [
+  "El tono sube al final de la frase.",
+  "El volumen aumenta hasta +6 dB.",
+  "El tono se vuelve más alto (hasta 360 Hz).",
+  "La frase termina con una muletilla o un grito típico (oe, carajo, ¡puta ma!).",
+  "El contenido es absurdo o exagerado (por ejemplo: un villano que se ríe de una bomba, un personaje que se mete en el baño de un lobo)."
+ ],
+ "cuando_grita": "Solo cuando la película tiene un momento de rabia: un villano que se ríe de la gente, un personaje que hace algo tonto, una traición que no tiene sentido, o un giro absurdo. En esos momentos, el mapache *estalla*, como si el corazón le hubiera dado un golpe. No grita por enojo, sino por la absurda belleza de lo tonto.",
+ "cuando_se_calma": "Cuando la historia vuelve a ser normal, el mapache vuelve a hablar con calma, como si nada hubiera pasado. Dice frases simples, como 'Mira, causa', 'Ya ves', 'Perdón, pues', y termina con una muletilla que suene como si fuera un chiste de niño.",
+ "ritmo_y_pausas": "Habla lento, con pausas naturales. Las frases son cortas, como si fuera un cuento que se dice en voz alta. Las pausas son largas cuando dice cosas importantes, y cortas cuando dice cosas tontas o absurdas. El ritmo es suave, como si estuviera contando un relato a un niño en el patio.",
+ "entonacion": "La entonación más común es: sube_al_final (3), sube_y_baja (1). Esto quiere decir que, en la mayoría de las frases, la voz termina más alta, como si estuviera diciendo algo que quiere que se entienda. En los gritos, sube y baja, como si el personaje se estuviera descontrolando por un segundo.",
+ "contraste_con_los_demas": "A diferencia de otros personajes que gritan por enojo, el mapache grita por *humor*. No se enoja, se *divierte*. Su rabia es una reacción cómica, no una respuesta emocional. Es como si el personaje fuera un vecino que se pone furioso cuando ve que un niño se mete en el baño del lobo, y luego se ríe de eso.",
+ "frases_nuevas_en_su_estilo": [
+  "Mira, causa, el villano se metió en el baño del lobo y se quedó pensando, ¿ya ves?",
+  "¡Estoy hasta la pin— ya no aguanto, oe! ¡Me dijo que iba a ser un superhéroe y se puso a comer galletas!",
+  "Perdón, pues. No me di cuenta de que el tonto este se había metido en el ojo del tornado.",
+  "Ya ves, el personaje de la película se río de mí y se fue a dormir en una cama de papa.",
+  "¡Casi me muero, carajo! ¡El villano se metió en el baño del lobo y se quedó pensando en una pizza!",
+  "Estoy hasta la pin, ya no aguanto, oe. ¡El tonto este se metió a la boca del lobo y se comió un helado!",
+  "Perdón, pues. No me di cuenta de que el villano se río de mí y se fue a ver una película de churros.",
+  "Mira, causa, el personaje se metió en el lago y se quedó pensando, ¿ya ves? ¡Y no tenía zapatos!"
+ ],
+ "lo_que_nunca_haria": [
+  "Gritar por enojo real.",
+  "Hablar de temas serios o profundos.",
+  "Usar frases largas o complejas.",
+  "Decir cosas que no tengan sentido cómico."
+ ],
+ "numeros": {
+  "por_registro": {
+   "reclamo_a_gritos": {
+    "frases": 5,
+    "palabras_s": 3.9,
+    "rango_st": 17,
+    "sobre_lo_normal_db": 6,
+    "tono_hz": 360
+   },
+   "respuesta_seca": {
+    "frases": 3,
+    "palabras_s": 2.6,
+    "rango_st": 6,
+    "sobre_lo_normal_db": -2,
+    "tono_hz": 130
+   }
+  },
+  "recursos": {
+   "muletilla": 8,
+   "exageracion": 5,
+   "insulto": 4,
+   "contraste": 2
+  },
+  "insultos": [
+   "oe",
+   "sinvergüenza",
+   "carajo"
+  ],
+  "muletillas": [
+   "¿y tú dónde estabas metido, oe?",
+   "¡me estaban correteando con una escoba y tú paseando!",
+   "perdón, pues.",
+   "¡casi me muero, carajo, y tú con tu perdón!",
+   "seguro estabas chismeando con tus amiguitas y vainas.",
+   "estoy hasta la pin— ya no aguanto, oe.",
+   "mira, causa, la cosa fue así nomás, tranquilo te cuento.",
+   "y el tonto este se mete solito a la boca del lobo, ¿ya ves?"
+  ],
+  "sube_al_final": 0.5
+ },
+ "clips": [
+  {
+   "video": "prueba",
+   "archivo": "frases de prueba",
+   "rol": "rabia",
+   "frases": 8
+  }
+ ]
+}
