@@ -13,10 +13,13 @@ import os
 import subprocess
 import sys
 import threading
+import time
 from pathlib import Path
 
 LISTA = Path(__file__).with_name("complementos.txt")
-_estado = {"instalando": False, "faltan": [], "error": None, "listo": False}
+_estado = {"instalando": False, "faltan": [], "error": None, "listo": False, "intentos": 0}
+_ultimo = {"t": 0.0}
+ESPERA_REINTENTO_S = 90  # si falla (por ejemplo, internet todavía no conectado al reiniciar), vuelve a probar sola
 
 
 def _pedidos() -> list[tuple[str, str]]:
@@ -42,10 +45,12 @@ def _python() -> str:
 
 
 def instalar() -> None:
+    _ultimo["t"] = time.time()
+    _estado["intentos"] += 1
     pendientes = faltan()
     _estado.update(faltan=pendientes, error=None)
     if not pendientes:
-        _estado["listo"] = True
+        _estado.update(listo=True, instalando=False)
         return
     _estado["instalando"] = True
     banderas = 0x08000000 if os.name == "nt" else 0  # CREATE_NO_WINDOW
@@ -69,8 +74,15 @@ def instalar() -> None:
 
 
 def en_segundo_plano() -> None:
+    if _estado["instalando"]:
+        return
+    _estado["instalando"] = True  # se marca antes de lanzar, para no lanzar dos a la vez
     threading.Thread(target=instalar, daemon=True).start()
 
 
 def estado() -> dict:
+    """La ventana pregunta cada 30 s; si la última vez falló, se reintenta sola cada minuto y medio."""
+    if (_estado["error"] and _estado["faltan"] and not _estado["instalando"]
+            and time.time() - _ultimo["t"] > ESPERA_REINTENTO_S):
+        en_segundo_plano()
     return dict(_estado)
