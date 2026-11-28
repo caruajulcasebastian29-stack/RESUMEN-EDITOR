@@ -48,6 +48,16 @@ begin
          or FileExists(ExpandConstant('{pf}\Ollama\ollama.exe'));
 end;
 
+function PrepareToInstall(var NeedsRestart: Boolean): String;
+var
+  Codigo: Integer;
+begin
+  { Si la app sigue abierta (corre en segundo plano), se cierra antes de reemplazar sus archivos. }
+  Exec('powershell.exe', '-NoProfile -WindowStyle Hidden -Command "Get-Process python,pythonw -ErrorAction SilentlyContinue | Where-Object { $_.Path -like ''' + ExpandConstant('{app}') + '\*'' } | Stop-Process -Force"', '', SW_HIDE, ewWaitUntilTerminated, Codigo);
+  Sleep(1000);
+  Result := '';
+end;
+
 procedure CurStepChanged(CurStep: TSetupStep);
 var
   Codigo: Integer;
