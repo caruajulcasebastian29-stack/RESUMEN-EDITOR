@@ -33,6 +33,16 @@ if MSDA is None:
 open(p, "w").write(s)
 print("parche CPU aplicado")
 PY
+# Los embeddings de CLIP se guardaron en GPU: en CPU hay que leerlos con map_location; y se muestra el error real.
+python - <<'PY'
+p = "src/utils/animal_landmark_runner.py"
+s = open(p).read()
+s = "import io as _io, torch as _torch\n_torch.storage._load_from_bytes = lambda b: _torch.load(_io.BytesIO(b), map_location='cpu', weights_only=False)\n" + s
+s = s.replace('        except Exception:\n            raise ValueError("Could not load clip embeddings', '        except Exception as _e:\n            raise ValueError(f"{_e!r} Could not load clip embeddings')
+open(p, "w").write(s)
+print("parche embeddings aplicado")
+PY
+export TORCH_FORCE_NO_WEIGHTS_ONLY_LOAD=1
 grep -rln "\.cuda()" src/utils/dependencies/XPose | head -5
 ls assets/examples/driving | head -30 > $GITHUB_WORKSPACE/$OUT/plantillas.txt
 cd $GITHUB_WORKSPACE

@@ -1,1 +1,1 @@
-animar-mapache 3 (dependencias de LivePortrait corregidas)
+animar-mapache 4 (embeddings en CPU)
