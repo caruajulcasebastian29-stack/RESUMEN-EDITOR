@@ -1,0 +1,230 @@
+== Maquina
+4
+               total        used        free      shared  buff/cache   available
+Mem:              15           1          10           0           3          14
+Swap:              2           0           2
+/dev/root       145G   61G   84G  42% /
+== FFmpeg
+
+Running kernel seems to be up-to-date.
+
+Restarting services...
+
+Service restarts being deferred:
+ systemctl restart hosted-compute-agent.service
+
+No containers need to be restarted.
+
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+ffmpeg version 8.0.1-3ubuntu2 Copyright (c) 2000-2025 the FFmpeg developers
+== Ollama
+{"version":"0.40.19"}
+== Descargando qwen3:4b-instruct
+success [K[?25h[?2026l
+NAME                 ID              SIZE      MODIFIED               
+qwen3:4b-instruct    0edcdef34593    2.5 GB    Less than a second ago    
+== Prueba de texto
+4.32 s
+Un resumen de película es una breve descripción que explica la trama principal, los personajes clave y el final de la historia de una película.
+== Tarea
+dependencias ok
+Fetching 18 files:   0%|          | 0/18 [00:00<?, ?it/s]Fetching 18 files:   6%|▌         | 1/18 [00:00<00:09,  1.76it/s]Fetching 18 files:  22%|██▏       | 4/18 [00:00<00:02,  6.76it/s]Fetching 18 files:  33%|███▎      | 6/18 [00:03<00:07,  1.61it/s]Fetching 18 files:  44%|████▍     | 8/18 [00:04<00:06,  1.63it/s]Fetching 18 files:  50%|█████     | 9/18 [00:04<00:04,  1.89it/s]Fetching 18 files:  56%|█████▌    | 10/18 [00:05<00:04,  1.93it/s]Fetching 18 files:  61%|██████    | 11/18 [00:05<00:03,  2.30it/s]Fetching 18 files:  67%|██████▋   | 12/18 [00:06<00:03,  1.57it/s]Fetching 18 files:  72%|███████▏  | 13/18 [00:08<00:05,  1.11s/it]Fetching 18 files:  78%|███████▊  | 14/18 [00:09<00:03,  1.16it/s]Fetching 18 files:  83%|████████▎ | 15/18 [00:09<00:02,  1.40it/s]Fetching 18 files:  89%|████████▉ | 16/18 [00:09<00:01,  1.51it/s]Fetching 18 files:  94%|█████████▍| 17/18 [00:11<00:00,  1.11it/s]Fetching 18 files: 100%|██████████| 18/18 [00:12<00:00,  1.07it/s]Fetching 18 files: 100%|██████████| 18/18 [00:12<00:00,  1.45it/s]
+pesos listos
+parche CPU aplicado
+parche embeddings aplicado
+src/utils/dependencies/XPose/models/UniPose/ops/test.py
+== 01_frente con aggrieved.pkl
+    self.cropper: Cropper = Cropper(crop_cfg=crop_cfg, image_type='animal_face', flag_use_half_precision=inference_cfg.flag_use_half_precision)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/utils/cropper.py", line 86, in __init__
+    self.animal_landmark_runner.warmup()
+  File "/tmp/lp/src/utils/animal_landmark_runner.py", line 137, in warmup
+    self.run(img_rgb, 'face', 'face', box_threshold=0.0, IoU_threshold=0.0)
+  File "/tmp/lp/src/utils/animal_landmark_runner.py", line 120, in run
+    boxes_filt, keypoints_filt = self.get_unipose_output(image, instance_text_prompt, keypoint_text_prompt, box_threshold, IoU_threshold)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/utils/animal_landmark_runner.py", line 78, in get_unipose_output
+    "kpts_embeddings_text": torch.cat((kpt_text_embeddings.float(), torch.zeros(100 - kpt_text_embeddings.shape[0], 512, device=self.device)), dim=0),
+                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/site-packages/torch/cuda/__init__.py", line 609, in _lazy_init
+    raise AssertionError("Torch not compiled with CUDA enabled")
+AssertionError: Torch not compiled with CUDA enabled
+== 01_frente con open_lip.pkl
+    self.cropper: Cropper = Cropper(crop_cfg=crop_cfg, image_type='animal_face', flag_use_half_precision=inference_cfg.flag_use_half_precision)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/utils/cropper.py", line 86, in __init__
+    self.animal_landmark_runner.warmup()
+  File "/tmp/lp/src/utils/animal_landmark_runner.py", line 137, in warmup
+    self.run(img_rgb, 'face', 'face', box_threshold=0.0, IoU_threshold=0.0)
+  File "/tmp/lp/src/utils/animal_landmark_runner.py", line 120, in run
+    boxes_filt, keypoints_filt = self.get_unipose_output(image, instance_text_prompt, keypoint_text_prompt, box_threshold, IoU_threshold)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/utils/animal_landmark_runner.py", line 78, in get_unipose_output
+    "kpts_embeddings_text": torch.cat((kpt_text_embeddings.float(), torch.zeros(100 - kpt_text_embeddings.shape[0], 512, device=self.device)), dim=0),
+                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/site-packages/torch/cuda/__init__.py", line 609, in _lazy_init
+    raise AssertionError("Torch not compiled with CUDA enabled")
+AssertionError: Torch not compiled with CUDA enabled
+== 01_frente con d0.mp4
+    self.cropper: Cropper = Cropper(crop_cfg=crop_cfg, image_type='animal_face', flag_use_half_precision=inference_cfg.flag_use_half_precision)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/utils/cropper.py", line 86, in __init__
+    self.animal_landmark_runner.warmup()
+  File "/tmp/lp/src/utils/animal_landmark_runner.py", line 137, in warmup
+    self.run(img_rgb, 'face', 'face', box_threshold=0.0, IoU_threshold=0.0)
+  File "/tmp/lp/src/utils/animal_landmark_runner.py", line 120, in run
+    boxes_filt, keypoints_filt = self.get_unipose_output(image, instance_text_prompt, keypoint_text_prompt, box_threshold, IoU_threshold)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/utils/animal_landmark_runner.py", line 78, in get_unipose_output
+    "kpts_embeddings_text": torch.cat((kpt_text_embeddings.float(), torch.zeros(100 - kpt_text_embeddings.shape[0], 512, device=self.device)), dim=0),
+                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/site-packages/torch/cuda/__init__.py", line 609, in _lazy_init
+    raise AssertionError("Torch not compiled with CUDA enabled")
+AssertionError: Torch not compiled with CUDA enabled
+== 05_rostro_serio con aggrieved.pkl
+    self.cropper: Cropper = Cropper(crop_cfg=crop_cfg, image_type='animal_face', flag_use_half_precision=inference_cfg.flag_use_half_precision)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/utils/cropper.py", line 86, in __init__
+    self.animal_landmark_runner.warmup()
+  File "/tmp/lp/src/utils/animal_landmark_runner.py", line 137, in warmup
+    self.run(img_rgb, 'face', 'face', box_threshold=0.0, IoU_threshold=0.0)
+  File "/tmp/lp/src/utils/animal_landmark_runner.py", line 120, in run
+    boxes_filt, keypoints_filt = self.get_unipose_output(image, instance_text_prompt, keypoint_text_prompt, box_threshold, IoU_threshold)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/utils/animal_landmark_runner.py", line 78, in get_unipose_output
+    "kpts_embeddings_text": torch.cat((kpt_text_embeddings.float(), torch.zeros(100 - kpt_text_embeddings.shape[0], 512, device=self.device)), dim=0),
+                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/site-packages/torch/cuda/__init__.py", line 609, in _lazy_init
+    raise AssertionError("Torch not compiled with CUDA enabled")
+AssertionError: Torch not compiled with CUDA enabled
+== 05_rostro_serio con open_lip.pkl
+    self.cropper: Cropper = Cropper(crop_cfg=crop_cfg, image_type='animal_face', flag_use_half_precision=inference_cfg.flag_use_half_precision)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/utils/cropper.py", line 86, in __init__
+    self.animal_landmark_runner.warmup()
+  File "/tmp/lp/src/utils/animal_landmark_runner.py", line 137, in warmup
+    self.run(img_rgb, 'face', 'face', box_threshold=0.0, IoU_threshold=0.0)
+  File "/tmp/lp/src/utils/animal_landmark_runner.py", line 120, in run
+    boxes_filt, keypoints_filt = self.get_unipose_output(image, instance_text_prompt, keypoint_text_prompt, box_threshold, IoU_threshold)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/utils/animal_landmark_runner.py", line 78, in get_unipose_output
+    "kpts_embeddings_text": torch.cat((kpt_text_embeddings.float(), torch.zeros(100 - kpt_text_embeddings.shape[0], 512, device=self.device)), dim=0),
+                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/site-packages/torch/cuda/__init__.py", line 609, in _lazy_init
+    raise AssertionError("Torch not compiled with CUDA enabled")
+AssertionError: Torch not compiled with CUDA enabled
+== 05_rostro_serio con d0.mp4
+    self.cropper: Cropper = Cropper(crop_cfg=crop_cfg, image_type='animal_face', flag_use_half_precision=inference_cfg.flag_use_half_precision)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/utils/cropper.py", line 86, in __init__
+    self.animal_landmark_runner.warmup()
+  File "/tmp/lp/src/utils/animal_landmark_runner.py", line 137, in warmup
+    self.run(img_rgb, 'face', 'face', box_threshold=0.0, IoU_threshold=0.0)
+  File "/tmp/lp/src/utils/animal_landmark_runner.py", line 120, in run
+    boxes_filt, keypoints_filt = self.get_unipose_output(image, instance_text_prompt, keypoint_text_prompt, box_threshold, IoU_threshold)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/utils/animal_landmark_runner.py", line 78, in get_unipose_output
+    "kpts_embeddings_text": torch.cat((kpt_text_embeddings.float(), torch.zeros(100 - kpt_text_embeddings.shape[0], 512, device=self.device)), dim=0),
+                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/site-packages/torch/cuda/__init__.py", line 609, in _lazy_init
+    raise AssertionError("Torch not compiled with CUDA enabled")
+AssertionError: Torch not compiled with CUDA enabled
+== 11_explicando con aggrieved.pkl
+    self.cropper: Cropper = Cropper(crop_cfg=crop_cfg, image_type='animal_face', flag_use_half_precision=inference_cfg.flag_use_half_precision)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/utils/cropper.py", line 86, in __init__
+    self.animal_landmark_runner.warmup()
+  File "/tmp/lp/src/utils/animal_landmark_runner.py", line 137, in warmup
+    self.run(img_rgb, 'face', 'face', box_threshold=0.0, IoU_threshold=0.0)
+  File "/tmp/lp/src/utils/animal_landmark_runner.py", line 120, in run
+    boxes_filt, keypoints_filt = self.get_unipose_output(image, instance_text_prompt, keypoint_text_prompt, box_threshold, IoU_threshold)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/utils/animal_landmark_runner.py", line 78, in get_unipose_output
+    "kpts_embeddings_text": torch.cat((kpt_text_embeddings.float(), torch.zeros(100 - kpt_text_embeddings.shape[0], 512, device=self.device)), dim=0),
+                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/site-packages/torch/cuda/__init__.py", line 609, in _lazy_init
+    raise AssertionError("Torch not compiled with CUDA enabled")
+AssertionError: Torch not compiled with CUDA enabled
+== 11_explicando con open_lip.pkl
+    self.cropper: Cropper = Cropper(crop_cfg=crop_cfg, image_type='animal_face', flag_use_half_precision=inference_cfg.flag_use_half_precision)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/utils/cropper.py", line 86, in __init__
+    self.animal_landmark_runner.warmup()
+  File "/tmp/lp/src/utils/animal_landmark_runner.py", line 137, in warmup
+    self.run(img_rgb, 'face', 'face', box_threshold=0.0, IoU_threshold=0.0)
+  File "/tmp/lp/src/utils/animal_landmark_runner.py", line 120, in run
+    boxes_filt, keypoints_filt = self.get_unipose_output(image, instance_text_prompt, keypoint_text_prompt, box_threshold, IoU_threshold)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/utils/animal_landmark_runner.py", line 78, in get_unipose_output
+    "kpts_embeddings_text": torch.cat((kpt_text_embeddings.float(), torch.zeros(100 - kpt_text_embeddings.shape[0], 512, device=self.device)), dim=0),
+                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/site-packages/torch/cuda/__init__.py", line 609, in _lazy_init
+    raise AssertionError("Torch not compiled with CUDA enabled")
+AssertionError: Torch not compiled with CUDA enabled
+== 11_explicando con d0.mp4
+    self.cropper: Cropper = Cropper(crop_cfg=crop_cfg, image_type='animal_face', flag_use_half_precision=inference_cfg.flag_use_half_precision)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/utils/cropper.py", line 86, in __init__
+    self.animal_landmark_runner.warmup()
+  File "/tmp/lp/src/utils/animal_landmark_runner.py", line 137, in warmup
+    self.run(img_rgb, 'face', 'face', box_threshold=0.0, IoU_threshold=0.0)
+  File "/tmp/lp/src/utils/animal_landmark_runner.py", line 120, in run
+    boxes_filt, keypoints_filt = self.get_unipose_output(image, instance_text_prompt, keypoint_text_prompt, box_threshold, IoU_threshold)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/utils/animal_landmark_runner.py", line 78, in get_unipose_output
+    "kpts_embeddings_text": torch.cat((kpt_text_embeddings.float(), torch.zeros(100 - kpt_text_embeddings.shape[0], 512, device=self.device)), dim=0),
+                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/site-packages/torch/cuda/__init__.py", line 609, in _lazy_init
+    raise AssertionError("Torch not compiled with CUDA enabled")
+AssertionError: Torch not compiled with CUDA enabled
+== 09_furioso con aggrieved.pkl
+    self.cropper: Cropper = Cropper(crop_cfg=crop_cfg, image_type='animal_face', flag_use_half_precision=inference_cfg.flag_use_half_precision)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/utils/cropper.py", line 86, in __init__
+    self.animal_landmark_runner.warmup()
+  File "/tmp/lp/src/utils/animal_landmark_runner.py", line 137, in warmup
+    self.run(img_rgb, 'face', 'face', box_threshold=0.0, IoU_threshold=0.0)
+  File "/tmp/lp/src/utils/animal_landmark_runner.py", line 120, in run
+    boxes_filt, keypoints_filt = self.get_unipose_output(image, instance_text_prompt, keypoint_text_prompt, box_threshold, IoU_threshold)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/utils/animal_landmark_runner.py", line 78, in get_unipose_output
+    "kpts_embeddings_text": torch.cat((kpt_text_embeddings.float(), torch.zeros(100 - kpt_text_embeddings.shape[0], 512, device=self.device)), dim=0),
+                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/site-packages/torch/cuda/__init__.py", line 609, in _lazy_init
+    raise AssertionError("Torch not compiled with CUDA enabled")
+AssertionError: Torch not compiled with CUDA enabled
+== 09_furioso con open_lip.pkl
+    self.cropper: Cropper = Cropper(crop_cfg=crop_cfg, image_type='animal_face', flag_use_half_precision=inference_cfg.flag_use_half_precision)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/utils/cropper.py", line 86, in __init__
+    self.animal_landmark_runner.warmup()
+  File "/tmp/lp/src/utils/animal_landmark_runner.py", line 137, in warmup
+    self.run(img_rgb, 'face', 'face', box_threshold=0.0, IoU_threshold=0.0)
+  File "/tmp/lp/src/utils/animal_landmark_runner.py", line 120, in run
+    boxes_filt, keypoints_filt = self.get_unipose_output(image, instance_text_prompt, keypoint_text_prompt, box_threshold, IoU_threshold)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/utils/animal_landmark_runner.py", line 78, in get_unipose_output
+    "kpts_embeddings_text": torch.cat((kpt_text_embeddings.float(), torch.zeros(100 - kpt_text_embeddings.shape[0], 512, device=self.device)), dim=0),
+                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/site-packages/torch/cuda/__init__.py", line 609, in _lazy_init
+    raise AssertionError("Torch not compiled with CUDA enabled")
+AssertionError: Torch not compiled with CUDA enabled
+== 09_furioso con d0.mp4
+    self.cropper: Cropper = Cropper(crop_cfg=crop_cfg, image_type='animal_face', flag_use_half_precision=inference_cfg.flag_use_half_precision)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/utils/cropper.py", line 86, in __init__
+    self.animal_landmark_runner.warmup()
+  File "/tmp/lp/src/utils/animal_landmark_runner.py", line 137, in warmup
+    self.run(img_rgb, 'face', 'face', box_threshold=0.0, IoU_threshold=0.0)
+  File "/tmp/lp/src/utils/animal_landmark_runner.py", line 120, in run
+    boxes_filt, keypoints_filt = self.get_unipose_output(image, instance_text_prompt, keypoint_text_prompt, box_threshold, IoU_threshold)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/lp/src/utils/animal_landmark_runner.py", line 78, in get_unipose_output
+    "kpts_embeddings_text": torch.cat((kpt_text_embeddings.float(), torch.zeros(100 - kpt_text_embeddings.shape[0], 512, device=self.device)), dim=0),
+                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/site-packages/torch/cuda/__init__.py", line 609, in _lazy_init
+    raise AssertionError("Torch not compiled with CUDA enabled")
+AssertionError: Torch not compiled with CUDA enabled
+== Fin
