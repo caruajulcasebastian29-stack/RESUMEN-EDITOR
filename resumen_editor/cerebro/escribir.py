@@ -53,7 +53,7 @@ class Bloque(BaseModel):
     lineas: list[Linea]
 
 
-def _sistema() -> str:
+def _sistema(manual: dict | None = None) -> str:
     n = estilo("narrador")
     reg = n["registros"]
     return f"""Eres el guionista de un canal de resúmenes de películas en YouTube. El narrador es un {n['personaje']['especie']}:
@@ -76,7 +76,29 @@ Marcas disponibles (van dentro del texto, donde ocurren):
 Escribes para ser dicho en voz alta: frases cortas, ritmo de conversación, sin acotaciones ni narrador neutro.
 No inventas hechos: cuentas solo lo que está en el mapa de la historia.
 
-{conocimiento.guia()}"""
+{conocimiento.guia()}
+
+{conocimiento.manual_texto(manual)}
+
+{_aprendido()}"""
+
+
+def _aprendido() -> str:
+    """La personalidad estudiada del mapache y las reglas que la IA sacó al estudiar (si ya estudió)."""
+    partes = []
+    try:
+        from . import personaje
+        partes.append(personaje.texto())
+    except Exception:
+        pass
+    try:
+        from . import estudio
+        r = estudio._texto_reglas(estudio._reglas())
+        if r:
+            partes.append("REGLAS DEL CANAL QUE APRENDISTE:\n" + r[:5000])
+    except Exception:
+        pass
+    return "\n\n".join(p for p in partes if p)
 
 
 PEDIDO = """Película: {titulo} ({genero}). {premisa}
@@ -176,7 +198,7 @@ def escribir(carpeta: Path, mapa: dict, manual: dict, aviso=None) -> Path:
         extra = ("Gustos de Jhon aprendidos de sus revisiones:\n" +
                  "\n".join(f"- No le gustó: {x}" for x in gustos.get("rechazado", [])[-6:]) + "\n" +
                  "\n".join(f"- Le gustó: {x}" for x in gustos.get("aprobado", [])[-6:]) + "\n")
-    sistema = _sistema()
+    sistema = _sistema(manual)
     insertos = (manual.get("insertos_personaje_por_minuto") or {}).get("mediana") or 1.5
 
     if not estado["gancho"]:
@@ -273,7 +295,7 @@ def rehacer(frases: list[dict], mapa: dict, manual: dict, comentario: str, anter
     for f in gancho:  # el gancho se reescribe solo, con el comentario
         texto = ia.preguntar(f"Reescribe este gancho de un resumen de película. Comentario de Jhon: «{comentario}».\n"
                              f"Gancho anterior: {f['texto']}\nSolo el texto nuevo, mismo largo.",
-                             papel="escritor", sistema=_sistema(), temperatura=0.8)
+                             papel="escritor", sistema=_sistema(manual), temperatura=0.8)
         salida.append({**f, "texto": texto.strip().strip('"')})
     hechos = [por_id[f["hecho"]] for f in resto if f.get("hecho") in por_id]
     if hechos:
@@ -282,7 +304,7 @@ def rehacer(frases: list[dict], mapa: dict, manual: dict, comentario: str, anter
         r = ia.estructurado(PEDIDO_REHACER.format(comentario=comentario or "sin comentario: no le convenció",
                                                   anterior=anterior or "—", siguiente=siguiente or "—", hechos=lista,
                                                   rechazada="\n".join(f["texto"] for f in resto)),
-                            Bloque, papel="escritor", sistema=_sistema(), temperatura=0.85, contexto=12288)
+                            Bloque, papel="escritor", sistema=_sistema(manual), temperatura=0.85, contexto=12288)
         for h in hechos:
             propias = [x for x in r.lineas if x.hecho == h["id"]]
             total = sum(len(G.MARCA.sub("", x.texto).split()) for x in propias) or 1

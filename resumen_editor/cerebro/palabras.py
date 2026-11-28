@@ -92,11 +92,16 @@ def analizar(voz: Path, carpeta: Path, idioma: str = "es", aviso=None) -> dict:
     rec = sherpa_onnx.OfflineRecognizer.from_whisper(
         encoder=str(w / "turbo-encoder.int8.onnx"), decoder=str(w / "turbo-decoder.int8.onnx"),
         tokens=str(w / "turbo-tokens.txt"), language=idioma, task="transcribe", num_threads=4)
-    hechos = []
+    parcial = carpeta / "palabras.parcial.json"  # si se pausa, al reanudar sigue donde quedó
+    hechos = json.loads(parcial.read_text(encoding="utf-8")) if parcial.exists() else []
     for k, (s, e) in enumerate(tramos):
+        if k < len(hechos):
+            continue
         hechos.append({"inicio": s, "fin": e, "texto": A.decodificar(rec, a, sr, s, e)})
-        if aviso and k % 10 == 0:
-            aviso("Transcribiendo", 100 * k / max(1, len(tramos)))
+        if k % 10 == 0:
+            parcial.write_text(json.dumps(hechos, ensure_ascii=False), encoding="utf-8")
+            if aviso:
+                aviso("Transcribiendo", 100 * k / max(1, len(tramos)))
     A.reparar_bucles(rec, a, sr, hechos)
 
     try:
@@ -123,4 +128,5 @@ def analizar(voz: Path, carpeta: Path, idioma: str = "es", aviso=None) -> dict:
     datos = {"tramos": hechos, "hablantes": len(tiempo), "error_hablantes": error,
              "palabras_por_minuto": round(len(texto_narrador.split()) / minutos_voz, 1) if minutos_voz else 0}
     destino.write_text(json.dumps(datos, ensure_ascii=False, indent=1), encoding="utf-8")
+    (carpeta / "palabras.parcial.json").unlink(missing_ok=True)
     return datos
