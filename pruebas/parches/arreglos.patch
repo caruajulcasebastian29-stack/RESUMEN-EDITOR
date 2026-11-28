@@ -1,0 +1,265 @@
+diff --git a/pruebas/banco/componer.py b/pruebas/banco/componer.py
+new file mode 100644
+index 0000000..4a85444
+--- /dev/null
++++ b/pruebas/banco/componer.py
+@@ -0,0 +1,59 @@
++"""Componer: solo la boca sale de la animación; el resto (ojos, antifaz, orejas, fósforo) es la imagen original."""
++import subprocess, sys, json
++import numpy as np, cv2
++from PIL import Image
++
++def leer(v):
++    w, h = map(int, subprocess.run(["ffprobe","-v","error","-select_streams","v:0","-show_entries","stream=width,height","-of","csv=p=0",v],capture_output=True,text=True).stdout.strip().split(","))
++    raw = subprocess.run(["ffmpeg","-v","error","-i",v,"-f","rawvideo","-pix_fmt","rgb24","-"],capture_output=True).stdout
++    return np.frombuffer(raw,np.uint8).reshape(-1,h,w,3)
++
++def fuente(pose, w, h):
++    im = Image.open(pose).convert("RGB"); a = np.array(im)
++    borde = np.concatenate([a[:6].reshape(-1,3), a[:, :6].reshape(-1,3), a[:, -6:].reshape(-1,3)])
++    color = tuple(int(c) for c in np.median(borde, axis=0))
++    W, H = im.size
++    lienzo = Image.new("RGB", (int(W*1.3), int(H*1.3)), color)
++    lienzo.paste(im, ((lienzo.width-W)//2, (lienzo.height-H)//2))
++    return np.array(lienzo.resize((w, h), Image.LANCZOS))
++
++def _fosforo(img):
++    hsv = cv2.cvtColor(img, cv2.COLOR_RGB2HSV)
++    return ((hsv[..., 0] >= 8) & (hsv[..., 0] <= 30) & (hsv[..., 1] > 70) & (hsv[..., 2] > 110)).astype(np.uint8)
++
++
++def mascara(G, S):
++    d = np.abs(G.astype(np.float32) - G[:1].astype(np.float32)).mean(axis=(0, 3))
++    d = cv2.GaussianBlur(d, (0, 0), 4)
++    m = (d > max(10.0, np.percentile(d, 99.7) * 0.45)).astype(np.uint8)
++    m = cv2.morphologyEx(m, cv2.MORPH_CLOSE, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (25, 25)))
++    n, lab, est, _ = cv2.connectedComponentsWithStats(m)
++    if n <= 1:
++        return np.zeros(d.shape, np.float32), None, np.zeros(d.shape, np.uint8)
++    k = 1 + int(np.argmax(est[1:, cv2.CC_STAT_AREA]))
++    boca = (lab == k).astype(np.uint8)
++    boca = cv2.dilate(boca, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (19, 19)))
++    x, y, w, h = cv2.boundingRect(boca)
++    # el fósforo (tono anaranjado/beige) cerca de la boca se queda quieto: viene de la imagen original
++    fos = _fosforo(S)
++    zona = np.zeros_like(fos); zona[max(0, y-60):y+h+60, max(0, x-120):x+w+120] = 1
++    fos = cv2.dilate(fos * zona, np.ones((7, 7), np.uint8))
++    boca = boca * (1 - fos)
++    M = cv2.GaussianBlur(boca.astype(np.float32), (0, 0), 6)
++    return np.clip(M * 1.2, 0, 1), (x, y, w, h), zona
++
++if __name__ == "__main__":
++    v, pose, salida = sys.argv[1:4]
++    G = leer(v); S = fuente(pose, G.shape[2], G.shape[1])
++    M, caja, zona = mascara(G, S)
++    out = np.empty_like(G)
++    for i, g in enumerate(G):
++        # si en la animación el fósforo se movió, ese pedazo también vuelve a la imagen original
++        fg = cv2.dilate(_fosforo(g) * zona, np.ones((9, 9), np.uint8)).astype(np.float32)
++        Mi = (M * (1 - cv2.GaussianBlur(fg, (0, 0), 2)))[..., None]
++        out[i] = (S.astype(np.float32) * (1 - Mi) + g.astype(np.float32) * Mi).astype(np.uint8)
++    p = subprocess.Popen(["ffmpeg","-v","error","-y","-f","rawvideo","-pix_fmt","rgb24","-s",f"{G.shape[2]}x{G.shape[1]}","-r","25","-i","-",
++                          "-c:v","libx264","-crf","17","-preset","veryfast","-pix_fmt","yuv420p",salida], stdin=subprocess.PIPE)
++    p.stdin.write(out.tobytes()); p.stdin.close(); p.wait()
++    area = float((np.abs(out.astype(np.float32) - out[:1].astype(np.float32)).mean(axis=(0, 3)) > 6).mean() * 100)
++    print(json.dumps({"video": v, "caja_boca": caja, "area_que_se_mueve_pct": round(area, 2)}))
+diff --git a/resumen_editor/cerebro/estudio.py b/resumen_editor/cerebro/estudio.py
+index e6465cd..ba0064d 100644
+--- a/resumen_editor/cerebro/estudio.py
++++ b/resumen_editor/cerebro/estudio.py
+@@ -175,7 +175,7 @@ def _leer_y_sacar_reglas(aviso) -> list[dict]:
+             de_esta = []
+             for trozo in _trozos(texto):
+                 r = ia.estructurado(PEDIDO_REGLAS.format(fuente=nombre, texto=trozo), Reglas, papel="rapido",
+-                                    sistema=SISTEMA_ESTUDIO, contexto=8192)
++                                    sistema=SISTEMA_ESTUDIO, contexto=8192, maximo=3000)
+                 de_esta += [{**json.loads(x.model_dump_json()), "fuente": nombre} for x in r.reglas]
+             hecho[clave] = de_esta
+             _estado(leidas=hecho)
+@@ -219,7 +219,7 @@ def _responder(pregunta: str, por_tema: dict) -> str:
+     contexto = "\n".join(f"- {a['frase']} ({a['por_que']})" for a in apoyo)
+     return ia.preguntar(f"Lo que recuerdas:\n{contexto}\n\nPregunta: {pregunta}\nResponde corto y con datos.",
+                         papel="experto", sistema=SISTEMA_ESTUDIO + "\n" + _texto_reglas(por_tema)[:6000],
+-                        temperatura=0.2)
++                        temperatura=0.2, maximo=500, espera=900)
+ 
+ 
+ def _examen(por_tema: dict, aviso, preguntas: list[dict] | None = None, base: float = 65, ancho: float = 25) -> dict:
+@@ -229,14 +229,21 @@ def _examen(por_tema: dict, aviso, preguntas: list[dict] | None = None, base: fl
+         preguntas = []
+         for t in trozos[:PREGUNTAS]:
+             texto = f"({t.get('archivo', '')} · {t.get('seccion', '')}) {t['texto']}"
+-            q = ia.estructurado(PEDIDO_PREGUNTA.format(texto=texto), Pregunta, papel="rapido",
+-                                sistema=SISTEMA_ESTUDIO)
++            try:
++                q = ia.estructurado(PEDIDO_PREGUNTA.format(texto=texto), Pregunta, papel="rapido",
++                                    sistema=SISTEMA_ESTUDIO, maximo=400, espera=600)
++            except ia.ErrorIA:
++                continue
+             preguntas.append({**json.loads(q.model_dump_json()), "fuente": t.get("archivo", ""), "texto": texto})
+     for k, p in enumerate(preguntas):
+-        p["alumno"] = _responder(p["pregunta"], por_tema)
+-        j = ia.estructurado(PEDIDO_JUEZ.format(pregunta=p["pregunta"], correcta=p["respuesta"], alumno=p["alumno"]),
+-                            Juicio, papel="rapido", sistema=SISTEMA_ESTUDIO, temperatura=0.0)
+-        p["correcta"], p["falta"] = j.correcta, j.falta
++        try:
++            p["alumno"] = _responder(p["pregunta"], por_tema)
++            j = ia.estructurado(PEDIDO_JUEZ.format(pregunta=p["pregunta"], correcta=p["respuesta"], alumno=p["alumno"]),
++                                Juicio, papel="rapido", sistema=SISTEMA_ESTUDIO, temperatura=0.0, maximo=300, espera=600)
++            p["correcta"], p["falta"] = j.correcta, j.falta
++        except (ia.ErrorIA, TimeoutError, OSError) as e:  # una pregunta que se cuelga no tumba el examen
++            p.setdefault("alumno", "")
++            p["correcta"], p["falta"] = False, f"no respondió a tiempo ({type(e).__name__})"
+         aviso(f"Examen: pregunta {k + 1} de {len(preguntas)}", base + ancho * (k + 1) / len(preguntas))
+     nota = sum(p["correcta"] for p in preguntas) / max(1, len(preguntas))
+     return {"nota": round(nota, 2), "aprobado": nota >= APRUEBA, "preguntas": preguntas}
+diff --git a/resumen_editor/cerebro/ia.py b/resumen_editor/cerebro/ia.py
+index dd2634a..d239efc 100644
+--- a/resumen_editor/cerebro/ia.py
++++ b/resumen_editor/cerebro/ia.py
+@@ -135,15 +135,15 @@ def _limpiar(texto: str) -> str:
+     return texto.strip()
+ 
+ 
+-def _generar(datos: dict) -> str:
++def _generar(datos: dict, espera: float = 1800) -> str:
+     """Llama a /api/generate. Si el modelo no admite la opción de razonamiento, la quita y repite."""
+     try:
+-        r = _post("/api/generate", datos)
++        r = _post("/api/generate", datos, espera)
+     except ErrorIA as e:
+         if "think" not in str(e).lower() or "think" not in datos:
+             raise
+         datos = {k: v for k, v in datos.items() if k != "think"}
+-        r = _post("/api/generate", datos)
++        r = _post("/api/generate", datos, espera)
+     return _limpiar(r["response"])
+ 
+ 
+@@ -152,20 +152,22 @@ def _imagen(ruta: Path | str) -> str:
+ 
+ 
+ def preguntar(prompt: str, *, papel: str = "rapido", sistema: str = "", imagenes=None,
+-              temperatura: float = 0.4, contexto: int = 8192, pensar: bool = False) -> str:
+-    """Respuesta libre en texto."""
++              temperatura: float = 0.4, contexto: int = 8192, pensar: bool = False,
++              maximo: int = 4096, espera: float = 1800) -> str:
++    """Respuesta libre en texto. `maximo`: tope de tokens (evita que el modelo se quede repitiendo sin fin)."""
+     prompt, sistema = _con_experto(papel, prompt, sistema)
+     datos = {"model": nombre(papel), "prompt": prompt, "system": sistema, "stream": False,
+              "think": pensar, "keep_alive": "10m",
+-             "options": {"temperature": temperatura, "num_ctx": contexto}}
++             "options": {"temperature": temperatura, "num_ctx": contexto, "num_predict": maximo,
++                         "repeat_penalty": 1.1}}
+     if imagenes:
+         datos["images"] = [_imagen(i) for i in imagenes]
+-    return _generar(datos)
++    return _generar(datos, espera)
+ 
+ 
+ def estructurado(prompt: str, esquema: Type[M], *, papel: str = "rapido", sistema: str = "",
+                  imagenes=None, temperatura: float = 0.2, contexto: int = 8192,
+-                 intentos: int = 3) -> M:
++                 intentos: int = 3, maximo: int = 6000, espera: float = 1800) -> M:
+     """Respuesta que cumple un esquema pydantic. Reintenta mostrando el error al modelo."""
+     nota = ""
+     ultimo = None
+@@ -174,10 +176,16 @@ def estructurado(prompt: str, esquema: Type[M], *, papel: str = "rapido", sistem
+         datos = {"model": nombre(papel), "prompt": prompt + nota, "system": sistema,
+                  "stream": False, "think": False, "keep_alive": "10m",
+                  "format": esquema.model_json_schema(),
+-                 "options": {"temperature": temperatura, "num_ctx": contexto}}
++                 "options": {"temperature": temperatura, "num_ctx": contexto, "num_predict": maximo,
++                             "repeat_penalty": 1.1}}
+         if imagenes:
+             datos["images"] = [_imagen(i) for i in imagenes]
+-        texto = _generar(datos)
++        try:
++            texto = _generar(datos, espera)
++        except (TimeoutError, OSError) as e:  # se colgó (suele ser un bucle repitiendo texto): otro intento
++            ultimo = e
++            temperatura = max(0.05, temperatura - 0.1) + 0.2
++            continue
+         try:
+             return esquema.model_validate_json(texto)
+         except ValidationError as e:
+diff --git a/resumen_editor/cerebro/personaje.py b/resumen_editor/cerebro/personaje.py
+index 4bac663..80703c0 100644
+--- a/resumen_editor/cerebro/personaje.py
++++ b/resumen_editor/cerebro/personaje.py
+@@ -65,7 +65,7 @@ class Linea(BaseModel):
+     registro: Registro
+     recursos: list[Recurso]
+     insultos: list[str] = Field(description="insultos o groserías tal como suenan en la frase")
+-    muletillas: list[str] = Field(description="palabras de relleno o de barrio que repite: pues, oe, vaina…")
++    muletillas: list[str] = Field(description="palabras sueltas de relleno o de barrio (1 a 3 palabras cada una): pues, oe, vaina…")
+     por_que_da_risa: str = Field(description="una frase corta; vacío si no busca risa")
+ 
+ 
+@@ -77,8 +77,8 @@ class Perfil(BaseModel):
+     como_habla: str = Field(description="cómo habla en general, en 3-4 frases sencillas")
+     actitud: str = Field(description="su actitud ante la vida y ante los demás")
+     acento_y_vocabulario: str
+-    muletillas: list[str]
+-    insultos_tipicos: list[str]
++    muletillas: list[str] = Field(description="solo palabras sueltas de 1 a 3 palabras (oe, pues, causa); nunca frases enteras")
++    insultos_tipicos: list[str] = Field(description="solo el insulto en sí, de 1 a 3 palabras (sinvergüenza, tonto este)")
+     como_usa_las_groserias: str
+     estructura_del_estallido: list[str] = Field(description="pasos de cómo pasa de la calma al grito y remata")
+     cuando_grita: str
+@@ -87,7 +87,9 @@ class Perfil(BaseModel):
+     entonacion: str
+     contraste_con_los_demas: str
+     frases_nuevas_en_su_estilo: list[str] = Field(
+-        description="10 frases NUEVAS que diría este personaje contando una película (no copias del clip)")
++        description="10 frases NUEVAS que diría narrando una película: cada una comenta una situación típica y creíble "
++                    "(el villano traiciona, el protagonista hace algo tonto, la esposa engaña al marido, la policía llega tarde); "
++                    "con sentido, nada absurdo ni infantil; no copias del clip")
+     lo_que_nunca_haria: list[str]
+ 
+ 
+@@ -117,8 +119,11 @@ Medidas de la voz por registro:
+ Frases analizadas (registro · recursos · texto · por qué da risa):
+ {lineas}
+ 
+-Escribe el perfil. Las frases nuevas deben ser originales, sobre películas, en su estilo y con sus muletillas;
+-si llevan grosería, córtala a la mitad (por ejemplo «¡puta ma—!»)."""
++Escribe el perfil. Describe solo lo que las frases y las medidas muestran: si un registro no aparece en los
++clips, no lo inventes (di que falta estudiarlo). Las frases nuevas deben ser originales y tener sentido: el
++mapache comentando una escena real de película (por ejemplo, cuando el villano engaña a todos: «¿Y este qué
++se cree, oe? Le dan la mano y se agarra el brazo entero, sinvergüenza»). Nada infantil ni absurdo.
++Si llevan grosería, córtala a la mitad (por ejemplo «¡puta ma—!»)."""
+ 
+ 
+ def _rol_texto(rol: str) -> str:
+@@ -135,7 +140,7 @@ def marcar(frases: list[dict], rol: str, avance=None) -> list[dict]:
+             f"volumen {f.get('sobresale_db', 0):+.1f} dB · {f['palabras_s']} pal/s · {f.get('entonacion', '')}"
+             f"{' · ' + ', '.join(f['sonidos']) if f['sonidos'] else ''}" for k, f in enumerate(grupo))
+         r = ia.estructurado(PEDIDO_LINEAS.format(rol=_rol_texto(rol), frases=texto_frases), Lineas,
+-                            papel="experto", sistema=SISTEMA, contexto=8192)
++                            papel="experto", sistema=SISTEMA, contexto=8192, maximo=3000)
+         por_n = {x.n: x for x in r.lineas}
+         for k, f in enumerate(grupo):
+             x = por_n.get(i + k)
+diff --git a/resumen_editor/proyecto.py b/resumen_editor/proyecto.py
+index eb60725..7a7730c 100644
+--- a/resumen_editor/proyecto.py
++++ b/resumen_editor/proyecto.py
+@@ -77,7 +77,7 @@ class Proyecto:
+     def detener(self) -> None:
+         if self.trabajando:
+             self._parar.set()
+-            self.guardar_estado(mensaje="Deteniendo… (termina el paso que está haciendo)")
++            self.guardar_estado(mensaje="Pausando… (termina el paso que está haciendo y se guarda)")
+ 
+     def eliminar(self) -> None:
+         """Borra el proyecto entero. Si está trabajando, primero lo detiene."""
+@@ -309,7 +309,7 @@ class Proyecto:
+                 self.montar()
+             except Cancelado:
+                 if self.dir.exists():
+-                    self.guardar_estado(mensaje="Detenido. Lo hecho hasta aquí se guardó; «Continuar» sigue desde ahí.",
++                    self.guardar_estado(mensaje="En pausa. Lo hecho hasta aquí está guardado; «Reanudar» sigue desde ahí.",
+                                         detenido=True)
+             except Exception as e:  # el error se muestra en la ventana, no en una consola
+                 if self.dir.exists():

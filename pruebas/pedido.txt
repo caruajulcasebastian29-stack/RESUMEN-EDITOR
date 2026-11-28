@@ -1,1 +1,1 @@
-cerebro 0.3.0 (estudio + examen + modelo propio, personaje, todas las capas, preguntas)
+cerebro 0.3.0, segunda prueba (arreglos: tope de largo, examen robusto, perfil con sentido, torchvision CPU)
