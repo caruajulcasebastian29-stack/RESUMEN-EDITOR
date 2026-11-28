@@ -1,0 +1,74 @@
+{
+ "salida/animacion/01_frente/01_frente--laugh_A.mp4": {
+  "area_que_se_mueve_pct": 4.83,
+  "cambio_fuera_de_la_boca_p995": 13.0,
+  "cambio_medio_fuera": 0.31,
+  "zona_boca": [
+   568,
+   393,
+   252,
+   118
+  ],
+  "aprobado": false
+ },
+ "salida/animacion/01_frente/01_frente--talking_A.mp4": {
+  "area_que_se_mueve_pct": 4.45,
+  "cambio_fuera_de_la_boca_p995": 9.0,
+  "cambio_medio_fuera": 0.22,
+  "zona_boca": [
+   562,
+   389,
+   252,
+   127
+  ],
+  "aprobado": false
+ },
+ "salida/animacion/09_furioso/09_furioso--aggrieved_A.mp4": {
+  "area_que_se_mueve_pct": 2.49,
+  "cambio_fuera_de_la_boca_p995": 4.0,
+  "cambio_medio_fuera": 0.1,
+  "zona_boca": [
+   691,
+   488,
+   288,
+   192
+  ],
+  "aprobado": true
+ },
+ "salida/animacion/11_explicando/11_explicando--open_lip_B.mp4": {
+  "area_que_se_mueve_pct": 1.62,
+  "cambio_fuera_de_la_boca_p995": 5.0,
+  "cambio_medio_fuera": 0.11,
+  "zona_boca": [
+   717,
+   439,
+   224,
+   129
+  ],
+  "aprobado": true
+ },
+ "salida/animacion/11_explicando/11_explicando--talking_A.mp4": {
+  "area_que_se_mueve_pct": 4.39,
+  "cambio_fuera_de_la_boca_p995": 15.0,
+  "cambio_medio_fuera": 0.32,
+  "zona_boca": [
+   729,
+   425,
+   180,
+   140
+  ],
+  "aprobado": false
+ },
+ "salida/animacion/11_explicando/11_explicando--talking_B.mp4": {
+  "area_que_se_mueve_pct": 3.96,
+  "cambio_fuera_de_la_boca_p995": 15.0,
+  "cambio_medio_fuera": 0.32,
+  "zona_boca": [
+   732,
+   430,
+   164,
+   131
+  ],
+  "aprobado": false
+ }
+}

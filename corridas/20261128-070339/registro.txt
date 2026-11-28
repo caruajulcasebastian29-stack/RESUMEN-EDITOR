@@ -1,0 +1,154 @@
+== Maquina
+4
+               total        used        free      shared  buff/cache   available
+Mem:              15           1          10           0           3          13
+Swap:              2           0           2
+/dev/root       145G   61G   85G  42% /
+== FFmpeg
+
+Running kernel seems to be up-to-date.
+
+Restarting services...
+
+Service restarts being deferred:
+ systemctl restart hosted-compute-agent.service
+
+No containers need to be restarted.
+
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+ffmpeg version 8.0.1-3ubuntu2 Copyright (c) 2000-2025 the FFmpeg developers
+== Ollama
+{"version":"0.40.19"}
+== Descargando qwen3:4b-instruct
+success [K[?25h[?2026l
+NAME                 ID              SIZE      MODIFIED               
+qwen3:4b-instruct    0edcdef34593    2.5 GB    Less than a second ago    
+== Prueba de texto
+5.60 s
+Un resumen de película es una breve descripción que explica la trama, los personajes principales y el desarrollo de la historia de una película.
+== Tarea
+dependencias ok
+Fetching 18 files:   0%|          | 0/18 [00:00<?, ?it/s]Fetching 18 files:   6%|▌         | 1/18 [00:01<00:18,  1.12s/it]Fetching 18 files:  17%|█▋        | 3/18 [00:01<00:05,  2.70it/s]Fetching 18 files:  22%|██▏       | 4/18 [00:06<00:27,  2.00s/it]Fetching 18 files:  28%|██▊       | 5/18 [00:07<00:23,  1.84s/it]Fetching 18 files:  33%|███▎      | 6/18 [00:09<00:20,  1.74s/it]Fetching 18 files:  39%|███▉      | 7/18 [00:26<01:12,  6.61s/it]Fetching 18 files:  44%|████▍     | 8/18 [00:33<01:05,  6.59s/it]Fetching 18 files:  50%|█████     | 9/18 [00:51<01:32, 10.24s/it]Fetching 18 files:  56%|█████▌    | 10/18 [00:53<01:00,  7.62s/it]Fetching 18 files:  61%|██████    | 11/18 [01:03<00:58,  8.41s/it]Fetching 18 files:  67%|██████▋   | 12/18 [01:04<00:36,  6.10s/it]Fetching 18 files:  72%|███████▏  | 13/18 [01:10<00:30,  6.06s/it]Fetching 18 files:  78%|███████▊  | 14/18 [01:10<00:17,  4.31s/it]Fetching 18 files:  83%|████████▎ | 15/18 [01:11<00:09,  3.32s/it]Fetching 18 files:  89%|████████▉ | 16/18 [01:15<00:07,  3.59s/it]Fetching 18 files:  94%|█████████▍| 17/18 [01:19<00:03,  3.58s/it]Fetching 18 files: 100%|██████████| 18/18 [01:21<00:00,  3.29s/it]Fetching 18 files: 100%|██████████| 18/18 [01:21<00:00,  4.55s/it]
+pesos listos
+parche CPU aplicado
+parche embeddings aplicado
+parche recortador CPU aplicado 1
+parche cuda->cpu en 4 archivos
+src/utils/dependencies/XPose/util/misc.py:332:                        memory=torch.cuda.max_memory_allocated() / MB))
+src/utils/dependencies/XPose/util/misc.py:590:        print('world size: {}, world rank: {}, local rank: {}, device_count: {}'.format(args.world_size, args.rank, args.local_rank, torch.cuda.device_count()))
+src/utils/dependencies/XPose/util/misc.py:603:    torch.cuda.set_device(args.local_rank)
+src/utils/dependencies/XPose/models/UniPose/ops/test.py:39:    output_cuda = MSDeformAttnFunction.apply(value.double(), shapes, level_start_index, sampling_locations.double(), attention_weights.double(), im2col_step).detach().cpu()
+src/utils/dependencies/XPose/models/UniPose/ops/test.py:40:    fwdok = torch.allclose(output_cuda, output_pytorch)
+src/utils/dependencies/XPose/models/UniPose/ops/test.py:41:    max_abs_err = (output_cuda - output_pytorch).abs().max()
+src/utils/dependencies/XPose/models/UniPose/ops/test.py:42:    max_rel_err = ((output_cuda - output_pytorch).abs() / output_pytorch.abs()).max()
+src/utils/dependencies/XPose/models/UniPose/ops/test.py:55:    output_cuda = MSDeformAttnFunction.apply(value, shapes, level_start_index, sampling_locations, attention_weights, im2col_step).detach().cpu()
+plantilla talking_A.pkl 100 cuadros; movimiento por punto: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.010999999940395355, 0.0, 0.004000000189989805, 0.010999999940395355, 0.013000000268220901, 0.003000000026077032, 0.003000000026077032, 0.0, 0.06300000101327896, 0.012000000104308128]
+plantilla talking_B.pkl 100 cuadros; movimiento por punto: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.010999999940395355, 0.0, 0.0, 0.003000000026077032, 0.0, 0.06300000101327896, 0.012000000104308128]
+plantilla laugh_A.pkl 54 cuadros; movimiento por punto: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0010000000474974513, 0.0, 0.004000000189989805, 0.00800000037997961, 0.0020000000949949026, 0.003000000026077032, 0.0020000000949949026, 0.0, 0.06599999964237213, 0.014000000432133675]
+plantilla laugh_B.pkl 54 cuadros; movimiento por punto: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.00800000037997961, 0.0, 0.0, 0.0020000000949949026, 0.0, 0.06599999964237213, 0.014000000432133675]
+plantilla aggrieved_A.pkl 57 cuadros; movimiento por punto: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.004000000189989805, 0.0, 0.0020000000949949026, 0.004000000189989805, 0.004000000189989805, 0.0020000000949949026, 0.0020000000949949026, 0.0, 0.007000000216066837, 0.0020000000949949026]
+plantilla aggrieved_B.pkl 57 cuadros; movimiento por punto: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.004000000189989805, 0.0, 0.0, 0.0020000000949949026, 0.0, 0.007000000216066837, 0.0020000000949949026]
+plantilla open_lip_A.pkl 77 cuadros; movimiento por punto: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0020000000949949026, 0.0, 0.004000000189989805, 0.006000000052154064, 0.0010000000474974513, 0.003000000026077032, 0.003000000026077032, 0.0, 0.02199999988079071, 0.004999999888241291]
+plantilla open_lip_B.pkl 77 cuadros; movimiento por punto: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.006000000052154064, 0.0, 0.0, 0.003000000026077032, 0.0, 0.02199999988079071, 0.004999999888241291]
+margen 01_frente (48, 48, 48)
+margen 05_rostro_serio (56, 56, 56)
+margen 09_furioso (33, 33, 34)
+margen 11_explicando (32, 32, 32)
+== 11_explicando con talking_A
+           /home/runner/work/RESUMEN-EDITOR                                     
+           /RESUMEN-EDITOR/salida/animacion                                     
+           /11_explicando/11_explicando--ta                                     
+           lking_A.gif                                                          
+== 11_explicando con talking_B
+           /home/runner/work/RESUMEN-EDITOR                                     
+           /RESUMEN-EDITOR/salida/animacion                                     
+           /11_explicando/11_explicando--ta                                     
+           lking_B.gif                                                          
+== 01_frente con talking_A
+           /home/runner/work/RESUMEN-EDITOR                                     
+           /RESUMEN-EDITOR/salida/animacion                                     
+           /01_frente/01_frente--talking_A.                                     
+           gif                                                                  
+== 09_furioso con aggrieved_A
+           /home/runner/work/RESUMEN-EDITOR                                     
+           /RESUMEN-EDITOR/salida/animacion                                     
+           /09_furioso/09_furioso--aggrieve                                     
+           d_A.gif                                                              
+== 01_frente con laugh_A
+           /home/runner/work/RESUMEN-EDITOR                                     
+           /RESUMEN-EDITOR/salida/animacion                                     
+           /01_frente/01_frente--laugh_A.gi                                     
+           f                                                                    
+== 11_explicando con open_lip_B
+           /home/runner/work/RESUMEN-EDITOR                                     
+           /RESUMEN-EDITOR/salida/animacion                                     
+           /11_explicando/11_explicando--op                                     
+           en_lip_B.gif                                                         
+RECHAZADO salida/animacion/01_frente/01_frente--laugh_A.mp4 {'area_que_se_mueve_pct': 4.83, 'cambio_fuera_de_la_boca_p995': 13.0, 'cambio_medio_fuera': 0.31, 'zona_boca': [568, 393, 252, 118], 'aprobado': False}
+RECHAZADO salida/animacion/01_frente/01_frente--talking_A.mp4 {'area_que_se_mueve_pct': 4.45, 'cambio_fuera_de_la_boca_p995': 9.0, 'cambio_medio_fuera': 0.22, 'zona_boca': [562, 389, 252, 127], 'aprobado': False}
+APROBADO  salida/animacion/09_furioso/09_furioso--aggrieved_A.mp4 {'area_que_se_mueve_pct': 2.49, 'cambio_fuera_de_la_boca_p995': 4.0, 'cambio_medio_fuera': 0.1, 'zona_boca': [691, 488, 288, 192], 'aprobado': True}
+APROBADO  salida/animacion/11_explicando/11_explicando--open_lip_B.mp4 {'area_que_se_mueve_pct': 1.62, 'cambio_fuera_de_la_boca_p995': 5.0, 'cambio_medio_fuera': 0.11, 'zona_boca': [717, 439, 224, 129], 'aprobado': True}
+RECHAZADO salida/animacion/11_explicando/11_explicando--talking_A.mp4 {'area_que_se_mueve_pct': 4.39, 'cambio_fuera_de_la_boca_p995': 15.0, 'cambio_medio_fuera': 0.32, 'zona_boca': [729, 425, 180, 140], 'aprobado': False}
+RECHAZADO salida/animacion/11_explicando/11_explicando--talking_B.mp4 {'area_que_se_mueve_pct': 3.96, 'cambio_fuera_de_la_boca_p995': 15.0, 'cambio_medio_fuera': 0.32, 'zona_boca': [732, 430, 164, 131], 'aprobado': False}
+salida/animacion/01_frente/:
+total 4272
+drwxr-xr-x 2 runner runner   4096 Nov 28 07:03 .
+drwxr-xr-x 5 runner runner   4096 Nov 28 07:03 ..
+-rw-r--r-- 1 runner runner 218882 Nov 28 06:53 01_frente--laugh_A.gif
+-rw-r--r-- 1 runner runner 371501 Nov 28 06:53 01_frente--laugh_A.mp4
+-rw-r--r-- 1 runner runner  96808 Nov 28 07:03 01_frente--laugh_A_cara.jpg
+-rw-r--r-- 1 runner runner 268294 Nov 28 06:53 01_frente--laugh_A_concat.mp4
+-rw-r--r-- 1 runner runner 142581 Nov 28 07:03 01_frente--laugh_A_cuadro.jpg
+-rw-r--r-- 1 runner runner  68269 Nov 28 07:03 01_frente--laugh_A_hoja.jpg
+-rw-r--r-- 1 runner runner 471103 Nov 28 07:03 01_frente--laugh_A_vivo.mp4
+-rw-r--r-- 1 runner runner 444026 Nov 28 06:39 01_frente--talking_A.gif
+-rw-r--r-- 1 runner runner 582522 Nov 28 06:39 01_frente--talking_A.mp4
+-rw-r--r-- 1 runner runner  98720 Nov 28 07:03 01_frente--talking_A_cara.jpg
+-rw-r--r-- 1 runner runner 465939 Nov 28 06:39 01_frente--talking_A_concat.mp4
+-rw-r--r-- 1 runner runner 142519 Nov 28 07:03 01_frente--talking_A_cuadro.jpg
+-rw-r--r-- 1 runner runner  77095 Nov 28 07:03 01_frente--talking_A_hoja.jpg
+-rw-r--r-- 1 runner runner 887753 Nov 28 07:03 01_frente--talking_A_vivo.mp4
+-rw-r--r-- 1 runner runner    676 Nov 28 06:53 palette.png
+
+salida/animacion/09_furioso/:
+total 1512
+drwxr-xr-x 2 runner runner   4096 Nov 28 07:03 .
+drwxr-xr-x 5 runner runner   4096 Nov 28 07:03 ..
+-rw-r--r-- 1 runner runner 241304 Nov 28 06:46 09_furioso--aggrieved_A.gif
+-rw-r--r-- 1 runner runner 280961 Nov 28 06:46 09_furioso--aggrieved_A.mp4
+-rw-r--r-- 1 runner runner 174906 Nov 28 07:03 09_furioso--aggrieved_A_cara.jpg
+-rw-r--r-- 1 runner runner 197606 Nov 28 06:46 09_furioso--aggrieved_A_concat.mp4
+-rw-r--r-- 1 runner runner 153526 Nov 28 07:03 09_furioso--aggrieved_A_cuadro.jpg
+-rw-r--r-- 1 runner runner  67465 Nov 28 07:03 09_furioso--aggrieved_A_hoja.jpg
+-rw-r--r-- 1 runner runner 405776 Nov 28 07:03 09_furioso--aggrieved_A_vivo.mp4
+-rw-r--r-- 1 runner runner    727 Nov 28 06:46 palette.png
+
+salida/animacion/11_explicando/:
+total 6948
+drwxr-xr-x 2 runner runner   4096 Nov 28 07:03 .
+drwxr-xr-x 5 runner runner   4096 Nov 28 07:03 ..
+-rw-r--r-- 1 runner runner 268529 Nov 28 07:03 11_explicando--open_lip_B.gif
+-rw-r--r-- 1 runner runner 347633 Nov 28 07:03 11_explicando--open_lip_B.mp4
+-rw-r--r-- 1 runner runner 131769 Nov 28 07:03 11_explicando--open_lip_B_cara.jpg
+-rw-r--r-- 1 runner runner 292520 Nov 28 07:03 11_explicando--open_lip_B_concat.mp4
+-rw-r--r-- 1 runner runner 167496 Nov 28 07:03 11_explicando--open_lip_B_cuadro.jpg
+-rw-r--r-- 1 runner runner  80418 Nov 28 07:03 11_explicando--open_lip_B_hoja.jpg
+-rw-r--r-- 1 runner runner 534226 Nov 28 07:03 11_explicando--open_lip_B_vivo.mp4
+-rw-r--r-- 1 runner runner 436280 Nov 28 06:15 11_explicando--talking_A.gif
+-rw-r--r-- 1 runner runner 539793 Nov 28 06:15 11_explicando--talking_A.mp4
+-rw-r--r-- 1 runner runner 161081 Nov 28 07:03 11_explicando--talking_A_cara.jpg
+-rw-r--r-- 1 runner runner 476755 Nov 28 06:15 11_explicando--talking_A_concat.mp4
+-rw-r--r-- 1 runner runner 166692 Nov 28 07:03 11_explicando--talking_A_cuadro.jpg
+-rw-r--r-- 1 runner runner  88935 Nov 28 07:03 11_explicando--talking_A_hoja.jpg
+-rw-r--r-- 1 runner runner 851097 Nov 28 07:03 11_explicando--talking_A_vivo.mp4
+-rw-r--r-- 1 runner runner 368805 Nov 28 06:27 11_explicando--talking_B.gif
+-rw-r--r-- 1 runner runner 484639 Nov 28 06:27 11_explicando--talking_B.mp4
+-rw-r--r-- 1 runner runner 181273 Nov 28 07:03 11_explicando--talking_B_cara.jpg
+-rw-r--r-- 1 runner runner 410314 Nov 28 06:27 11_explicando--talking_B_concat.mp4
+-rw-r--r-- 1 runner runner 167113 Nov 28 07:03 11_explicando--talking_B_cuadro.jpg
+-rw-r--r-- 1 runner runner  79908 Nov 28 07:03 11_explicando--talking_B_hoja.jpg
+-rw-r--r-- 1 runner runner 825782 Nov 28 07:03 11_explicando--talking_B_vivo.mp4
+-rw-r--r-- 1 runner runner    751 Nov 28 07:03 palette.png
+== Fin
