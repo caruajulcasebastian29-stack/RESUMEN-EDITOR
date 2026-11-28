@@ -66,3 +66,38 @@ def sembrar() -> int:
     filas = [{"video": PREFIJO + t["archivo"], "inicio": 0.0, "funcion": "nota", "recurso": t["seccion"] or "general",
               "frase": t["texto"], "por_que": f"observado en {t['archivo']}", "tono": ""} for t in trozos_notas()]
     return memoria.guardar_filas(filas)
+
+
+def manual_texto(manual: dict | None) -> str:
+    """Lo aprendido de los videos que Jhon le enseñó, en frases para el guionista."""
+    if not manual or not manual.get("videos_propios"):
+        return ""
+    def med(clave):
+        v = manual.get(clave) or {}
+        return v.get("mediana")
+    lineas = [f"Además, de {manual['videos_propios']} videos que Jhon le enseñó:"]
+    if med("palabras_por_minuto"):
+        lineas.append(f"- El narrador habla a unas {med('palabras_por_minuto'):.0f} palabras por minuto.")
+    if med("tarjetas_tiempo_por_minuto"):
+        lineas.append(f"- Ponen tarjetas de tiempo unas {med('tarjetas_tiempo_por_minuto'):.1f} veces por minuto"
+                      + (f", por ejemplo: {', '.join(manual.get('ejemplos_tarjetas', [])[:6])}" if manual.get("ejemplos_tarjetas") else "") + ".")
+    if manual.get("ejemplos_titulos"):
+        lineas.append(f"- Títulos que usaron: {'; '.join(manual['ejemplos_titulos'][:5])}.")
+    if manual.get("ejemplos_rotulos"):
+        lineas.append(f"- Rótulos de personajes: {', '.join(manual['ejemplos_rotulos'][:8])}.")
+    if med("relacion_voz_cortes") is not None:
+        r = med("relacion_voz_cortes")
+        lineas.append("- Cuando el narrador acelera, el montaje también corta más rápido." if r > 0.3 else
+                      "- La velocidad de corte no sigue a la de la voz: el montaje va por su cuenta.")
+    if med("gancho_cortes_por_minuto"):
+        lineas.append(f"- El gancho va a unos {med('gancho_cortes_por_minuto'):.0f} cortes por minuto.")
+    if med("risas_por_minuto"):
+        lineas.append(f"- Ponen risas unas {med('risas_por_minuto'):.1f} veces por minuto.")
+    if med("efectos_comicos_por_minuto"):
+        lineas.append(f"- Efectos de sonido cómicos: unos {med('efectos_comicos_por_minuto'):.1f} por minuto.")
+    for x in (manual.get("para_copiar") or [])[-6:]:
+        lineas.append(f"- Técnica vista en sus videos: {x}")
+    for g in (manual.get("ganchos") or [])[-3:]:
+        if isinstance(g, dict) and g.get("frase"):
+            lineas.append(f"- Gancho real ({g.get('tipo', '')}): «{g['frase']}»")
+    return "\n".join(lineas)
