@@ -22,6 +22,8 @@ VENTANA = 0.1  # segundos por medida de volumen
 
 
 def separar(video: Path, carpeta: Path) -> tuple[Path, Path]:
+    carpeta = Path(carpeta)
+    carpeta.mkdir(parents=True, exist_ok=True)
     voz, musica = carpeta / "voz.wav", carpeta / "musica.wav"
     if voz.exists() and musica.exists():
         return voz, musica
@@ -34,7 +36,7 @@ def separar(video: Path, carpeta: Path) -> tuple[Path, Path]:
     sep.load_model(MODELO_SEPARACION)
     for nombre in sep.separate(str(mezcla)):
         ruta = carpeta / Path(nombre).name
-        ruta.rename(voz if "(Vocals)" in nombre else musica)
+        ruta.replace(voz if "(Vocals)" in nombre else musica)
     mezcla.unlink(missing_ok=True)
     return voz, musica
 
