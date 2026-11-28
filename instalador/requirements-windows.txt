@@ -11,10 +11,9 @@ scenedetect[opencv]>=0.6.4
 sherpa-onnx>=1.10
 onnxruntime>=1.18
 audio-separator[cpu]>=0.30
-audioread>=3.0
-pydub>=0.25
-samplerate>=0.2
-resampy>=0.4
+audioread
+pydub
+samplerate
 transnetv2-pytorch>=1.0
 lancedb>=0.13
 edge-tts>=6.1
