@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import json
 import shutil
+from pathlib import Path
 import threading
 import webbrowser
 
@@ -54,7 +55,10 @@ async def nuevo(video: UploadFile = File(...)):
 def estado(nombre: str):
     p = _p(nombre)
     mapa = p.leer("entender/mapa.json")
-    return {"estado": p.estado(), "trabajando": p.trabajando, "limpieza": p.leer("limpieza.json"), "guion": p.leer("guion.json"),
+    e = p.estado()
+    e["interrumpido"] = (not p.trabajando and not e.get("error") and not e.get("detenido")
+                         and e.get("paso") not in ("lotes", "creado") and (e.get("progreso") or 0) < 100)
+    return {"estado": e, "trabajando": p.trabajando, "limpieza": p.leer("limpieza.json"), "guion": p.leer("guion.json"),
             "lotes": p.leer("lotes.json", []), "diagnostico": p.leer("entender/diagnostico.json"),
             "pelicula": (mapa or {}).get("pelicula"), "revision": p.leer("revision.json")}
 
@@ -67,6 +71,7 @@ def continuar(nombre: str):
     return {"ok": True}
 
 
+@app.post("/api/proyectos/{nombre}/pausar")
 @app.post("/api/proyectos/{nombre}/detener")
 def detener(nombre: str):
     _p(nombre).detener()
@@ -162,8 +167,10 @@ def salud():
     faltan = []
     if ok_ollama:
         hay = set(ia.instalados())
-        faltan = [m for m in ia.MODELOS.values() if m not in hay and m + ":latest" not in hay]
-    return {"ollama": ok_ollama, "modelos_faltantes": faltan, "ffmpeg": shutil.which("ffmpeg") is not None}
+        faltan = [m for k, m in ia.MODELOS.items() if k != "experto" and m not in hay and m + ":latest" not in hay]
+    from . import complementos
+    return {"ollama": ok_ollama, "modelos_faltantes": faltan, "ffmpeg": shutil.which("ffmpeg") is not None,
+            "complementos": complementos.estado()}
 
 
 @app.post("/api/salud/descargar")
@@ -171,7 +178,9 @@ def descargar_modelos():
     from .cerebro import ia
 
     def trabajo():
-        for m in ia.MODELOS.values():
+        for k, m in ia.MODELOS.items():
+            if k == "experto":  # este no se descarga: lo crea la app al estudiar
+                continue
             try:
                 ia.descargar_modelo(m, aviso=lambda msg, p: _estado_ref(mensaje=msg, progreso=round(p)))
             except Exception as e:
@@ -197,9 +206,13 @@ def referencias():
     from .cerebro import aprender
     fichas = [json.loads(p.read_text(encoding="utf-8")) for p in sorted(aprender.FICHAS.glob("*/ficha.json"))]
     # también los que quedaron a medias (detenidos o con error), para poder quitarlos
-    a_medias = [d.name for d in sorted(aprender.FICHAS.glob("*")) if d.is_dir() and not (d / "ficha.json").exists()]
+    a_medias = [{"video": d.name, "puede_reanudar": _video_de(d.name) is not None}
+                for d in sorted(aprender.FICHAS.glob("*")) if d.is_dir() and not (d / "ficha.json").exists()]
     estado = _estado_ref()
     estado["trabajando"] = _ref["hilo"] is not None and _ref["hilo"].is_alive()
+    # se quedó a medias sin estar trabajando: la app se cerró o se pausó
+    estado["interrumpido"] = (not estado["trabajando"] and not estado.get("error") and bool(a_medias)
+                              and 0 < (estado.get("progreso") or 0) < 100)
     if not aprender.MANUAL.exists() or "videos_base" not in aprender.MANUAL.read_text(encoding="utf-8"):
         aprender.actualizar_manual()  # primera vez: arranca con lo estudiado de fábrica
     manual = json.loads(aprender.MANUAL.read_text(encoding="utf-8"))
@@ -210,13 +223,91 @@ def referencias():
 
 
 _ref = {"hilo": None, "parar": threading.Event()}
+# la tarjeta de 4 GB solo aguanta un trabajo de IA a la vez: estudiar videos, el personaje y el repaso se turnan
+_turno = threading.Lock()
 
 
+def _video_de(video_id: str):
+    """El archivo original de un video de referencia (para reanudarlo)."""
+    from .cerebro import aprender
+    carpeta = aprender.DATOS / "referencias_videos"
+    for v in carpeta.glob("*") if carpeta.exists() else []:
+        if aprender.ident(v) == video_id:
+            return v
+    return None
+
+
+def _empezar_estudio(destino) -> None:
+    from .cerebro import aprender
+    _ref["parar"].clear()
+
+    def aviso(m, p):
+        if _ref["parar"].is_set():
+            raise P.Cancelado()
+        _estado_ref(mensaje=m, progreso=round(p))
+
+    def trabajo():
+        try:
+            _estado_ref(video=destino.name, video_id=aprender.ident(destino), error=None,
+                        mensaje="Esperando su turno (la IA está ocupada con otra tarea)…", progreso=1, pausado=False)
+            with _turno:
+                _estado_ref(mensaje="Empezando")
+                aprender.aprender(destino, aviso=aviso)
+            _estado_ref(mensaje=f"Aprendido: {destino.name}. Ahora repasa lo nuevo.", progreso=100)
+            _repasar()
+        except P.Cancelado:
+            _estado_ref(mensaje=f"En pausa: {destino.name}. Lo ya estudiado está guardado; pulsa «Reanudar» para seguir.",
+                        pausado=True)
+        except Exception as e:
+            import traceback
+            _estado_ref(error=str(e), detalle=traceback.format_exc()[-1500:])
+    _ref["hilo"] = threading.Thread(target=trabajo, daemon=True)
+    _ref["hilo"].start()
+
+
+@app.post("/api/referencias/reanudar/{video_id}")
+def reanudar_referencia(video_id: str):
+    if _ref["hilo"] is not None and _ref["hilo"].is_alive():
+        raise HTTPException(409, "Ya está estudiando otro video; espera o pausa ese primero.")
+    v = _video_de(video_id)
+    if v is None:
+        raise HTTPException(404, "No encontré el video original; vuelve a soltarlo en la caja.")
+    _empezar_estudio(v)
+    return {"ok": True}
+
+
+@app.get("/api/referencias/{video_id}/informe")
+def informe_referencia(video_id: str):
+    """Todo lo que aprendió de un video, con ejemplos, para mostrarlo en la ventana."""
+    from .cerebro import aprender, memoria
+    carpeta = (aprender.FICHAS / video_id).resolve()
+    if aprender.FICHAS.resolve() not in carpeta.parents or not (carpeta / "ficha.json").exists():
+        raise HTTPException(404)
+
+    def leer(nombre, defecto=None):
+        r = carpeta / nombre
+        return json.loads(r.read_text(encoding="utf-8")) if r.exists() else defecto
+    ficha = leer("ficha.json")
+    texto = leer("texto.json", {})
+    narr = leer("narracion.json", {})
+    try:
+        ejemplos = memoria.de_video(video_id, 40)
+    except Exception:
+        ejemplos = []
+    return {"ficha": ficha,
+            "textos": [e for e in texto.get("elementos", []) if e["tipo"] not in ("marca",)][:80],
+            "momentos": [m for v in narr.get("ventanas", []) for m in v.get("momentos", [])][:60],
+            "gancho": narr.get("gancho"),
+            "tonos": [v.get("tono") for v in narr.get("ventanas", []) if v.get("tono")][:20],
+            "memoria": ejemplos}
+
+
+@app.post("/api/referencias/pausar")
 @app.post("/api/referencias/detener")
 def detener_referencia():
     if _ref["hilo"] is not None and _ref["hilo"].is_alive():
         _ref["parar"].set()
-        _estado_ref(mensaje="Deteniendo… (termina el paso que está haciendo)")
+        _estado_ref(mensaje="Pausando… (termina el paso que está haciendo y se guarda)")
     return {"ok": True}
 
 
@@ -252,25 +343,165 @@ async def nueva_referencia(video: UploadFile = File(...)):
     with destino.open("wb") as f:
         shutil.copyfileobj(video.file, f)
 
-    _ref["parar"].clear()
+    _empezar_estudio(destino)
+    return {"ok": True}
+
+
+# ---------- estudio: la IA estudia todo lo que sabe, se examina y crea su modelo propio ----------
+_est = {"hilo": None, "parar": threading.Event()}
+
+
+def _repasar(forzar: bool = False) -> None:
+    from .cerebro import estudio
+    if _est["hilo"] is not None and _est["hilo"].is_alive():
+        return
+
+    _est["parar"].clear()
 
     def aviso(m, p):
-        if _ref["parar"].is_set():
+        if _est["parar"].is_set():
             raise P.Cancelado()
-        _estado_ref(mensaje=m, progreso=round(p))
 
     def trabajo():
         try:
-            _estado_ref(video=video.filename, video_id=aprender.ident(destino), error=None, mensaje="Empezando", progreso=0)
-            aprender.aprender(destino, aviso=aviso)
-            _estado_ref(mensaje=f"Aprendido: {video.filename}", progreso=100)
+            with _turno:
+                estudio.estudiar(aviso=aviso, forzar=forzar)
         except P.Cancelado:
-            _estado_ref(mensaje=f"Detenido: {video.filename}. Puedes quitarlo o volver a soltarlo para seguir.", progreso=0)
-        except Exception as e:
-            _estado_ref(error=str(e))
-    _ref["hilo"] = threading.Thread(target=trabajo, daemon=True)
-    _ref["hilo"].start()
+            estudio._estado(trabajando=False, mensaje="Estudio en pausa. Lo leído está guardado; «Reanudar» sigue.",
+                            pausado=True)
+        except Exception:
+            pass  # el error queda en el estado del estudio
+    _est["hilo"] = threading.Thread(target=trabajo, daemon=True)
+    _est["hilo"].start()
+
+
+@app.get("/api/estudio")
+def ver_estudio():
+    from .cerebro import estudio
+    e = estudio.estado()
+    e["trabajando"] = _est["hilo"] is not None and _est["hilo"].is_alive()
+    if e.get("trabajando") and _turno.locked() and e.get("progreso", 0) <= 1:
+        e["mensaje"] = "Esperando su turno…"
+    return e
+
+
+@app.post("/api/estudio")
+def hacer_estudio():
+    from .cerebro import ia
+    if not ia.disponible():
+        raise HTTPException(409, "Ollama no está abierto.")
+    _repasar(forzar=True)
     return {"ok": True}
+
+
+@app.post("/api/estudio/pausar")
+def pausar_estudio():
+    _est["parar"].set()
+    return {"ok": True}
+
+
+@app.post("/api/estudio/reanudar")
+def reanudar_estudio():
+    from .cerebro import estudio
+    estudio._estado(pausado=False)
+    _repasar(forzar=True)
+    return {"ok": True}
+
+
+@app.post("/api/preguntar")
+def preguntar(pregunta: str = Form(...)):
+    """Preguntarle al editor experto (responde con lo que estudió y lo que tiene en la memoria)."""
+    from .cerebro import estudio, ia
+    if not ia.disponible():
+        raise HTTPException(409, "Ollama no está abierto.")
+    if not _turno.acquire(timeout=5):
+        raise HTTPException(409, "La IA está ocupada estudiando; pregúntale cuando termine o pausa el estudio.")
+    try:
+        return {"respuesta": estudio.sugerir(pregunta[:800])}
+    finally:
+        _turno.release()
+
+
+# ---------- el personaje: estudia los clips de cómo debe hablar el mapache ----------
+_pj = {"hilo": None, "estado": {}}
+
+
+@app.get("/api/personaje")
+def ver_personaje():
+    from .cerebro import personaje
+    clips = []
+    for c in sorted(personaje.CARPETA.glob("*/lineas.json")):
+        d = json.loads(c.read_text(encoding="utf-8"))
+        clips.append({"video": d["video"], "archivo": d["archivo"], "rol": d["rol"], "frases": len(d["lineas"]),
+                      "lineas": [{k: x.get(k) for k in ("inicio", "hablante", "texto", "registro", "recursos",
+                                                         "insultos", "por_que_da_risa", "tono_hz", "sobresale_db",
+                                                         "palabras_s", "entonacion")} for x in d["lineas"]]})
+    return {"perfil": personaje.perfil(), "clips": clips,
+            "estado": dict(_pj["estado"], trabajando=_pj["hilo"] is not None and _pj["hilo"].is_alive())}
+
+
+@app.post("/api/personaje")
+async def nuevo_clip_personaje(video: UploadFile = File(...), rol: str = Form("todo")):
+    from .cerebro import aprender, personaje
+    if _pj["hilo"] is not None and _pj["hilo"].is_alive():
+        raise HTTPException(409, "Ya está estudiando un clip del personaje; espera a que termine.")
+    if rol not in ("calma", "rabia", "todo"):
+        rol = "todo"
+    destino = aprender.DATOS / "personaje_videos" / Path(video.filename).name
+    destino.parent.mkdir(parents=True, exist_ok=True)
+    with destino.open("wb") as f:
+        shutil.copyfileobj(video.file, f)
+
+    def aviso(m, p):
+        _pj["estado"] = {"mensaje": m, "progreso": round(p), "archivo": destino.name}
+
+    def trabajo():
+        try:
+            aviso("Esperando su turno (la IA está ocupada con otra tarea)…", 1)
+            with _turno:
+                personaje.estudiar_clip(destino, rol, aviso)
+                personaje.armar_perfil(aviso)
+            aviso(f"Personaje actualizado con {destino.name}. Ahora repasa lo nuevo.", 100)
+            _repasar()
+        except Exception as e:
+            _pj["estado"] = {"error": str(e), "archivo": destino.name}
+    _pj["hilo"] = threading.Thread(target=trabajo, daemon=True)
+    _pj["hilo"].start()
+    return {"ok": True}
+
+
+@app.delete("/api/personaje/{video_id}")
+def quitar_clip_personaje(video_id: str):
+    from .cerebro import personaje
+    if _pj["hilo"] is not None and _pj["hilo"].is_alive():
+        raise HTTPException(409, "Está estudiando un clip; espera a que termine.")
+    personaje.quitar(video_id)
+    if any(personaje.CARPETA.glob("*/lineas.json")):
+        with _turno:
+            personaje.armar_perfil()
+    else:
+        personaje.PERFIL.unlink(missing_ok=True)
+    return {"ok": True}
+
+
+def _al_arrancar() -> None:
+    """Al abrir la app: si el conocimiento cambió (actualización nueva, videos o personaje), lo vuelve a estudiar."""
+    import time
+    from .cerebro import estudio, ia
+    for _ in range(60):  # espera a que Ollama esté abierto (hasta 5 minutos)
+        if ia.disponible():
+            break
+        time.sleep(5)
+    else:
+        return
+    try:
+        hay = set(ia.instalados())
+        if any(m not in hay and m + ":latest" not in hay for k, m in ia.MODELOS.items() if k != "experto"):
+            return  # faltan modelos: primero se descargan desde la ventana
+        if not estudio.estado().get("al_dia"):
+            _repasar()
+    except Exception:
+        pass
 
 
 # ---------- actualizaciones ----------
@@ -286,7 +517,8 @@ def hacer_actualizacion():
     info = actualizar.buscar()
     if not info.get("hay") or not info.get("rapida") or not info.get("app_zip"):
         raise HTTPException(409, "Esta versión necesita el instalador completo.")
-    if any(p.trabajando for p in _abiertos.values()) or (_ref["hilo"] is not None and _ref["hilo"].is_alive()):
+    ocupado = [h for h in (_ref["hilo"], _est["hilo"], _pj["hilo"]) if h is not None and h.is_alive()]
+    if any(p.trabajando for p in _abiertos.values()) or ocupado:
         raise HTTPException(409, "Espera a que termine (o detén) lo que está trabajando antes de actualizar.")
     actualizar.aplicar(info["app_zip"])
     return {"ok": True}
@@ -306,6 +538,9 @@ def version():
 
 def abrir(puerto: int = 8765, ventana: bool = True) -> None:
     import uvicorn
+    from . import complementos
+    complementos.en_segundo_plano()  # herramientas nuevas de esta versión
+    threading.Thread(target=_al_arrancar, daemon=True).start()
     if ventana:
         threading.Timer(1.5, lambda: webbrowser.open(f"http://127.0.0.1:{puerto}")).start()
     uvicorn.run(app, host="127.0.0.1", port=puerto, log_level="warning")
