@@ -6,7 +6,7 @@
 # 3. Si todo pasa, guarda los arreglos en main.
 set -u
 mkdir -p salida
-git apply --whitespace=nowarn pruebas/parches/arreglos2.patch && echo "parche aplicado" || { echo "EL PARCHE NO APLICA"; exit 1; }
+git apply --recount --whitespace=nowarn pruebas/parches/arreglos2.patch && echo "parche aplicado" || { echo "EL PARCHE NO APLICA"; exit 1; }
 fallos=0
 
 mkdir -p /tmp/ruedas
