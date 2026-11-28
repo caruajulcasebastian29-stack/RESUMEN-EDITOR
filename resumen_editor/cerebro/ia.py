@@ -135,15 +135,15 @@ def _limpiar(texto: str) -> str:
     return texto.strip()
 
 
-def _generar(datos: dict) -> str:
+def _generar(datos: dict, espera: float = 1800) -> str:
     """Llama a /api/generate. Si el modelo no admite la opción de razonamiento, la quita y repite."""
     try:
-        r = _post("/api/generate", datos)
+        r = _post("/api/generate", datos, espera)
     except ErrorIA as e:
         if "think" not in str(e).lower() or "think" not in datos:
             raise
         datos = {k: v for k, v in datos.items() if k != "think"}
-        r = _post("/api/generate", datos)
+        r = _post("/api/generate", datos, espera)
     return _limpiar(r["response"])
 
 
@@ -152,20 +152,22 @@ def _imagen(ruta: Path | str) -> str:
 
 
 def preguntar(prompt: str, *, papel: str = "rapido", sistema: str = "", imagenes=None,
-              temperatura: float = 0.4, contexto: int = 8192, pensar: bool = False) -> str:
-    """Respuesta libre en texto."""
+              temperatura: float = 0.4, contexto: int = 8192, pensar: bool = False,
+              maximo: int = 4096, espera: float = 1800) -> str:
+    """Respuesta libre en texto. `maximo`: tope de tokens (evita que el modelo se quede repitiendo sin fin)."""
     prompt, sistema = _con_experto(papel, prompt, sistema)
     datos = {"model": nombre(papel), "prompt": prompt, "system": sistema, "stream": False,
              "think": pensar, "keep_alive": "10m",
-             "options": {"temperature": temperatura, "num_ctx": contexto}}
+             "options": {"temperature": temperatura, "num_ctx": contexto, "num_predict": maximo,
+                         "repeat_penalty": 1.1}}
     if imagenes:
         datos["images"] = [_imagen(i) for i in imagenes]
-    return _generar(datos)
+    return _generar(datos, espera)
 
 
 def estructurado(prompt: str, esquema: Type[M], *, papel: str = "rapido", sistema: str = "",
                  imagenes=None, temperatura: float = 0.2, contexto: int = 8192,
-                 intentos: int = 3) -> M:
+                 intentos: int = 3, maximo: int = 6000, espera: float = 1800) -> M:
     """Respuesta que cumple un esquema pydantic. Reintenta mostrando el error al modelo."""
     nota = ""
     ultimo = None
@@ -174,10 +176,16 @@ def estructurado(prompt: str, esquema: Type[M], *, papel: str = "rapido", sistem
         datos = {"model": nombre(papel), "prompt": prompt + nota, "system": sistema,
                  "stream": False, "think": False, "keep_alive": "10m",
                  "format": esquema.model_json_schema(),
-                 "options": {"temperature": temperatura, "num_ctx": contexto}}
+                 "options": {"temperature": temperatura, "num_ctx": contexto, "num_predict": maximo,
+                             "repeat_penalty": 1.1}}
         if imagenes:
             datos["images"] = [_imagen(i) for i in imagenes]
-        texto = _generar(datos)
+        try:
+            texto = _generar(datos, espera)
+        except (TimeoutError, OSError) as e:  # se colgó (suele ser un bucle repitiendo texto): otro intento
+            ultimo = e
+            temperatura = max(0.05, temperatura - 0.1) + 0.2
+            continue
         try:
             return esquema.model_validate_json(texto)
         except ValidationError as e:

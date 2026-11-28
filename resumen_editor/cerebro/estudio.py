@@ -175,7 +175,7 @@ def _leer_y_sacar_reglas(aviso) -> list[dict]:
             de_esta = []
             for trozo in _trozos(texto):
                 r = ia.estructurado(PEDIDO_REGLAS.format(fuente=nombre, texto=trozo), Reglas, papel="rapido",
-                                    sistema=SISTEMA_ESTUDIO, contexto=8192)
+                                    sistema=SISTEMA_ESTUDIO, contexto=8192, maximo=3000)
                 de_esta += [{**json.loads(x.model_dump_json()), "fuente": nombre} for x in r.reglas]
             hecho[clave] = de_esta
             _estado(leidas=hecho)
@@ -219,7 +219,7 @@ def _responder(pregunta: str, por_tema: dict) -> str:
     contexto = "\n".join(f"- {a['frase']} ({a['por_que']})" for a in apoyo)
     return ia.preguntar(f"Lo que recuerdas:\n{contexto}\n\nPregunta: {pregunta}\nResponde corto y con datos.",
                         papel="experto", sistema=SISTEMA_ESTUDIO + "\n" + _texto_reglas(por_tema)[:6000],
-                        temperatura=0.2)
+                        temperatura=0.2, maximo=500, espera=900)
 
 
 def _examen(por_tema: dict, aviso, preguntas: list[dict] | None = None, base: float = 65, ancho: float = 25) -> dict:
@@ -229,14 +229,21 @@ def _examen(por_tema: dict, aviso, preguntas: list[dict] | None = None, base: fl
         preguntas = []
         for t in trozos[:PREGUNTAS]:
             texto = f"({t.get('archivo', '')} · {t.get('seccion', '')}) {t['texto']}"
-            q = ia.estructurado(PEDIDO_PREGUNTA.format(texto=texto), Pregunta, papel="rapido",
-                                sistema=SISTEMA_ESTUDIO)
+            try:
+                q = ia.estructurado(PEDIDO_PREGUNTA.format(texto=texto), Pregunta, papel="rapido",
+                                    sistema=SISTEMA_ESTUDIO, maximo=400, espera=600)
+            except ia.ErrorIA:
+                continue
             preguntas.append({**json.loads(q.model_dump_json()), "fuente": t.get("archivo", ""), "texto": texto})
     for k, p in enumerate(preguntas):
-        p["alumno"] = _responder(p["pregunta"], por_tema)
-        j = ia.estructurado(PEDIDO_JUEZ.format(pregunta=p["pregunta"], correcta=p["respuesta"], alumno=p["alumno"]),
-                            Juicio, papel="rapido", sistema=SISTEMA_ESTUDIO, temperatura=0.0)
-        p["correcta"], p["falta"] = j.correcta, j.falta
+        try:
+            p["alumno"] = _responder(p["pregunta"], por_tema)
+            j = ia.estructurado(PEDIDO_JUEZ.format(pregunta=p["pregunta"], correcta=p["respuesta"], alumno=p["alumno"]),
+                                Juicio, papel="rapido", sistema=SISTEMA_ESTUDIO, temperatura=0.0, maximo=300, espera=600)
+            p["correcta"], p["falta"] = j.correcta, j.falta
+        except (ia.ErrorIA, TimeoutError, OSError) as e:  # una pregunta que se cuelga no tumba el examen
+            p.setdefault("alumno", "")
+            p["correcta"], p["falta"] = False, f"no respondió a tiempo ({type(e).__name__})"
         aviso(f"Examen: pregunta {k + 1} de {len(preguntas)}", base + ancho * (k + 1) / len(preguntas))
     nota = sum(p["correcta"] for p in preguntas) / max(1, len(preguntas))
     return {"nota": round(nota, 2), "aprobado": nota >= APRUEBA, "preguntas": preguntas}

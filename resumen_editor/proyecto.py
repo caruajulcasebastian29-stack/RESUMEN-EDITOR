@@ -77,7 +77,7 @@ class Proyecto:
     def detener(self) -> None:
         if self.trabajando:
             self._parar.set()
-            self.guardar_estado(mensaje="Deteniendo… (termina el paso que está haciendo)")
+            self.guardar_estado(mensaje="Pausando… (termina el paso que está haciendo y se guarda)")
 
     def eliminar(self) -> None:
         """Borra el proyecto entero. Si está trabajando, primero lo detiene."""
@@ -309,7 +309,7 @@ class Proyecto:
                 self.montar()
             except Cancelado:
                 if self.dir.exists():
-                    self.guardar_estado(mensaje="Detenido. Lo hecho hasta aquí se guardó; «Continuar» sigue desde ahí.",
+                    self.guardar_estado(mensaje="En pausa. Lo hecho hasta aquí está guardado; «Reanudar» sigue desde ahí.",
                                         detenido=True)
             except Exception as e:  # el error se muestra en la ventana, no en una consola
                 if self.dir.exists():

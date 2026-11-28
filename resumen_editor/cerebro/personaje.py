@@ -65,7 +65,7 @@ class Linea(BaseModel):
     registro: Registro
     recursos: list[Recurso]
     insultos: list[str] = Field(description="insultos o groserías tal como suenan en la frase")
-    muletillas: list[str] = Field(description="palabras de relleno o de barrio que repite: pues, oe, vaina…")
+    muletillas: list[str] = Field(description="palabras sueltas de relleno o de barrio (1 a 3 palabras cada una): pues, oe, vaina…")
     por_que_da_risa: str = Field(description="una frase corta; vacío si no busca risa")
 
 
@@ -77,8 +77,8 @@ class Perfil(BaseModel):
     como_habla: str = Field(description="cómo habla en general, en 3-4 frases sencillas")
     actitud: str = Field(description="su actitud ante la vida y ante los demás")
     acento_y_vocabulario: str
-    muletillas: list[str]
-    insultos_tipicos: list[str]
+    muletillas: list[str] = Field(description="solo palabras sueltas de 1 a 3 palabras (oe, pues, causa); nunca frases enteras")
+    insultos_tipicos: list[str] = Field(description="solo el insulto en sí, de 1 a 3 palabras (sinvergüenza, tonto este)")
     como_usa_las_groserias: str
     estructura_del_estallido: list[str] = Field(description="pasos de cómo pasa de la calma al grito y remata")
     cuando_grita: str
@@ -87,7 +87,9 @@ class Perfil(BaseModel):
     entonacion: str
     contraste_con_los_demas: str
     frases_nuevas_en_su_estilo: list[str] = Field(
-        description="10 frases NUEVAS que diría este personaje contando una película (no copias del clip)")
+        description="10 frases NUEVAS que diría narrando una película: cada una comenta una situación típica y creíble "
+                    "(el villano traiciona, el protagonista hace algo tonto, la esposa engaña al marido, la policía llega tarde); "
+                    "con sentido, nada absurdo ni infantil; no copias del clip")
     lo_que_nunca_haria: list[str]
 
 
@@ -117,8 +119,11 @@ Medidas de la voz por registro:
 Frases analizadas (registro · recursos · texto · por qué da risa):
 {lineas}
 
-Escribe el perfil. Las frases nuevas deben ser originales, sobre películas, en su estilo y con sus muletillas;
-si llevan grosería, córtala a la mitad (por ejemplo «¡puta ma—!»)."""
+Escribe el perfil. Describe solo lo que las frases y las medidas muestran: si un registro no aparece en los
+clips, no lo inventes (di que falta estudiarlo). Las frases nuevas deben ser originales y tener sentido: el
+mapache comentando una escena real de película (por ejemplo, cuando el villano engaña a todos: «¿Y este qué
+se cree, oe? Le dan la mano y se agarra el brazo entero, sinvergüenza»). Nada infantil ni absurdo.
+Si llevan grosería, córtala a la mitad (por ejemplo «¡puta ma—!»)."""
 
 
 def _rol_texto(rol: str) -> str:
@@ -135,7 +140,7 @@ def marcar(frases: list[dict], rol: str, avance=None) -> list[dict]:
             f"volumen {f.get('sobresale_db', 0):+.1f} dB · {f['palabras_s']} pal/s · {f.get('entonacion', '')}"
             f"{' · ' + ', '.join(f['sonidos']) if f['sonidos'] else ''}" for k, f in enumerate(grupo))
         r = ia.estructurado(PEDIDO_LINEAS.format(rol=_rol_texto(rol), frases=texto_frases), Lineas,
-                            papel="experto", sistema=SISTEMA, contexto=8192)
+                            papel="experto", sistema=SISTEMA, contexto=8192, maximo=3000)
         por_n = {x.n: x for x in r.lineas}
         for k, f in enumerate(grupo):
             x = por_n.get(i + k)
