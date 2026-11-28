@@ -1,1 +1,1 @@
-animar-mapache 8 (cabeza quieta, solo boca, recorte amplio, respiración, control de calidad)
+cerebro 0.3.0 (estudio + examen + modelo propio, personaje, todas las capas, preguntas)

@@ -1,1 +1,3 @@
 qwen3:4b-instruct
+embeddinggemma
+qwen3-vl:4b
