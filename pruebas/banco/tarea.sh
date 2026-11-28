@@ -27,7 +27,7 @@ fi
 curl -sIL https://github.com/caruajulcasebastian29-stack/RESUMEN-EDITOR/releases/download/complementos-1/ruedas-win-py312.zip | grep -i -E "^HTTP|content-length" | tail -2
 
 # prueba de la ventana y de instalar/cancelar/reintentar
-python -m pip install -q fastapi uvicorn httpx pydantic python-multipart
+python -m pip install -q torch --index-url https://download.pytorch.org/whl/cpu && python -m pip install -q -r instalador/requirements-windows.txt 2>&1 | tail -2
 RESUMEN_EDITOR_DATOS=/tmp/cdat python - <<'PY' || fallos=$((fallos+1))
 import sys, time
 sys.path.insert(0, ".")
