@@ -1,0 +1,80 @@
+name: Instalador de Windows
+
+# Arma el instalador completo en un servidor Windows de GitHub, lo prueba y lo publica en Releases.
+# Se lanza al cambiar instalador/version.txt (o a mano desde la pestaña Actions).
+on:
+  push:
+    paths:
+      - "instalador/version.txt"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 120
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        id: py
+        with:
+          python-version: "3.12"
+
+      - name: Copiar Python dentro del paquete
+        run: |
+          $origen = Split-Path -Parent "${{ steps.py.outputs.python-path }}"
+          New-Item -ItemType Directory -Force build | Out-Null
+          Copy-Item -Recurse $origen build/python
+          build/python/python.exe -m pip install -q --upgrade pip
+          build/python/python.exe -m pip install -q torch --index-url https://download.pytorch.org/whl/cpu
+          build/python/python.exe -m pip install -q -r instalador/requirements-windows.txt
+
+      - name: FFmpeg, Rhubarb y fuente
+        run: |
+          Invoke-WebRequest https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-win64-gpl.zip -OutFile ff.zip
+          Expand-Archive ff.zip ff
+          New-Item -ItemType Directory -Force build/ffmpeg | Out-Null
+          $d = (Get-ChildItem ff -Directory | Select-Object -First 1).FullName
+          Copy-Item -Recurse "$d\bin" build/ffmpeg/bin
+          Invoke-WebRequest https://github.com/DanielSWolf/rhubarb-lip-sync/releases/download/v1.14.0/Rhubarb-Lip-Sync-1.14.0-Windows.zip -OutFile rh.zip
+          Expand-Archive rh.zip rh
+          $r = (Get-ChildItem rh -Directory | Select-Object -First 1).FullName
+          Copy-Item -Recurse $r build/rhubarb
+          New-Item -ItemType Directory -Force recursos/fuentes | Out-Null
+          Invoke-WebRequest https://github.com/google/fonts/raw/main/ofl/anton/Anton-Regular.ttf -OutFile recursos/fuentes/Anton-Regular.ttf
+
+      - name: Copiar la app
+        run: |
+          New-Item -ItemType Directory -Force build/app | Out-Null
+          foreach ($c in "resumen_editor","interfaz","estilo","recursos") { Copy-Item -Recurse $c build/app/$c }
+          Get-ChildItem build/app -Recurse -Directory -Filter __pycache__ | Remove-Item -Recurse -Force
+
+      - name: Probar que todo arranca
+        run: |
+          $env:PATH = "$PWD\build\ffmpeg\bin;$env:PATH"
+          $env:RESUMEN_EDITOR_DATOS = "$PWD\prueba_datos"
+          cd build/app
+          ..\python\python.exe -c "import resumen_editor.servidor, resumen_editor.cerebro.aprender, resumen_editor.cerebro.entender, resumen_editor.cerebro.escribir, sherpa_onnx, lancedb, torch, transnetv2_pytorch, audio_separator, librosa, edge_tts; print('importaciones ok')"
+          ffmpeg -loglevel error -y -f lavfi -i testsrc2=size=640x360:rate=25:duration=6 -f lavfi -i "testsrc=size=640x360:rate=25:duration=6" -filter_complex "[0:v][1:v]concat=n=2:v=1[v]" -map "[v]" ..\..\clip.mp4
+          ..\python\python.exe -c "from pathlib import Path; from resumen_editor.cerebro import tomas; import os; os.makedirs('t', exist_ok=True); d = tomas.analizar(Path('../../clip.mp4'), Path('t'), 12); print('tomas', d['metodo'], len(d['tomas']))"
+          ..\python\python.exe -c "from fastapi.testclient import TestClient; from resumen_editor.servidor import app; c = TestClient(app); r = c.get('/'); assert r.status_code == 200; print('ventana ok', len(r.text))"
+
+      - name: Compilar el instalador
+        run: |
+          $v = (Get-Content instalador/version.txt).Trim()
+          if (-not (Test-Path "C:\Program Files (x86)\Inno Setup 6\ISCC.exe")) { choco install innosetup -y --no-progress }
+          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" /DVersion=$v instalador/resumen_editor.iss
+          Get-ChildItem dist
+
+      - name: Publicar en Releases
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $v = (Get-Content instalador/version.txt).Trim()
+          gh release create "v$v" dist/ResumenEditor-Instalador.exe --title "Resumen Editor $v" --notes "Instalador de Windows. Descárgalo y ábrelo con doble clic." --latest
