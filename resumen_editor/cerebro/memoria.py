@@ -37,19 +37,42 @@ def guardar_video(video_id: str, narracion: dict) -> int:
     if g:
         filas.append({"video": video_id, "inicio": 0.0, "funcion": "gancho", "recurso": g["tipo"],
                       "frase": g["frase"], "por_que": g["promesa"], "tono": ""})
+    borrar_video(video_id)
+    return guardar_filas(filas)
+
+
+def _limpio(texto: str) -> str:
+    return texto.replace("'", "")
+
+
+def guardar_filas(filas: list[dict]) -> int:
+    """Añade filas ya armadas (video, inicio, funcion, recurso, frase, por_que, tono)."""
     if not filas:
         return 0
-    vecs = ia.vectores([_texto({**f, "por_que_funciona": f["por_que"]}) for f in filas])
+    vecs = []
+    for i in range(0, len(filas), 32):  # de a pocos: la tarjeta de 4 GB no aguanta cientos de golpe
+        vecs += ia.vectores([_texto({**f, "por_que_funciona": f["por_que"]}) for f in filas[i:i + 32]])
     for f, v in zip(filas, vecs):
         f["vector"] = v
     db = _db()
     if TABLA in db.table_names():
-        t = db.open_table(TABLA)
-        t.delete(f"video = '{video_id.replace(chr(39), '')}'")
-        t.add(filas)
+        db.open_table(TABLA).add(filas)
     else:
         db.create_table(TABLA, filas)
     return len(filas)
+
+
+def borrar_video(video_id: str) -> None:
+    db = _db()
+    if TABLA in db.table_names():
+        db.open_table(TABLA).delete(f"video = '{_limpio(video_id)}'")
+
+
+def hay_video(prefijo: str) -> bool:
+    db = _db()
+    if TABLA not in db.table_names():
+        return False
+    return db.open_table(TABLA).count_rows(f"video LIKE '{_limpio(prefijo)}%'") > 0
 
 
 def buscar(consulta: str, k: int = 8, funcion: str | None = None) -> list[dict]:

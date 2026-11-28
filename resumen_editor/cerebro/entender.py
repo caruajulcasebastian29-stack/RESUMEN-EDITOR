@@ -126,7 +126,7 @@ def diagnosticar(carpeta: Path, ts: dict, vistas: list[dict], m: dict, manual: d
     """Problemas concretos, cada uno con su ubicación, para que el guion y el montaje los corrijan."""
     problemas = []
     lista = ts["tomas"]
-    tope = (manual.get("duracion_toma_max") or {}).get("max") or 3.0
+    tope = (manual.get("duracion_toma_max") or {}).get("mediana") or 3.0
     for t in lista:
         d = t["fin"] - t["inicio"]
         if d > tope * 1.5:

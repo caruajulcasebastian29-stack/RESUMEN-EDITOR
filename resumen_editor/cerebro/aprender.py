@@ -13,7 +13,7 @@ import statistics as st
 import subprocess
 from pathlib import Path
 
-from . import audio, imagen, memoria, narracion, palabras, tomas, voz
+from . import audio, conocimiento, imagen, memoria, narracion, palabras, tomas, voz
 
 DATOS = Path(os.environ.get("RESUMEN_EDITOR_DATOS", Path.home() / "Documents" / "Resumen Editor"))
 FICHAS = DATOS / "referencias"
@@ -41,6 +41,10 @@ def aprender(video: Path, aviso=None) -> dict:
         if aviso:
             aviso(nombre, frac)
 
+    try:  # la primera vez, las notas de fábrica pasan a la memoria
+        conocimiento.sembrar()
+    except Exception:
+        pass
     dur = _dur(video)
     paso("Buscando cortes y transiciones", 2)
     t = tomas.analizar(video, carpeta, dur)
@@ -90,18 +94,21 @@ def _rango(vals):
 
 
 def actualizar_manual() -> dict:
-    fichas = [json.loads(p.read_text(encoding="utf-8")) for p in sorted(FICHAS.glob("*/ficha.json"))]
+    propias = [json.loads(p.read_text(encoding="utf-8")) for p in sorted(FICHAS.glob("*/ficha.json"))]
+    fichas = conocimiento.fichas_base() + propias  # lo estudiado antes de crear la app + lo que Jhon le enseña
     transiciones: dict[str, float] = {}
     for f in fichas:
-        total = sum(f["tomas"]["transiciones"].values()) or 1
-        for k, v in f["tomas"]["transiciones"].items():
+        total = sum(f["tomas"].get("transiciones", {}).values()) or 1
+        for k, v in f["tomas"].get("transiciones", {}).items():
             transiciones[k] = transiciones.get(k, 0) + v / total / len(fichas)
     recursos: dict[str, list[float]] = {}
     for f in fichas:
-        for k, v in f["narracion"]["recursos_por_minuto"].items():
+        for k, v in f["narracion"].get("recursos_por_minuto", {}).items():
             recursos.setdefault(k, []).append(v)
     manual = {
         "videos_estudiados": len(fichas),
+        "videos_base": len(fichas) - len(propias),
+        "pausas_por_minuto": _rango(_valores(fichas, "narracion", "pausas_por_minuto")),
         "cortes_por_minuto": _rango(_valores(fichas, "tomas", "cortes_por_minuto")),
         "duracion_toma_mediana": _rango(_valores(fichas, "tomas", "duracion_toma", "mediana")),
         "duracion_toma_max": _rango(_valores(fichas, "tomas", "duracion_toma", "p90")),

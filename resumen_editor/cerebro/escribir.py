@@ -20,7 +20,7 @@ from pydantic import BaseModel, Field
 
 from .. import guion as G
 from ..config import estilo, preferencias
-from . import ia, memoria
+from . import conocimiento, ia, memoria
 
 BLOQUE_S = 75.0
 INTENTOS = 3
@@ -74,7 +74,9 @@ Marcas disponibles (van dentro del texto, donde ocurren):
 {chr(10).join(f'  {k}: {v}' for k, v in n['marcas_guion'].items())}
 
 Escribes para ser dicho en voz alta: frases cortas, ritmo de conversación, sin acotaciones ni narrador neutro.
-No inventas hechos: cuentas solo lo que está en el mapa de la historia."""
+No inventas hechos: cuentas solo lo que está en el mapa de la historia.
+
+{conocimiento.guia()}"""
 
 
 PEDIDO = """Película: {titulo} ({genero}). {premisa}
@@ -111,6 +113,10 @@ def _palabras_que_caben(seg: float, ppm: float) -> int:
 def _ejemplos(hechos: list[dict]) -> str:
     try:
         emociones = ", ".join(dict.fromkeys(h["emocion"] for h in hechos))
+        try:
+            conocimiento.sembrar()
+        except Exception:
+            pass
         ej = memoria.buscar(f"narración con humor en escena de {emociones}", k=6)
     except Exception:
         ej = []
