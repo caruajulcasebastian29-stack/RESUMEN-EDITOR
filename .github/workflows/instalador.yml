@@ -54,6 +54,12 @@ jobs:
           New-Item -ItemType Directory -Force build/app | Out-Null
           foreach ($c in "resumen_editor","interfaz","estilo","recursos") { Copy-Item -Recurse $c build/app/$c }
           Get-ChildItem build/app -Recurse -Directory -Filter __pycache__ | Remove-Item -Recurse -Force
+          # versión y huella de paquetes: con esto la app sabe si puede actualizarse sola
+          (Get-Content instalador/version.txt).Trim() | Set-Content -NoNewline -Encoding utf8NoBOM build/app/version.txt
+          (Get-FileHash instalador/requirements-windows.txt -Algorithm SHA256).Hash | Set-Content -NoNewline -Encoding utf8NoBOM build/app/requisitos.txt
+          New-Item -ItemType Directory -Force publicar | Out-Null
+          Compress-Archive -Path build/app/* -DestinationPath publicar/app.zip
+          Copy-Item build/app/requisitos.txt publicar/requisitos.txt
 
       - name: Probar que todo arranca
         run: |
@@ -63,10 +69,11 @@ jobs:
           cd build/app
           ..\python\python.exe -c "import resumen_editor.servidor, resumen_editor.cerebro.aprender, resumen_editor.cerebro.entender, resumen_editor.cerebro.escribir, sherpa_onnx, lancedb, torch, transnetv2_pytorch, audio_separator, librosa, edge_tts, audioread, pydub, samplerate; from audio_separator.separator import Separator; from resumen_editor.cerebro import audio, palabras, voz, imagen, narracion, memoria, cortes; print('importaciones ok')"
           ffmpeg -loglevel error -y -f lavfi -i testsrc2=size=640x360:rate=25:duration=6 -f lavfi -i "testsrc=size=640x360:rate=25:duration=6" -filter_complex "[0:v][1:v]concat=n=2:v=1[v]" -map "[v]" ..\..\clip.mp4
-          ..\python\python.exe -c "from pathlib import Path; from resumen_editor.cerebro import tomas; import os; os.makedirs('t', exist_ok=True); d = tomas.analizar(Path('../../clip.mp4'), Path('t'), 12); print('tomas', d['metodo'], len(d['tomas']))"
+          ..\python\python.exe -c "from pathlib import Path; from resumen_editor.cerebro import tomas; import os; os.makedirs('../../t', exist_ok=True); d = tomas.analizar(Path('../../clip.mp4'), Path('../../t'), 12); print('tomas', d['metodo'], len(d['tomas']))"
           ffmpeg -loglevel error -y -f lavfi -i "sine=f=300:d=6" ..\..\tono.wav
-          ..\python\python.exe -c "from pathlib import Path; from resumen_editor.cerebro import audio; v, m = audio.separar(Path('../../tono.wav'), Path('sep')); print('separacion ok', v.exists(), m.exists())"
+          ..\python\python.exe -c "from pathlib import Path; from resumen_editor.cerebro import audio; v, m = audio.separar(Path('../../tono.wav'), Path('../../sep')); print('separacion ok', v.exists(), m.exists())"
           ..\python\python.exe -c "from fastapi.testclient import TestClient; from resumen_editor.servidor import app; c = TestClient(app); r = c.get('/'); assert r.status_code == 200; print('ventana ok', len(r.text))"
+          ..\python\python.exe -c "from resumen_editor import actualizar; from resumen_editor.cerebro import conocimiento, aprender; assert actualizar.version_local() != '0.0.0'; assert len(conocimiento.trozos_notas()) > 100; m = aprender.actualizar_manual(); assert m['videos_base'] == 8; print('version', actualizar.version_local(), 'conocimiento ok')"
 
       - name: Compilar el instalador
         run: |
@@ -80,4 +87,4 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           $v = (Get-Content instalador/version.txt).Trim()
-          gh release create "v$v" dist/ResumenEditor-Instalador.exe --title "Resumen Editor $v" --notes "Instalador de Windows. Descárgalo y ábrelo con doble clic." --latest
+          gh release create "v$v" dist/ResumenEditor-Instalador.exe publicar/app.zip publicar/requisitos.txt --title "Resumen Editor $v" --notes "Instalador de Windows. Descárgalo y ábrelo con doble clic." --latest
