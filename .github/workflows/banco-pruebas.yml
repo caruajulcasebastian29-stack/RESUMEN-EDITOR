@@ -50,9 +50,10 @@ jobs:
           git config user.email "banco-pruebas@users.noreply.github.com"
           CARPETA="corridas/$(date -u +%Y%m%d-%H%M%S)"
           mkdir -p /tmp/salida && cp -r salida/. /tmp/salida/ || true
+          rm -rf salida
           git fetch origin resultados || true
           if git rev-parse --verify origin/resultados >/dev/null 2>&1; then
-            git checkout -B resultados origin/resultados
+            git checkout -f -B resultados origin/resultados
           else
             git checkout --orphan resultados && git rm -rf . >/dev/null
           fi
