@@ -33,6 +33,10 @@ AJUSTES = DATOS / "ajustes.json"
 os.environ.setdefault("RESUMEN_EDITOR_DATOS", str(DATOS))
 os.environ.setdefault("RESUMEN_EDITOR_MODELOS", str(DATOS / "modelos"))
 
+class Cancelado(Exception):
+    """Jhon pulsó «Detener»: el trabajo se corta en el siguiente punto seguro."""
+
+
 PASOS = ["entender", "limpieza", "guion", "voz", "montaje", "revision", "lotes"]
 
 
@@ -60,6 +64,29 @@ class Proyecto:
     def __init__(self, carpeta: Path):
         self.dir = Path(carpeta)
         self._hilo: threading.Thread | None = None
+        self._parar = threading.Event()
+
+    @property
+    def trabajando(self) -> bool:
+        return self._hilo is not None and self._hilo.is_alive()
+
+    def revisar_parada(self) -> None:
+        if self._parar.is_set():
+            raise Cancelado()
+
+    def detener(self) -> None:
+        if self.trabajando:
+            self._parar.set()
+            self.guardar_estado(mensaje="Deteniendo… (termina el paso que está haciendo)")
+
+    def eliminar(self) -> None:
+        """Borra el proyecto entero. Si está trabajando, primero lo detiene."""
+        if self.trabajando:
+            self._parar.set()
+            self._hilo.join(timeout=120)
+            if self.trabajando:
+                raise RuntimeError("El proyecto sigue ocupado en un paso largo; prueba otra vez en un minuto.")
+        shutil.rmtree(self.dir, ignore_errors=True)
 
     # ---------- creación y estado ----------
     @classmethod
@@ -98,7 +125,10 @@ class Proyecto:
         self.escribir("estado.json", e)
 
     def _aviso(self, paso: str):
-        return lambda mensaje, progreso: self.guardar_estado(paso=paso, mensaje=mensaje, progreso=round(progreso))
+        def aviso(mensaje, progreso):
+            self.revisar_parada()
+            self.guardar_estado(paso=paso, mensaje=mensaje, progreso=round(progreso))
+        return aviso
 
     # ---------- pasos ----------
     def entender(self) -> dict:
@@ -139,6 +169,7 @@ class Proyecto:
             destino = self.dir / "voz" / f"{f.id:03d}.wav"
             if (solo is None and destino.exists()) or (solo is not None and f.id not in solo):
                 continue
+            self.revisar_parada()
             motor.generar(f, destino)
             self.guardar_estado(progreso=round(100 * (i + 1) / len(frases)))
 
@@ -157,6 +188,7 @@ class Proyecto:
         elector = self._elector()
         partes = []
         for i, f in enumerate(frases):
+            self.revisar_parada()
             pieza = self.dir / "trabajo" / f"frase_{f.id:03d}.mp4"
             hecha = self.dir / "trabajo" / f"frase_{f.id:03d}.json"
             if pieza.exists() and hecha.exists() and not (solo and f.id in solo):
@@ -261,6 +293,10 @@ class Proyecto:
 
     # ---------- en segundo plano ----------
     def correr_todo(self) -> None:
+        if self.trabajando:
+            return
+        self._parar.clear()
+
         def trabajo():
             try:
                 if not (self.analisis / "diagnostico.json").exists():
@@ -271,8 +307,13 @@ class Proyecto:
                     self.escribir_guion()
                 self.generar_voz()
                 self.montar()
+            except Cancelado:
+                if self.dir.exists():
+                    self.guardar_estado(mensaje="Detenido. Lo hecho hasta aquí se guardó; «Continuar» sigue desde ahí.",
+                                        detenido=True)
             except Exception as e:  # el error se muestra en la ventana, no en una consola
-                self.guardar_estado(error=f"{e}", detalle=traceback.format_exc()[-1500:])
+                if self.dir.exists():
+                    self.guardar_estado(error=f"{e}", detalle=traceback.format_exc()[-1500:])
         self._hilo = threading.Thread(target=trabajo, daemon=True)
         self._hilo.start()
 

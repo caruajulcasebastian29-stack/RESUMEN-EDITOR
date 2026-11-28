@@ -44,7 +44,7 @@ def main() -> None:
         return
     sys.path.insert(0, str(RAIZ))
     from resumen_editor.servidor import abrir
-    abrir(PUERTO)
+    abrir(PUERTO, ventana="--sin-ventana" not in sys.argv)  # tras actualizar, la ventana ya abierta se recarga sola
 
 
 if __name__ == "__main__":
