@@ -52,7 +52,20 @@ s = s.replace('embeddings_cache_path=self.crop_cfg.xpose_embedding_cache_path,',
 open(p, "w").write(s)
 print("parche recortador CPU aplicado", s.count("cpu_only=(device"))
 PY
-grep -rln "\.cuda()" src/utils/dependencies/XPose | head -5
+# X-Pose tiene "cuda" escrito a mano en varias partes: se cambia por "cuda si hay, si no cpu".
+python - <<'PY'
+import pathlib, re
+DEV = "('cuda' if __import__('torch').cuda.is_available() else 'cpu')"
+n = 0
+for f in pathlib.Path("src/utils/dependencies/XPose").rglob("*.py"):
+    s = f.read_text()
+    t = s.replace(".to('cuda')", f".to({DEV})").replace('.to("cuda")', f".to({DEV})").replace(".cuda()", f".to({DEV})")
+    t = re.sub(r"device\s*=\s*['\"]cuda['\"]", f"device={DEV}", t)
+    if t != s:
+        f.write_text(t); n += 1
+print("parche cuda->cpu en", n, "archivos")
+PY
+grep -rn "cuda" src/utils/dependencies/XPose --include=*.py | grep -v "is_available" | head -8
 ls assets/examples/driving | head -30 > $GITHUB_WORKSPACE/$OUT/plantillas.txt
 cd $GITHUB_WORKSPACE
 for pose in 01_frente 05_rostro_serio 11_explicando 09_furioso; do

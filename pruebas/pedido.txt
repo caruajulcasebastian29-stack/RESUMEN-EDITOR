@@ -1,1 +1,1 @@
-animar-mapache 5 (recortador en CPU)
+animar-mapache 6 (X-Pose en CPU)
