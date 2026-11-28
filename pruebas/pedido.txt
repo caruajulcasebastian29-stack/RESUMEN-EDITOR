@@ -1,1 +1,1 @@
-animar-mapache 7 (más natural: suavizado, intensidad 1.0, pegado a resolución completa)
+animar-mapache 8 (cabeza quieta, solo boca, recorte amplio, respiración, control de calidad)

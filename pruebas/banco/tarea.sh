@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
-# Tarea actual del banco: mapache 3D con LivePortrait (modo animales) en CPU, versión más natural:
-# movimiento suavizado, intensidad normal (1.0) y la cara pegada sobre la imagen original a resolución completa.
+# Tarea actual del banco: mapache 3D con LivePortrait (modo animales) en CPU, versión 8.
+# Problema de la versión 7: la plantilla giraba la cabeza y movía toda la cara; en un personaje de pelo
+# estilizado eso estira el antifaz, corta el pelo de la oreja y hace saltar el fósforo de un lado al otro.
+# Ahora: la cabeza NO gira ni se desplaza; solo se mueven la boca (A: boca+ojos, B: solo boca), el recorte
+# es más grande para que entren las orejas, y el cuerpo «respira» moviendo la imagen entera (sin deformar).
+# Cada clip pasa un control automático: cuánto cambia la imagen fuera de la boca respecto del cuadro 1.
 set -u
 OUT=salida/animacion; mkdir -p $OUT
 python -m pip install -q --upgrade pip
@@ -67,31 +71,36 @@ print("parche cuda->cpu en", n, "archivos")
 PY
 grep -rn "cuda" src/utils/dependencies/XPose --include=*.py | grep -v "is_available" | head -8
 ls assets/examples/driving | head -40 > $GITHUB_WORKSPACE/$OUT/plantillas.txt
-# Movimiento más natural: se suavizan las plantillas (sin tirones cuadro a cuadro)
+# Plantillas «solo boca»: cabeza quieta (giro, posición y tamaño del primer cuadro) y expresión solo en los
+# puntos de la boca (y de los ojos en la variante A). Índices de LivePortrait: boca 6,12,14,17,19,20; ojos 11,13,15,16,18.
 python - <<'PY'
-import pickle, numpy as np, glob, os
+import pickle, numpy as np, os
 from scipy.ndimage import gaussian_filter1d
-def suave(ruta, sigma=1.6):
-    d = pickle.load(open(ruta, "rb"))
+BOCA, OJOS = [6, 12, 14, 17, 19, 20], [11, 13, 15, 16, 18]
+def plantilla(nombre, puntos, sufijo, sigma=1.2, fuerza=1.0):
+    d = pickle.load(open(f"assets/examples/driving/{nombre}.pkl", "rb"))
     m = d["motion"]
-    for k in ("exp", "t", "scale"):
-        a = np.stack([x[k] for x in m]).astype(np.float32)
-        a = gaussian_filter1d(a, sigma, axis=0, mode="nearest")
-        for x, v in zip(m, a):
-            x[k] = v
     clave = "R" if "R" in m[0] else "R_d"
-    R = np.stack([x[clave] for x in m]).astype(np.float32)
-    R = gaussian_filter1d(R, sigma, axis=0, mode="nearest")
-    for x, r in zip(m, R):
-        u, _, vt = np.linalg.svd(r[0]); x[clave] = (u @ vt)[None].astype(np.float32)
-    destino = ruta.replace(".pkl", "_suave.pkl")
+    exp = np.stack([x["exp"] for x in m]).astype(np.float32)          # (n, 1, 21, 3)
+    exp = gaussian_filter1d(exp, sigma, axis=0, mode="nearest")
+    base = exp[0].copy()
+    nuevo = np.repeat(base[None], len(m), 0)
+    nuevo[:, :, puntos, :] = base[:, puntos, :] + fuerza * (exp[:, :, puntos, :] - base[:, puntos, :])
+    for k, x in enumerate(m):
+        x["exp"] = nuevo[k]
+        x[clave] = m[0][clave].copy()
+        x["t"] = m[0]["t"].copy()
+        x["scale"] = m[0]["scale"].copy()
+    destino = f"assets/examples/driving/{nombre}_{sufijo}.pkl"
     pickle.dump(d, open(destino, "wb"))
-    print("suavizado", os.path.basename(destino), len(m), "cuadros")
-for n in ("talking", "laugh", "shy", "aggrieved", "open_lip"):
-    suave(f"assets/examples/driving/{n}.pkl")
+    mov = np.abs(nuevo - base).max(axis=(0, 1, 3))
+    print("plantilla", os.path.basename(destino), len(m), "cuadros; movimiento por punto:", np.round(mov, 3).tolist())
+for n in ("talking", "laugh", "aggrieved", "open_lip"):
+    plantilla(n, BOCA + OJOS, "A")
+    plantilla(n, BOCA, "B")
 PY
 cd $GITHUB_WORKSPACE
-# Imagen con margen del mismo fondo, para que al girar la cabeza no aparezcan esquinas negras
+# Imagen con margen del mismo fondo
 mkdir -p /tmp/poses
 python - <<'PY'
 from PIL import Image
@@ -111,16 +120,59 @@ animar() {  # pose plantilla
   echo "== $1 con $2"
   ( cd /tmp/lp && CUDA_VISIBLE_DEVICES="" timeout 2400 python inference_animals.py -s "/tmp/poses/$1.png" \
       -d assets/examples/driving/$2.pkl --driving_multiplier 1.0 --flag_stitching --flag_pasteback \
-      --flag_force_cpu --no_flag_use_half_precision -o "$GITHUB_WORKSPACE/$OUT/$1" ) 2>&1 | tail -6
+      --scale 2.9 --vy_ratio -0.05 --flag_force_cpu --no_flag_use_half_precision -o "$GITHUB_WORKSPACE/$OUT/$1" ) 2>&1 | tail -4
 }
-animar 11_explicando talking_suave
-animar 01_frente talking_suave
-animar 09_furioso aggrieved_suave
-animar 05_rostro_serio shy_suave
-animar 01_frente laugh_suave
-animar 11_explicando open_lip_suave
-# hojas de contacto y un cuadro a tamaño real para revisar los dientes
-for v in $(find $OUT -name "*.mp4" ! -name "*concat*"); do
+animar 11_explicando talking_A
+animar 11_explicando talking_B
+animar 01_frente talking_A
+animar 09_furioso aggrieved_A
+animar 01_frente laugh_A
+animar 11_explicando open_lip_B
+# respiración: la imagen entera se agranda y sube un poco (ciclo de 3,2 s); nada de la cara se deforma
+for v in $(find $OUT -name "*.mp4" ! -name "*concat*" ! -name "*_vivo.mp4"); do
+  ffmpeg -loglevel error -y -i "$v" -vf "scale=w='trunc(iw*(1.025+0.008*sin(2*PI*t/3.2))/2)*2':h=-2:eval=frame,crop=iw/1.035:ih/1.035:(iw-ow)/2:(ih-oh)/2+4*sin(2*PI*t/3.2),scale=trunc(iw/2)*2:trunc(ih/2)*2" \
+    -c:v libx264 -crf 18 -preset veryfast -pix_fmt yuv420p "${v%.mp4}_vivo.mp4" || echo "respiracion fallo $v"
+done
+# control de calidad: cuánto cambia la imagen fuera de la boca respecto del primer cuadro
+python - <<'PY'
+import glob, json, subprocess, numpy as np
+from PIL import Image
+def cuadros(v):
+    w, h = map(int, subprocess.run(["ffprobe","-v","error","-select_streams","v:0","-show_entries","stream=width,height",
+                                     "-of","csv=p=0",v], capture_output=True, text=True).stdout.strip().split(","))
+    raw = subprocess.run(["ffmpeg","-v","error","-i",v,"-f","rawvideo","-pix_fmt","gray","-"], capture_output=True).stdout
+    return np.frombuffer(raw, np.uint8).reshape(-1, h, w).astype(np.float32)
+informe = {}
+for v in sorted(glob.glob("salida/animacion/*/*.mp4")):
+    if "concat" in v or "_vivo" in v:
+        continue
+    f = cuadros(v)
+    d = np.abs(f - f[0]).mean(0)                    # cuánto cambia cada píxel en promedio
+    ys, xs = np.where(d >= np.percentile(d, 99.3))  # la zona que más se mueve: la boca
+    cy, cx = np.median(ys), np.median(xs)
+    hy, hx = max(40, 1.6 * np.percentile(np.abs(ys - cy), 90)), max(60, 1.6 * np.percentile(np.abs(xs - cx), 90))
+    fuera = np.ones_like(d, bool)
+    fuera[int(max(0, cy - hy)):int(cy + hy), int(max(0, cx - hx)):int(cx + hx)] = False
+    peor = float(np.percentile(np.abs(f - f[0])[:, fuera], 99.5))
+    medio = float(d[fuera].mean())
+    area = float((d > 6).mean() * 100)  # % de la imagen que se mueve: solo boca ≈ 1 %; en la versión 7 era 5–20 %
+    ok = area < 2.5
+    informe[v] = {"area_que_se_mueve_pct": round(area, 2), "cambio_fuera_de_la_boca_p995": round(peor, 1), "cambio_medio_fuera": round(medio, 2),
+                  "zona_boca": [int(cx), int(cy), int(hx), int(hy)], "aprobado": ok}
+    print(("APROBADO " if ok else "RECHAZADO"), v, informe[v])
+    n = len(f); idx = np.linspace(0, n - 1, 10).astype(int)
+    y0, y1 = int(max(0, cy - 4 * hy)), int(min(f.shape[1], cy + 2.2 * hy)); x0, x1 = int(max(0, cx - 3 * hx)), int(min(f.shape[2], cx + 3 * hx))
+    color = subprocess.run(["ffmpeg","-v","error","-i",v,"-f","rawvideo","-pix_fmt","rgb24","-"], capture_output=True).stdout
+    c = np.frombuffer(color, np.uint8).reshape(n, f.shape[1], f.shape[2], 3)
+    tiras = [Image.fromarray(c[k, y0:y1, x0:x1]).resize((360, int(360 * (y1 - y0) / max(1, x1 - x0)))) for k in idx]
+    hoja = Image.new("RGB", (360 * 5, tiras[0].height * 2))
+    for k, t in enumerate(tiras):
+        hoja.paste(t, ((k % 5) * 360, (k // 5) * t.height))
+    hoja.save(v.replace(".mp4", "_cara.jpg"), quality=90)
+json.dump(informe, open("salida/animacion/control_calidad.json", "w"), indent=1)
+PY
+# hojas de contacto y un cuadro a tamaño real
+for v in $(find $OUT -name "*.mp4" ! -name "*concat*" ! -name "*_vivo.mp4"); do
   ffmpeg -loglevel error -y -i "$v" -vf "fps=4,scale=320:-2,tile=6x2" -frames:v 1 "${v%.mp4}_hoja.jpg"
   ffmpeg -loglevel error -y -ss 1.2 -i "$v" -frames:v 1 -q:v 2 "${v%.mp4}_cuadro.jpg"
 done
