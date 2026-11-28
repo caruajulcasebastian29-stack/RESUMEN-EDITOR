@@ -1,0 +1,73 @@
+== Maquina
+4
+               total        used        free      shared  buff/cache   available
+Mem:              15           0           6           0           8          14
+Swap:              2           0           2
+/dev/root       145G   66G   79G  46% /
+== FFmpeg
+
+Running kernel seems to be up-to-date.
+
+Restarting services...
+
+Service restarts being deferred:
+ systemctl restart hosted-compute-agent.service
+
+No containers need to be restarted.
+
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+ffmpeg version 8.0.1-3ubuntu2 Copyright (c) 2000-2025 the FFmpeg developers
+== Ollama
+{"version":"0.40.19"}
+== Descargando qwen3:4b-instruct
+success [K[?25h[?2026l
+== Descargando embeddinggemma
+success [K[?25h[?2026l
+== Descargando qwen3-vl:4b
+success [K[?25h[?2026l
+NAME                     ID              SIZE      MODIFIED               
+qwen3-vl:4b              a1b29c246319    3.3 GB    Less than a second ago    
+embeddinggemma:latest    85462619ee72    621 MB    Less than a second ago    
+qwen3:4b-instruct        0edcdef34593    2.5 GB    Less than a second ago    
+mapache-editor:latest    5391bb16188c    2.5 GB    4 hours ago               
+== Prueba de texto
+6.68 s
+Un resumen de película es una breve descripción que explica los eventos principales y la trama de una película.
+== Tarea
+parche aplicado
+total 108588
+drwxr-xr-x  2 runner runner     4096 Nov 28 15:38 .
+drwxrwxrwt 13 root   root       4096 Nov 28 15:38 ..
+-rw-r--r--  1 runner runner    26661 Nov 28 15:38 flatbuffers-25.12.19-py2.py3-none-any.whl
+-rw-r--r--  1 runner runner 12580189 Nov 28 15:38 numpy-2.5.5-cp312-cp312-win_amd64.whl
+-rw-r--r--  1 runner runner 16698767 Nov 28 15:38 onnxruntime-1.32.0-cp312-cp312-win_amd64.whl
+-rw-r--r--  1 runner runner 47965460 Nov 28 15:38 opencv_python-5.1.0.95-cp37-abi3-win_amd64.whl
+-rw-r--r--  1 runner runner   140049 Nov 28 15:38 packaging-26.4-py3-none-any.whl
+-rw-r--r--  1 runner runner  7272166 Nov 28 15:38 pillow-13.0.0-cp312-cp312-win_amd64.whl
+-rw-r--r--  1 runner runner  8958177 Nov 28 15:38 praat_parselmouth-0.4.7-cp312-cp312-win_amd64.whl
+-rw-r--r--  1 runner runner   456514 Nov 28 15:38 protobuf-7.36.2-cp310-abi3-win_amd64.whl
+-rw-r--r--  1 runner runner   104619 Nov 28 15:38 pyclipper-1.4.0-cp312-cp312-win_amd64.whl
+-rw-r--r--  1 runner runner   154452 Nov 28 15:38 pyyaml-6.0.4-cp312-cp312-win_amd64.whl
+-rw-r--r--  1 runner runner 14915192 Nov 28 15:38 rapidocr_onnxruntime-1.4.4-py3-none-any.whl
+-rw-r--r--  1 runner runner  1791280 Nov 28 15:38 shapely-2.2.0-cp312-cp312-win_amd64.whl
+-rw-r--r--  1 runner runner    11050 Nov 28 15:38 six-1.17.0-py2.py3-none-any.whl
+-rw-r--r--  1 runner runner    80199 Nov 28 15:38 tqdm-4.70.1-py3-none-any.whl
+-rw-r--r-- 1 runner runner 111157683 Nov 28 15:38 /tmp/ruedas-win-py312.zip
+https://github.com/caruajulcasebastian29-stack/RESUMEN-EDITOR/releases/tag/complementos-1
+HTTP/2 200 
+content-length: 111157683
+/opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+  from starlette.testclient import TestClient as TestClient  # noqa
+Traceback (most recent call last):
+  File "<stdin>", line 4, in <module>
+  File "/home/runner/work/RESUMEN-EDITOR/RESUMEN-EDITOR/resumen_editor/servidor.py", line 16, in <module>
+    from . import proyecto as P
+  File "/home/runner/work/RESUMEN-EDITOR/RESUMEN-EDITOR/resumen_editor/proyecto.py", line 27, in <module>
+    from . import limpieza, lotes, montaje
+  File "/home/runner/work/RESUMEN-EDITOR/RESUMEN-EDITOR/resumen_editor/limpieza.py", line 9, in <module>
+    import numpy as np
+ModuleNotFoundError: No module named 'numpy'
+== fallos: 1
+== Fin

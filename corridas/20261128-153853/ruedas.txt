@@ -1,0 +1,17 @@
+total 108588
+drwxr-xr-x  2 runner runner     4096 Nov 28 15:38 .
+drwxrwxrwt 13 root   root       4096 Nov 28 15:38 ..
+-rw-r--r--  1 runner runner    26661 Nov 28 15:38 flatbuffers-25.12.19-py2.py3-none-any.whl
+-rw-r--r--  1 runner runner 12580189 Nov 28 15:38 numpy-2.5.5-cp312-cp312-win_amd64.whl
+-rw-r--r--  1 runner runner 16698767 Nov 28 15:38 onnxruntime-1.32.0-cp312-cp312-win_amd64.whl
+-rw-r--r--  1 runner runner 47965460 Nov 28 15:38 opencv_python-5.1.0.95-cp37-abi3-win_amd64.whl
+-rw-r--r--  1 runner runner   140049 Nov 28 15:38 packaging-26.4-py3-none-any.whl
+-rw-r--r--  1 runner runner  7272166 Nov 28 15:38 pillow-13.0.0-cp312-cp312-win_amd64.whl
+-rw-r--r--  1 runner runner  8958177 Nov 28 15:38 praat_parselmouth-0.4.7-cp312-cp312-win_amd64.whl
+-rw-r--r--  1 runner runner   456514 Nov 28 15:38 protobuf-7.36.2-cp310-abi3-win_amd64.whl
+-rw-r--r--  1 runner runner   104619 Nov 28 15:38 pyclipper-1.4.0-cp312-cp312-win_amd64.whl
+-rw-r--r--  1 runner runner   154452 Nov 28 15:38 pyyaml-6.0.4-cp312-cp312-win_amd64.whl
+-rw-r--r--  1 runner runner 14915192 Nov 28 15:38 rapidocr_onnxruntime-1.4.4-py3-none-any.whl
+-rw-r--r--  1 runner runner  1791280 Nov 28 15:38 shapely-2.2.0-cp312-cp312-win_amd64.whl
+-rw-r--r--  1 runner runner    11050 Nov 28 15:38 six-1.17.0-py2.py3-none-any.whl
+-rw-r--r--  1 runner runner    80199 Nov 28 15:38 tqdm-4.70.1-py3-none-any.whl
