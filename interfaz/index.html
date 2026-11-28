@@ -22,8 +22,9 @@
   .panel h2 { font-size:15px; margin:0 0 12px; color:var(--suave); font-weight:600; text-transform:uppercase; letter-spacing:.6px; }
   #soltar, .soltar { border:2px dashed var(--borde); border-radius:12px; padding:48px; text-align:center; color:var(--suave); cursor:pointer; }
   #soltar.encima, .soltar.encima { border-color:var(--amarillo); color:var(--texto); }
-  .lista div { display:flex; justify-content:space-between; padding:10px 4px; border-bottom:1px solid var(--borde); cursor:pointer; }
-  .lista div:hover { color:var(--amarillo); }
+  .lista > div { display:flex; justify-content:space-between; align-items:center; gap:10px; padding:10px 4px; border-bottom:1px solid var(--borde); }
+  .lista > div .nombre { cursor:pointer; flex:1; }
+  .lista > div .nombre:hover { color:var(--amarillo); }
   .pasos { display:flex; gap:6px; margin-bottom:18px; }
   .pasos div { flex:1; text-align:center; font-size:12px; padding:8px 4px; border-radius:8px; background:var(--panel);
                border:1px solid var(--borde); color:var(--suave); }
@@ -50,12 +51,17 @@
   dialog label { display:block; margin:12px 0 4px; font-size:13px; color:var(--suave); }
   dialog input, dialog select { width:100%; background:var(--fondo); border:1px solid var(--borde); color:var(--texto); border-radius:6px; padding:8px; }
   .oculto { display:none; }
+  button.peligro { color:var(--rojo); border-color:#5e2a2a; }
+  button.chico { padding:3px 10px; font-size:12px; }
+  .acciones { display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
+  #version { color:var(--suave); font-size:12px; }
   .aviso { color:var(--amarillo); font-size:13px; }
 </style>
 </head>
 <body>
 <header>
   <h1>Resumen <span>Editor</span></h1>
+  <span id="version"></span>
   <div class="espacio"></div>
   <button id="btn-inicio">Proyectos</button>
   <button id="btn-aprender">Aprender</button>
@@ -64,6 +70,7 @@
 
 <main>
   <div class="panel oculto" id="salud" style="border-color:var(--rojo)"></div>
+  <div class="panel oculto" id="actualizacion" style="border-color:var(--amarillo)"></div>
   <!-- 1 · INICIO -->
   <section id="vista-inicio">
     <div class="panel">
@@ -71,6 +78,7 @@
       <div id="soltar">Arrastra aquí el resumen descargado (MP4)<br><small>o haz clic para elegirlo</small></div>
       <input type="file" id="archivo" accept="video/*" class="oculto">
       <div class="barra oculto" id="barra-subida"><i></i></div>
+      <button id="btn-cancelar-subida" class="oculto chico" style="margin-top:8px">Cancelar subida</button>
     </div>
     <div class="panel">
       <h2>Proyectos</h2>
@@ -87,9 +95,13 @@
       <input type="file" id="archivo-ref" accept="video/*" class="oculto">
       <div id="estado-ref" style="margin-top:12px"></div>
       <div class="barra"><i id="progreso-ref"></i></div>
+      <div class="acciones"><button id="btn-detener-ref" class="oculto">⏸ Detener el estudio</button></div>
     </div>
     <div class="panel"><h2>Lo que ha aprendido</h2><div id="manual"></div></div>
-    <div class="panel"><h2>Videos estudiados</h2><div id="fichas"></div></div>
+    <div class="panel"><h2>Videos estudiados</h2><div class="lista" id="fichas"></div></div>
+    <div class="panel"><h2>Conocimiento de fábrica</h2>
+      <p style="color:var(--suave);font-size:13px;margin-top:0">Lo que se estudió de estos resúmenes antes de crear la app. Ya está dentro de su memoria; lo que le enseñes se suma.</p>
+      <div id="base"></div></div>
   </section>
 
   <!-- 2–7 · PROYECTO -->
@@ -101,7 +113,12 @@
       <div class="barra"><i id="progreso"></i></div>
       <p class="aviso" id="aviso"></p>
       <p class="error" id="error"></p>
-      <button id="btn-continuar" class="oculto">Intentar de nuevo</button>
+      <div class="acciones">
+        <button id="btn-volver">← Volver a proyectos</button>
+        <button id="btn-detener" class="oculto">⏸ Detener</button>
+        <button id="btn-continuar" class="oculto">▶ Continuar</button>
+        <button id="btn-eliminar" class="peligro">Eliminar proyecto</button>
+      </div>
     </div>
     <div class="panel oculto" id="panel-diagnostico">
       <h2>Lo que la app entendió y lo que corrige</h2>
@@ -184,22 +201,36 @@ async function pintarAprender() {
   const d = await api("/api/referencias"), e = d.estado || {};
   $("#estado-ref").innerHTML = e.error ? `<span class="error">${esc(e.error)}</span>` : esc(e.mensaje || "");
   $("#progreso-ref").style.width = (e.progreso || 0) + "%";
+  $("#btn-detener-ref").classList.toggle("oculto", !e.trabajando);
+  $("#base").innerHTML = (d.base||[]).map(b => `<div class="frase">${esc(b.archivo)} · ${b.cortes} cortes/min · ${b.palabras} palabras/min</div>`).join("");
   const m = d.manual || {}, r = x => x ? `${x.mediana} <span style="color:var(--suave)">(${x.min}–${x.max})</span>` : "—";
   $("#manual").innerHTML = m.videos_estudiados ? `
-    <div class="frase">Videos estudiados: <b>${m.videos_estudiados}</b></div>
+    <div class="frase">Videos estudiados: <b>${m.videos_estudiados}</b> (${m.videos_base||0} de fábrica + ${m.videos_estudiados-(m.videos_base||0)} que le enseñaste)</div>
     <div class="frase">Cortes por minuto: ${r(m.cortes_por_minuto)} · duración típica de toma: ${r(m.duracion_toma_mediana)} s</div>
     <div class="frase">Transiciones: ${Object.entries(m.transiciones||{}).map(([k,v])=>`${esc(k)} ${Math.round(v*100)} %`).join(" · ")}</div>
     <div class="frase">Música bajo la voz: ${r(m.musica_bajo_voz_db)} dB · palabras por minuto: ${r(m.palabras_por_minuto)}</div>
     <div class="frase">Chistes por minuto: ${r(m.chistes_por_minuto)} · la voz sube y baja: ${r(m.voz_rango_st)} semitonos</div>
     <div class="frase">Recursos más usados: ${Object.entries(m.recursos_por_minuto||{}).slice(0,6).map(([k,v])=>`${esc(k)} (${v}/min)`).join(", ")}</div>`
     : "<p style='color:var(--suave)'>Todavía no ha estudiado ningún video.</p>";
-  $("#fichas").innerHTML = (d.fichas||[]).map(f => `<div class="frase"><b>${esc(f.archivo)}</b> · ${Math.round(f.duracion/60)} min ·
+  const filas = (d.fichas||[]).map(f => `<div><span class="nombre"><b>${esc(f.archivo)}</b> · ${Math.round(f.duracion/60)} min ·
     ${f.tomas.cortes_por_minuto} cortes/min · ${f.narracion.palabras_por_minuto} palabras/min · ${f.ejemplos_en_memoria} ejemplos guardados
-    ${f.gancho ? `<br><span style="color:var(--suave)">Gancho: «${esc(f.gancho.frase)}»</span>` : ""}</div>`).join("");
+    ${f.gancho ? `<br><span style="color:var(--suave)">Gancho: «${esc(f.gancho.frase)}»</span>` : ""}</span>
+    <button class="chico peligro" onclick="quitarReferencia('${esc(f.video)}')">Quitar</button></div>`);
+  const medias = (d.a_medias||[]).map(v => `<div><span class="nombre">${esc(v)} <span style="color:var(--suave)">· a medias</span></span>
+    <button class="chico peligro" onclick="quitarReferencia('${esc(v)}')">Quitar</button></div>`);
+  $("#fichas").innerHTML = filas.concat(medias).join("") || "<p style='color:var(--suave)'>Ninguno todavía.</p>";
 }
-function subirReferencia(archivo) {
+async function quitarReferencia(id) {
+  if (!confirm("¿Quitar este video de lo aprendido? Se borra su ficha y lo que dejó en la memoria.")) return;
+  const r = await fetch(`/api/referencias/${encodeURIComponent(id)}`, {method:"DELETE"});
+  if (!r.ok) alert((await r.json()).detail || "No se pudo quitar");
+  pintarAprender();
+}
+async function subirReferencia(archivo) {
   const datos = new FormData(); datos.append("video", archivo);
-  fetch("/api/referencias", {method:"POST", body:datos}).then(pintarAprender);
+  const r = await fetch("/api/referencias", {method:"POST", body:datos});
+  if (!r.ok) alert((await r.json()).detail || "No se pudo empezar");
+  pintarAprender();
 }
 
 async function cargarLista() {
@@ -207,18 +238,31 @@ async function cargarLista() {
   $("#lista").innerHTML = ps.length ? "" : "<p style='color:var(--suave)'>Todavía no hay proyectos.</p>";
   ps.forEach(p => {
     const d = document.createElement("div");
-    d.innerHTML = `<span>${esc(p.nombre)}</span><span style="color:var(--suave)">${esc(p.mensaje||p.paso)}</span>`;
-    d.onclick = () => abrir(p.nombre);
+    d.innerHTML = `<span class="nombre">${esc(p.nombre)}</span><span style="color:var(--suave)">${esc(p.mensaje||p.paso)}</span>
+      <button class="chico peligro">Eliminar</button>`;
+    d.querySelector(".nombre").onclick = () => abrir(p.nombre);
+    d.querySelector("button").onclick = () => eliminarProyecto(p.nombre);
     $("#lista").appendChild(d);
   });
 }
+async function eliminarProyecto(nombre) {
+  if (!confirm(`¿Eliminar el proyecto «${nombre}»? Se borra todo lo hecho en él. Lo aprendido por la app no se toca.`)) return;
+  const r = await fetch(`/api/proyectos/${encodeURIComponent(nombre)}`, {method:"DELETE"});
+  if (!r.ok) { alert((await r.json()).detail || "No se pudo eliminar"); return; }
+  if (actual === nombre) { actual = null; clearInterval(temporizador); mostrar("inicio"); }
+  cargarLista();
+}
 
+let subida = null;
 function subir(archivo) {
   const datos = new FormData(); datos.append("video", archivo);
-  const x = new XMLHttpRequest();
-  $("#barra-subida").classList.remove("oculto");
+  const x = new XMLHttpRequest(); subida = x;
+  $("#barra-subida").classList.remove("oculto"); $("#btn-cancelar-subida").classList.remove("oculto");
+  const fin = () => { subida = null; $("#barra-subida").classList.add("oculto"); $("#btn-cancelar-subida").classList.add("oculto");
+                      $("#barra-subida i").style.width = "0"; $("#archivo").value = ""; };
   x.upload.onprogress = e => $("#barra-subida i").style.width = (100*e.loaded/e.total)+"%";
-  x.onload = () => { const r = JSON.parse(x.responseText); abrir(r.nombre); };
+  x.onload = () => { fin(); const r = JSON.parse(x.responseText); abrir(r.nombre); };
+  x.onabort = fin; x.onerror = () => { fin(); alert("No se pudo subir el video."); };
   x.open("POST", "/api/proyectos"); x.send(datos);
 }
 
@@ -244,7 +288,8 @@ async function refrescar() {
   $("#progreso").style.width = (e.progreso||0) + "%";
   $("#aviso").textContent = [e.aviso, ...(e.avisos_guion||[])].filter(Boolean).join(" · ");
   $("#error").textContent = e.error ? "Algo falló: " + e.error : "";
-  $("#btn-continuar").classList.toggle("oculto", !e.error);
+  $("#btn-continuar").classList.toggle("oculto", d.trabajando || !(e.error || e.detenido));
+  $("#btn-detener").classList.toggle("oculto", !d.trabajando);
 
   if (d.pelicula || d.diagnostico) {
     $("#panel-diagnostico").classList.remove("oculto");
@@ -308,6 +353,11 @@ $("#archivo-ref").onchange = e => e.target.files[0] && subirReferencia(e.target.
 ["dragleave","drop"].forEach(ev => $("#soltar-ref").addEventListener(ev, e => { e.preventDefault(); $("#soltar-ref").classList.remove("encima"); }));
 $("#soltar-ref").addEventListener("drop", e => e.dataTransfer.files[0] && subirReferencia(e.dataTransfer.files[0]));
 $("#btn-continuar").onclick = () => api(`/api/proyectos/${encodeURIComponent(actual)}/continuar`, {method:"POST"});
+$("#btn-detener").onclick = () => api(`/api/proyectos/${encodeURIComponent(actual)}/detener`, {method:"POST"}).then(refrescar);
+$("#btn-eliminar").onclick = () => eliminarProyecto(actual);
+$("#btn-volver").onclick = () => $("#btn-inicio").click();
+$("#btn-cancelar-subida").onclick = () => subida && subida.abort();
+$("#btn-detener-ref").onclick = () => api("/api/referencias/detener", {method:"POST"}).then(pintarAprender);
 $("#btn-rehacer").onclick = () => api(`/api/proyectos/${encodeURIComponent(actual)}/rehacer`, {method:"POST"});
 $("#btn-yt").onclick = () => exportar("youtube");
 $("#btn-tt").onclick = () => exportar("tiktok");
@@ -322,7 +372,36 @@ $("#guardar-ajustes").onclick = async e => {
   await api("/api/ajustes", {method:"POST", body:new FormData($("#form-ajustes"))});
   $("#dlg-ajustes").close();
 };
-cargarLista(); revisarSalud(); setInterval(revisarSalud, 30000);
+async function revisarActualizacion() {
+  try {
+    const v = await api("/api/version"); $("#version").textContent = "v" + v.version;
+    const a = await api("/api/actualizacion"), b = $("#actualizacion");
+    if (!a.hay) { b.classList.add("oculto"); return; }
+    b.classList.remove("oculto");
+    b.innerHTML = a.rapida
+      ? `Hay una versión nueva (${esc(a.remota)}). Se actualiza en un minuto, sin reinstalar y sin tocar tus proyectos ni lo aprendido.
+         <button class="principal" id="btn-actualizar">Actualizar ahora</button> <span id="estado-act"></span>`
+      : `Hay una versión nueva (${esc(a.remota)}) que trae piezas nuevas y necesita el instalador completo. Tus proyectos y lo aprendido se conservan.
+         <a href="${esc(a.pagina)}" target="_blank" style="color:var(--amarillo)">Descargar el instalador</a>`;
+    if (a.rapida) $("#btn-actualizar").onclick = actualizarAhora;
+  } catch (e) {}
+}
+async function actualizarAhora() {
+  const r = await fetch("/api/actualizacion", {method:"POST"});
+  if (!r.ok) { alert((await r.json()).detail); return; }
+  $("#btn-actualizar").disabled = true;
+  const vigilar = setInterval(async () => {
+    try {
+      const e = await api("/api/actualizacion/estado");
+      $("#estado-act").textContent = e.error || e.mensaje || "";
+      if (e.error) clearInterval(vigilar);
+    } catch (err) {  // el servidor se está reiniciando: esperar y recargar
+      clearInterval(vigilar); $("#estado-act").textContent = "Reiniciando…";
+      const volver = setInterval(() => fetch("/api/version").then(() => { clearInterval(volver); location.reload(); }).catch(() => {}), 1500);
+    }
+  }, 1500);
+}
+cargarLista(); revisarSalud(); setInterval(revisarSalud, 30000); revisarActualizacion();
 </script>
 </body>
 </html>
