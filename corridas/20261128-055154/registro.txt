@@ -1,0 +1,151 @@
+== Maquina
+4
+               total        used        free      shared  buff/cache   available
+Mem:              15           1          10           0           3          14
+Swap:              2           0           2
+/dev/root       145G   61G   84G  42% /
+== FFmpeg
+
+Running kernel seems to be up-to-date.
+
+Restarting services...
+
+Service restarts being deferred:
+ systemctl restart hosted-compute-agent.service
+
+No containers need to be restarted.
+
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+ffmpeg version 8.0.1-3ubuntu2 Copyright (c) 2000-2025 the FFmpeg developers
+== Ollama
+{"version":"0.40.19"}
+== Descargando qwen3:4b-instruct
+success [K[?25h[?2026l
+NAME                 ID              SIZE      MODIFIED               
+qwen3:4b-instruct    0edcdef34593    2.5 GB    Less than a second ago    
+== Prueba de texto
+5.27 s
+Un resumen de película es una breve descripción que explica los eventos principales y la trama de la película en una sola frase.
+== Tarea
+dependencias ok
+Fetching 18 files:   0%|          | 0/18 [00:00<?, ?it/s]Fetching 18 files:   6%|▌         | 1/18 [00:00<00:14,  1.17it/s]Fetching 18 files:  28%|██▊       | 5/18 [00:01<00:04,  2.86it/s]Fetching 18 files:  33%|███▎      | 6/18 [00:03<00:07,  1.51it/s]Fetching 18 files:  39%|███▉      | 7/18 [00:03<00:06,  1.78it/s]Fetching 18 files:  44%|████▍     | 8/18 [00:05<00:07,  1.37it/s]Fetching 18 files:  50%|█████     | 9/18 [00:08<00:12,  1.36s/it]Fetching 18 files:  56%|█████▌    | 10/18 [00:08<00:08,  1.08s/it]Fetching 18 files:  61%|██████    | 11/18 [00:08<00:05,  1.18it/s]Fetching 18 files:  78%|███████▊  | 14/18 [00:10<00:02,  1.39it/s]Fetching 18 files:  83%|████████▎ | 15/18 [00:11<00:02,  1.49it/s]Fetching 18 files:  89%|████████▉ | 16/18 [00:11<00:01,  1.74it/s]Fetching 18 files:  94%|█████████▍| 17/18 [00:11<00:00,  2.17it/s]Fetching 18 files: 100%|██████████| 18/18 [00:13<00:00,  1.19it/s]Fetching 18 files: 100%|██████████| 18/18 [00:13<00:00,  1.35it/s]
+pesos listos
+parche CPU aplicado
+parche embeddings aplicado
+parche recortador CPU aplicado 1
+parche cuda->cpu en 4 archivos
+src/utils/dependencies/XPose/util/misc.py:332:                        memory=torch.cuda.max_memory_allocated() / MB))
+src/utils/dependencies/XPose/util/misc.py:590:        print('world size: {}, world rank: {}, local rank: {}, device_count: {}'.format(args.world_size, args.rank, args.local_rank, torch.cuda.device_count()))
+src/utils/dependencies/XPose/util/misc.py:603:    torch.cuda.set_device(args.local_rank)
+src/utils/dependencies/XPose/models/UniPose/ops/test.py:39:    output_cuda = MSDeformAttnFunction.apply(value.double(), shapes, level_start_index, sampling_locations.double(), attention_weights.double(), im2col_step).detach().cpu()
+src/utils/dependencies/XPose/models/UniPose/ops/test.py:40:    fwdok = torch.allclose(output_cuda, output_pytorch)
+src/utils/dependencies/XPose/models/UniPose/ops/test.py:41:    max_abs_err = (output_cuda - output_pytorch).abs().max()
+src/utils/dependencies/XPose/models/UniPose/ops/test.py:42:    max_rel_err = ((output_cuda - output_pytorch).abs() / output_pytorch.abs()).max()
+src/utils/dependencies/XPose/models/UniPose/ops/test.py:55:    output_cuda = MSDeformAttnFunction.apply(value, shapes, level_start_index, sampling_locations, attention_weights, im2col_step).detach().cpu()
+suavizado talking_suave.pkl 100 cuadros
+suavizado laugh_suave.pkl 54 cuadros
+suavizado shy_suave.pkl 80 cuadros
+suavizado aggrieved_suave.pkl 57 cuadros
+suavizado open_lip_suave.pkl 77 cuadros
+margen 01_frente (48, 48, 48)
+margen 05_rostro_serio (56, 56, 56)
+margen 09_furioso (33, 33, 34)
+margen 11_explicando (32, 32, 32)
+== 11_explicando con talking_suave
+           lking_suave_concat.mp4                                               
+[05:06:47] Animated gif:                    live_portrait_pipeline_animal.py:234
+           /home/runner/work/RESUMEN-EDITOR                                     
+           /RESUMEN-EDITOR/salida/animacion                                     
+           /11_explicando/11_explicando--ta                                     
+           lking_suave.gif                                                      
+== 01_frente con talking_suave
+           ave_concat.mp4                                                       
+[05:18:51] Animated gif:                    live_portrait_pipeline_animal.py:234
+           /home/runner/work/RESUMEN-EDITOR                                     
+           /RESUMEN-EDITOR/salida/animacion                                     
+           /01_frente/01_frente--talking_su                                     
+           ave.gif                                                              
+== 09_furioso con aggrieved_suave
+           d_suave_concat.mp4                                                   
+           Animated gif:                    live_portrait_pipeline_animal.py:234
+           /home/runner/work/RESUMEN-EDITOR                                     
+           /RESUMEN-EDITOR/salida/animacion                                     
+           /09_furioso/09_furioso--aggrieve                                     
+           d_suave.gif                                                          
+== 05_rostro_serio con shy_suave
+           --shy_suave_concat.mp4                                               
+[05:35:41] Animated gif:                    live_portrait_pipeline_animal.py:234
+           /home/runner/work/RESUMEN-EDITOR                                     
+           /RESUMEN-EDITOR/salida/animacion                                     
+           /05_rostro_serio/05_rostro_serio                                     
+           --shy_suave.gif                                                      
+== 01_frente con laugh_suave
+           e_concat.mp4                                                         
+           Animated gif:                    live_portrait_pipeline_animal.py:234
+           /home/runner/work/RESUMEN-EDITOR                                     
+           /RESUMEN-EDITOR/salida/animacion                                     
+           /01_frente/01_frente--laugh_suav                                     
+           e.gif                                                                
+== 11_explicando con open_lip_suave
+           en_lip_suave_concat.mp4                                              
+           Animated gif:                    live_portrait_pipeline_animal.py:234
+           /home/runner/work/RESUMEN-EDITOR                                     
+           /RESUMEN-EDITOR/salida/animacion                                     
+           /11_explicando/11_explicando--op                                     
+           en_lip_suave.gif                                                     
+salida/animacion/01_frente/:
+total 4420
+drwxr-xr-x 2 runner runner    4096 Nov 28 05:51 .
+drwxr-xr-x 6 runner runner    4096 Nov 28 05:35 ..
+-rw-r--r-- 1 runner runner  307254 Nov 28 05:42 01_frente--laugh_suave.gif
+-rw-r--r-- 1 runner runner  450345 Nov 28 05:42 01_frente--laugh_suave.mp4
+-rw-r--r-- 1 runner runner  436577 Nov 28 05:42 01_frente--laugh_suave_concat.mp4
+-rw-r--r-- 1 runner runner  148962 Nov 28 05:51 01_frente--laugh_suave_cuadro.jpg
+-rw-r--r-- 1 runner runner   68701 Nov 28 05:51 01_frente--laugh_suave_hoja.jpg
+-rw-r--r-- 1 runner runner  659773 Nov 28 05:18 01_frente--talking_suave.gif
+-rw-r--r-- 1 runner runner 1004542 Nov 28 05:18 01_frente--talking_suave.mp4
+-rw-r--r-- 1 runner runner 1192823 Nov 28 05:18 01_frente--talking_suave_concat.mp4
+-rw-r--r-- 1 runner runner  146545 Nov 28 05:51 01_frente--talking_suave_cuadro.jpg
+-rw-r--r-- 1 runner runner   76669 Nov 28 05:51 01_frente--talking_suave_hoja.jpg
+-rw-r--r-- 1 runner runner     678 Nov 28 05:42 palette.png
+
+salida/animacion/05_rostro_serio/:
+total 2752
+drwxr-xr-x 2 runner runner    4096 Nov 28 05:51 .
+drwxr-xr-x 6 runner runner    4096 Nov 28 05:35 ..
+-rw-r--r-- 1 runner runner 1461113 Nov 28 05:35 05_rostro_serio--shy_suave.gif
+-rw-r--r-- 1 runner runner  658069 Nov 28 05:35 05_rostro_serio--shy_suave.mp4
+-rw-r--r-- 1 runner runner  495472 Nov 28 05:35 05_rostro_serio--shy_suave_concat.mp4
+-rw-r--r-- 1 runner runner   83014 Nov 28 05:51 05_rostro_serio--shy_suave_cuadro.jpg
+-rw-r--r-- 1 runner runner  100273 Nov 28 05:51 05_rostro_serio--shy_suave_hoja.jpg
+-rw-r--r-- 1 runner runner     665 Nov 28 05:35 palette.png
+
+salida/animacion/09_furioso/:
+total 1508
+drwxr-xr-x 2 runner runner   4096 Nov 28 05:51 .
+drwxr-xr-x 6 runner runner   4096 Nov 28 05:35 ..
+-rw-r--r-- 1 runner runner 370706 Nov 28 05:25 09_furioso--aggrieved_suave.gif
+-rw-r--r-- 1 runner runner 476614 Nov 28 05:25 09_furioso--aggrieved_suave.mp4
+-rw-r--r-- 1 runner runner 426686 Nov 28 05:25 09_furioso--aggrieved_suave_concat.mp4
+-rw-r--r-- 1 runner runner 175382 Nov 28 05:51 09_furioso--aggrieved_suave_cuadro.jpg
+-rw-r--r-- 1 runner runner  69667 Nov 28 05:51 09_furioso--aggrieved_suave_hoja.jpg
+-rw-r--r-- 1 runner runner    722 Nov 28 05:25 palette.png
+
+salida/animacion/11_explicando/:
+total 4432
+drwxr-xr-x 2 runner runner    4096 Nov 28 05:51 .
+drwxr-xr-x 6 runner runner    4096 Nov 28 05:35 ..
+-rw-r--r-- 1 runner runner  358922 Nov 28 05:51 11_explicando--open_lip_suave.gif
+-rw-r--r-- 1 runner runner  490068 Nov 28 05:51 11_explicando--open_lip_suave.mp4
+-rw-r--r-- 1 runner runner  509054 Nov 28 05:51 11_explicando--open_lip_suave_concat.mp4
+-rw-r--r-- 1 runner runner  179494 Nov 28 05:51 11_explicando--open_lip_suave_cuadro.jpg
+-rw-r--r-- 1 runner runner   82492 Nov 28 05:51 11_explicando--open_lip_suave_hoja.jpg
+-rw-r--r-- 1 runner runner  578219 Nov 28 05:06 11_explicando--talking_suave.gif
+-rw-r--r-- 1 runner runner  933553 Nov 28 05:06 11_explicando--talking_suave.mp4
+-rw-r--r-- 1 runner runner 1122299 Nov 28 05:06 11_explicando--talking_suave_concat.mp4
+-rw-r--r-- 1 runner runner  173588 Nov 28 05:51 11_explicando--talking_suave_cuadro.jpg
+-rw-r--r-- 1 runner runner   81067 Nov 28 05:51 11_explicando--talking_suave_hoja.jpg
+-rw-r--r-- 1 runner runner     765 Nov 28 05:51 palette.png
+== Fin
