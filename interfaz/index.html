@@ -25,6 +25,7 @@
   .lista > div { display:flex; justify-content:space-between; align-items:center; gap:10px; padding:10px 4px; border-bottom:1px solid var(--borde); }
   .lista > div .nombre { cursor:pointer; flex:1; }
   .lista > div .nombre:hover { color:var(--amarillo); }
+  .lista div:hover { color:var(--amarillo); }
   .pasos { display:flex; gap:6px; margin-bottom:18px; }
   .pasos div { flex:1; text-align:center; font-size:12px; padding:8px 4px; border-radius:8px; background:var(--panel);
                border:1px solid var(--borde); color:var(--suave); }
@@ -54,8 +55,19 @@
   button.peligro { color:var(--rojo); border-color:#5e2a2a; }
   button.chico { padding:3px 10px; font-size:12px; }
   .acciones { display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
+  .fila-lista { display:flex; align-items:center; gap:10px; }
+  .fila-lista .nombre { flex:1; cursor:pointer; }
   #version { color:var(--suave); font-size:12px; }
   .aviso { color:var(--amarillo); font-size:13px; }
+  #dlg-informe { width:min(920px,94vw); max-height:88vh; }
+  .tabla { width:100%; border-collapse:collapse; font-size:13px; }
+  .tabla td, .tabla th { border-bottom:1px solid var(--borde); padding:6px; text-align:left; vertical-align:top; }
+  .tabla th { color:var(--suave); font-weight:600; }
+  .r-calma { color:var(--verde); } .r-queja { color:var(--amarillo); } .r-reclamo_a_gritos, .r-grito { color:var(--rojo); font-weight:600; }
+  .r-remate { color:#ff2d7a; font-weight:600; } .r-susurro { color:var(--azul); } .r-respuesta_seca { color:var(--suave); }
+  .chips span { display:inline-block; background:var(--fondo); border:1px solid var(--borde); border-radius:12px; padding:2px 9px; margin:2px; font-size:12px; }
+  textarea { width:100%; background:var(--fondo); border:1px solid var(--borde); color:var(--texto); border-radius:8px; padding:8px; font:inherit; }
+  details summary { cursor:pointer; color:var(--suave); margin:8px 0; }
 </style>
 </head>
 <body>
@@ -65,6 +77,7 @@
   <div class="espacio"></div>
   <button id="btn-inicio">Proyectos</button>
   <button id="btn-aprender">Aprender</button>
+  <button id="btn-personaje">Personaje</button>
   <button id="btn-ajustes">Ajustes</button>
 </header>
 
@@ -89,13 +102,31 @@
   <!-- APRENDER · videos de referencia -->
   <section id="vista-aprender" class="oculto">
     <div class="panel">
+      <h2>Su cerebro</h2>
+      <p style="color:var(--suave);font-size:13px;margin-top:0">La IA lee todo lo que sabe (los análisis de fábrica, los videos que le enseñas y el personaje), escribe sus reglas del canal, se toma un examen, repasa lo que falló y crea su propio modelo en Ollama («mapache-editor»). Lo hace sola cuando aprende algo nuevo.</p>
+      <div id="cerebro-estado"></div>
+      <div class="barra"><i id="cerebro-progreso"></i></div>
+      <div class="acciones">
+        <button id="btn-pausar-cerebro" class="oculto">⏸ Pausar el estudio</button>
+        <button id="btn-reanudar-cerebro" class="oculto">▶ Reanudar el estudio</button>
+        <button id="btn-estudiar">Volver a estudiar todo</button>
+      </div>
+      <div id="cerebro-examen"></div>
+      <details><summary>Pregúntale algo</summary>
+        <textarea id="pregunta" rows="2" placeholder="Por ejemplo: ¿cómo empieza un buen gancho? ¿cuándo debe gritar el mapache?"></textarea>
+        <div class="acciones"><button id="btn-preguntar">Preguntar</button></div>
+        <div id="respuesta" class="frase"></div>
+      </details>
+    </div>
+    <div class="panel">
       <h2>Enseñarle un video de referencia</h2>
       <p style="color:var(--suave);font-size:13px;margin-top:0">La app estudia cortes, transiciones, música, voz, narración, ganchos y el personaje del canal, y lo guarda en su memoria. Tarda: va lento pero seguro.</p>
       <div id="soltar-ref" class="soltar">Arrastra aquí un resumen de otro canal (MP4)<br><small>o haz clic para elegirlo</small></div>
       <input type="file" id="archivo-ref" accept="video/*" class="oculto">
       <div id="estado-ref" style="margin-top:12px"></div>
       <div class="barra"><i id="progreso-ref"></i></div>
-      <div class="acciones"><button id="btn-detener-ref" class="oculto">⏸ Detener el estudio</button></div>
+      <div class="acciones"><button id="btn-detener-ref" class="oculto">⏸ Pausar</button>
+        <button id="btn-reanudar-ref" class="oculto">▶ Reanudar</button></div>
     </div>
     <div class="panel"><h2>Lo que ha aprendido</h2><div id="manual"></div></div>
     <div class="panel"><h2>Videos estudiados</h2><div class="lista" id="fichas"></div></div>
@@ -103,6 +134,29 @@
       <p style="color:var(--suave);font-size:13px;margin-top:0">Lo que se estudió de estos resúmenes antes de crear la app. Ya está dentro de su memoria; lo que le enseñes se suma.</p>
       <div id="base"></div></div>
   </section>
+
+  <!-- PERSONAJE · cómo habla el mapache -->
+  <section id="vista-personaje" class="oculto">
+    <div class="panel">
+      <h2>Enseñarle cómo habla el mapache</h2>
+      <p style="color:var(--suave);font-size:13px;margin-top:0">Suelta clips de referencia (los doblajes en broma que elegiste). La app separa la voz, escucha qué dice y quién lo dice, mide el tono, los gritos, la velocidad y la entonación de cada frase, y la IA marca los insultos, las muletillas, las quejas y los remates. Con eso arma la personalidad del mapache. Los clips solo se estudian: no se usan en tus videos.</p>
+      <label style="color:var(--suave);font-size:13px">¿Qué debe tomar de este clip?
+        <select id="rol-clip" style="background:var(--fondo);color:var(--texto);border:1px solid var(--borde);border-radius:6px;padding:6px;margin-left:6px">
+          <option value="calma">Cómo narra tranquilo (el gato)</option>
+          <option value="rabia">Cómo reclama y estalla (la rata)</option>
+          <option value="todo">Todo el clip</option>
+        </select></label>
+      <div id="soltar-pj" class="soltar" style="margin-top:10px">Arrastra aquí un clip (MP4)<br><small>o haz clic para elegirlo</small></div>
+      <input type="file" id="archivo-pj" accept="video/*,audio/*" class="oculto">
+      <div id="estado-pj" style="margin-top:12px"></div>
+      <div class="barra"><i id="progreso-pj"></i></div>
+    </div>
+    <div class="panel"><h2>Su personalidad</h2><div id="perfil-pj"></div></div>
+    <div class="panel"><h2>Clips estudiados</h2><div id="clips-pj"></div></div>
+  </section>
+
+  <dialog id="dlg-informe"><div id="informe"></div>
+    <div class="acciones"><button onclick="document.getElementById('dlg-informe').close()">Cerrar</button></div></dialog>
 
   <!-- 2–7 · PROYECTO -->
   <section id="vista-proyecto" class="oculto">
@@ -115,8 +169,8 @@
       <p class="error" id="error"></p>
       <div class="acciones">
         <button id="btn-volver">← Volver a proyectos</button>
-        <button id="btn-detener" class="oculto">⏸ Detener</button>
-        <button id="btn-continuar" class="oculto">▶ Continuar</button>
+        <button id="btn-detener" class="oculto">⏸ Pausar</button>
+        <button id="btn-continuar" class="oculto">▶ Reanudar</button>
         <button id="btn-eliminar" class="peligro">Eliminar proyecto</button>
       </div>
     </div>
@@ -179,6 +233,9 @@ function mostrar(vista) {
   $("#vista-inicio").classList.toggle("oculto", vista !== "inicio");
   $("#vista-proyecto").classList.toggle("oculto", vista !== "proyecto");
   $("#vista-aprender").classList.toggle("oculto", vista !== "aprender");
+  $("#vista-personaje").classList.toggle("oculto", vista !== "personaje");
+  if (vista !== "aprender") clearInterval(tempRef);
+  if (vista !== "personaje") clearInterval(tempPj);
 }
 
 async function revisarSalud() {
@@ -187,6 +244,9 @@ async function revisarSalud() {
   if (!s.ffmpeg) avisos.push("Falta FFmpeg. Vuelve a ejecutar el instalador.");
   if (!s.ollama) avisos.push("Ollama no está abierto. Ábrelo desde el menú Inicio (o reinstala) y vuelve a esta ventana.");
   else if (s.modelos_faltantes.length) avisos.push(`Faltan modelos de IA: ${s.modelos_faltantes.map(esc).join(", ")}. <button onclick="descargarModelos()">Descargarlos ahora</button>`);
+  const c = s.complementos || {};
+  if (c.instalando) avisos.push(`Instalando herramientas nuevas (${(c.faltan||[]).map(esc).join(", ")}). Tarda unos minutos; no cierres la app.`);
+  else if (c.error && (c.faltan||[]).length) avisos.push(`No se pudieron instalar algunas herramientas nuevas (${c.faltan.map(esc).join(", ")}). Revisa tu internet y vuelve a abrir la app.`);
   $("#salud").innerHTML = avisos.join("<br>");
   $("#salud").classList.toggle("oculto", !avisos.length);
 }
@@ -202,6 +262,11 @@ async function pintarAprender() {
   $("#estado-ref").innerHTML = e.error ? `<span class="error">${esc(e.error)}</span>` : esc(e.mensaje || "");
   $("#progreso-ref").style.width = (e.progreso || 0) + "%";
   $("#btn-detener-ref").classList.toggle("oculto", !e.trabajando);
+  const reanudable = (d.a_medias||[]).find(x => x.puede_reanudar && x.video === e.video_id);
+  $("#btn-reanudar-ref").classList.toggle("oculto", e.trabajando || !reanudable);
+  $("#btn-reanudar-ref").onclick = () => reanudarReferencia(e.video_id);
+  if (e.interrumpido && !e.error) $("#estado-ref").innerHTML = `En pausa: ${esc(e.video||"")} (${e.progreso||0} %). Lo ya estudiado está guardado; pulsa «Reanudar» para seguir desde ahí.`;
+  pintarCerebro();
   $("#base").innerHTML = (d.base||[]).map(b => `<div class="frase">${esc(b.archivo)} · ${b.cortes} cortes/min · ${b.palabras} palabras/min</div>`).join("");
   const m = d.manual || {}, r = x => x ? `${x.mediana} <span style="color:var(--suave)">(${x.min}–${x.max})</span>` : "—";
   $("#manual").innerHTML = m.videos_estudiados ? `
@@ -210,15 +275,47 @@ async function pintarAprender() {
     <div class="frase">Transiciones: ${Object.entries(m.transiciones||{}).map(([k,v])=>`${esc(k)} ${Math.round(v*100)} %`).join(" · ")}</div>
     <div class="frase">Música bajo la voz: ${r(m.musica_bajo_voz_db)} dB · palabras por minuto: ${r(m.palabras_por_minuto)}</div>
     <div class="frase">Chistes por minuto: ${r(m.chistes_por_minuto)} · la voz sube y baja: ${r(m.voz_rango_st)} semitonos</div>
-    <div class="frase">Recursos más usados: ${Object.entries(m.recursos_por_minuto||{}).slice(0,6).map(([k,v])=>`${esc(k)} (${v}/min)`).join(", ")}</div>`
+    <div class="frase">Recursos más usados: ${Object.entries(m.recursos_por_minuto||{}).slice(0,6).map(([k,v])=>`${esc(k)} (${v}/min)`).join(", ")}</div>
+    ${linea("Tarjetas de tiempo por minuto", m.tarjetas_tiempo_por_minuto)}${linea("Rótulos por minuto", m.rotulos_por_minuto)}
+    ${linea("Cambios de música por minuto", m.cambios_musica_por_minuto)}${linea("Efectos de sonido por minuto", m.efectos_sonido_por_minuto)}
+    ${linea("Risas por minuto", m.risas_por_minuto)}${linea("Efectos cómicos por minuto", m.efectos_comicos_por_minuto)}
+    ${linea("Tomas en primer plano (proporción)", m.tomas_primer_plano)}${linea("Tomas con zoom (proporción)", m.tomas_con_acercamiento)}
+    ${linea("Volumen de la mezcla (LUFS)", m.lufs_mezcla)}${linea("Cortes por minuto en el gancho", m.gancho_cortes_por_minuto)}
+    ${(m.ejemplos_tarjetas||[]).length ? `<div class="frase">Tarjetas que vio: ${m.ejemplos_tarjetas.slice(0,8).map(esc).join(" · ")}</div>` : ""}
+    ${(m.para_copiar||[]).length ? `<div class="frase">Técnicas para copiar: ${m.para_copiar.slice(-6).map(esc).join(" · ")}</div>` : ""}
+    ${m.videos_propios ? "" : `<div class="frase" style="color:var(--suave)">Las medidas de texto en pantalla, sonidos, encuadre y volumen se llenan con los videos que le enseñes.</div>`}`
     : "<p style='color:var(--suave)'>Todavía no ha estudiado ningún video.</p>";
   const filas = (d.fichas||[]).map(f => `<div><span class="nombre"><b>${esc(f.archivo)}</b> · ${Math.round(f.duracion/60)} min ·
     ${f.tomas.cortes_por_minuto} cortes/min · ${f.narracion.palabras_por_minuto} palabras/min · ${f.ejemplos_en_memoria} ejemplos guardados
     ${f.gancho ? `<br><span style="color:var(--suave)">Gancho: «${esc(f.gancho.frase)}»</span>` : ""}</span>
+    <button class="chico" onclick="verInforme('${esc(f.video)}')">Ver lo aprendido</button>
     <button class="chico peligro" onclick="quitarReferencia('${esc(f.video)}')">Quitar</button></div>`);
-  const medias = (d.a_medias||[]).map(v => `<div><span class="nombre">${esc(v)} <span style="color:var(--suave)">· a medias</span></span>
-    <button class="chico peligro" onclick="quitarReferencia('${esc(v)}')">Quitar</button></div>`);
+  const medias = (d.a_medias||[]).map(x => `<div><span class="nombre">${esc(x.video)} <span style="color:var(--suave)">· a medias</span></span>
+    ${x.puede_reanudar && !e.trabajando ? `<button class="chico" onclick="reanudarReferencia('${esc(x.video)}')">▶ Reanudar</button>` : ""}
+    <button class="chico peligro" onclick="quitarReferencia('${esc(x.video)}')">Quitar</button></div>`);
   $("#fichas").innerHTML = filas.concat(medias).join("") || "<p style='color:var(--suave)'>Ninguno todavía.</p>";
+}
+const linea = (t, x) => x ? `<div class="frase">${t}: ${x.mediana} <span style="color:var(--suave)">(${x.min}–${x.max}, ${x.videos} videos)</span></div>` : "";
+async function reanudarReferencia(id) {
+  const r = await fetch(`/api/referencias/reanudar/${encodeURIComponent(id)}`, {method:"POST"});
+  if (!r.ok) alert((await r.json()).detail || "No se pudo reanudar");
+  pintarAprender();
+}
+async function pintarCerebro() {
+  const c = await api("/api/estudio");
+  const ex = c.examen;
+  $("#cerebro-estado").innerHTML = c.error ? `<span class="error">${esc(c.error)}</span>`
+    : esc(c.mensaje || (c.reglas ? "Estudio terminado" : "Todavía no ha estudiado.")) +
+      (c.reglas ? ` · <b>${c.reglas}</b> reglas aprendidas` : "") +
+      (c.modelo_propio ? " · modelo propio listo" : "") + (c.al_dia === false && c.reglas && !c.trabajando ? " · <span class='aviso'>hay cosas nuevas por estudiar</span>" : "");
+  $("#cerebro-progreso").style.width = (c.trabajando ? c.progreso || 1 : c.reglas ? 100 : 0) + "%";
+  $("#btn-pausar-cerebro").classList.toggle("oculto", !c.trabajando);
+  $("#btn-reanudar-cerebro").classList.toggle("oculto", c.trabajando || !c.pausado);
+  $("#btn-estudiar").classList.toggle("oculto", !!c.trabajando);
+  $("#cerebro-examen").innerHTML = ex ? `<div class="frase">Examen: <b>${Math.round((ex.nota_final ?? ex.nota)*100)} %</b> de respuestas correctas
+      ${ex.repaso ? `(primer intento ${Math.round(ex.nota*100)} %; repasó ${ex.repaso.preguntas} que falló)` : ""}</div>
+    <details><summary>Ver preguntas del examen</summary>${(ex.ejemplos||[]).map(p => `<div class="frase">
+      <b>${p.correcta ? "✔" : "✘"} ${esc(p.pregunta)}</b><br>Respondió: ${esc(p.alumno)}<br><span style="color:var(--suave)">Correcta: ${esc(p.respuesta)}</span></div>`).join("")}</details>` : "";
 }
 async function quitarReferencia(id) {
   if (!confirm("¿Quitar este video de lo aprendido? Se borra su ficha y lo que dejó en la memoria.")) return;
@@ -231,6 +328,77 @@ async function subirReferencia(archivo) {
   const r = await fetch("/api/referencias", {method:"POST", body:datos});
   if (!r.ok) alert((await r.json()).detail || "No se pudo empezar");
   pintarAprender();
+}
+
+async function verInforme(id) {
+  const r = await fetch(`/api/referencias/${encodeURIComponent(id)}/informe`);
+  if (!r.ok) { alert("No se encontró el informe."); return; }
+  const d = await r.json(), f = d.ficha || {}, c = f.comprension || {};
+  const pct = x => x == null ? "—" : Math.round(x*100) + " %";
+  const kv = o => Object.entries(o||{}).map(([k,v]) => `<span>${esc(k)}: ${typeof v === "number" && v <= 1 ? pct(v) : esc(v)}</span>`).join("");
+  $("#informe").innerHTML = `<h2>${esc(f.archivo||id)}</h2>
+    ${c.descripcion ? `<div class="frase"><b>Lo que entendió:</b> ${esc(c.descripcion)}</div>` : ""}
+    ${c.ritmo ? `<div class="frase"><b>Ritmo:</b> ${esc(c.ritmo)}</div>` : ""}
+    ${(c.estructura||[]).length ? `<div class="frase"><b>Estructura:</b><br>${c.estructura.map(esc).join("<br>")}</div>` : ""}
+    ${(c.lo_que_hace_igual_al_canal||[]).length ? `<div class="frase"><b>Igual a lo que ya sabía:</b> ${c.lo_que_hace_igual_al_canal.map(esc).join(" · ")}</div>` : ""}
+    ${(c.lo_que_hace_distinto||[]).length ? `<div class="frase"><b>Distinto:</b> ${c.lo_que_hace_distinto.map(esc).join(" · ")}</div>` : ""}
+    ${(c.para_copiar||[]).length ? `<div class="frase"><b>Para copiar:</b> ${c.para_copiar.map(esc).join(" · ")}</div>` : ""}
+    ${d.gancho ? `<div class="frase"><b>Gancho:</b> «${esc(d.gancho.frase||"")}» ${esc(d.gancho.tipo||"")}</div>` : ""}
+    <div class="frase"><b>Cortes:</b> ${f.tomas?.cortes_por_minuto ?? "—"} por minuto · <b>Palabras:</b> ${f.narracion?.palabras_por_minuto ?? "—"} por minuto</div>
+    <div class="frase chips"><b>Encuadre:</b> ${kv(f.encuadre?.planos)}</div>
+    <div class="frase chips"><b>Sonidos por minuto:</b> ${kv(f.sonidos?.por_minuto)} <b>Ánimo de la música:</b> ${kv(f.sonidos?.animo_musica)}</div>
+    <div class="frase chips"><b>Textos por minuto:</b> ${kv(f.texto?.por_minuto)}</div>
+    <div class="frase chips"><b>Efectos de imagen:</b> ${kv({zoom: f.efectos?.con_acercamiento, paneo: f.efectos?.con_paneo, tinte: f.efectos?.con_tinte, "blanco y negro": f.efectos?.blanco_y_negro})}</div>
+    ${(d.textos||[]).length ? `<details><summary>Textos que leyó en pantalla (${d.textos.length})</summary>${d.textos.map(t => `<div class="frase">${mmss(t.inicio)} · ${esc(t.tipo)} · «${esc(t.texto)}» · ${esc(t.color)} · ${esc(t.lugar)}</div>`).join("")}</details>` : ""}
+    ${(d.momentos||[]).length ? `<details><summary>Momentos de la narración (${d.momentos.length})</summary>${d.momentos.map(m => `<div class="frase">${esc(m.recurso||m.funcion||"")}: «${esc(m.frase||"")}» <span style="color:var(--suave)">${esc(m.por_que_funciona||m.por_que||"")}</span></div>`).join("")}</details>` : ""}
+    ${(d.memoria||[]).length ? `<details><summary>Lo que guardó en su memoria (${d.memoria.length})</summary>${d.memoria.map(m => `<div class="frase">${esc(m.funcion)} · ${esc(m.recurso)}: «${esc(m.frase)}» <span style="color:var(--suave)">${esc(m.por_que)}</span></div>`).join("")}</details>` : ""}`;
+  $("#dlg-informe").showModal();
+}
+
+let tempPj = null;
+async function abrirPersonaje() {
+  actual = null; clearInterval(temporizador); mostrar("personaje");
+  clearInterval(tempPj); await pintarPersonaje(); tempPj = setInterval(pintarPersonaje, 3000);
+}
+async function pintarPersonaje() {
+  const d = await api("/api/personaje"), e = d.estado || {}, p = d.perfil;
+  $("#estado-pj").innerHTML = e.error ? `<span class="error">${esc(e.error)}</span>` : esc(e.mensaje || "");
+  $("#progreso-pj").style.width = (e.progreso || 0) + "%";
+  const lista = (t, xs) => (xs||[]).length ? `<div class="frase chips"><b>${t}:</b> ${xs.map(x => `<span>${esc(x)}</span>`).join("")}</div>` : "";
+  $("#perfil-pj").innerHTML = p ? `
+    <div class="frase"><b>Cómo habla:</b> ${esc(p.como_habla)}</div>
+    <div class="frase"><b>Actitud:</b> ${esc(p.actitud)}</div>
+    <div class="frase"><b>Acento y vocabulario:</b> ${esc(p.acento_y_vocabulario)}</div>
+    ${lista("Muletillas", p.muletillas)}${lista("Insultos típicos", p.insultos_tipicos)}
+    <div class="frase"><b>Groserías:</b> ${esc(p.como_usa_las_groserias)}</div>
+    <div class="frase"><b>Cómo estalla:</b> ${(p.estructura_del_estallido||[]).map(esc).join(" → ")}</div>
+    <div class="frase"><b>Cuándo grita:</b> ${esc(p.cuando_grita)} · <b>Cuándo se calma:</b> ${esc(p.cuando_se_calma)}</div>
+    <div class="frase"><b>Ritmo y pausas:</b> ${esc(p.ritmo_y_pausas)}</div>
+    <div class="frase"><b>Entonación:</b> ${esc(p.entonacion)}</div>
+    <div class="frase"><b>Contraste:</b> ${esc(p.contraste_con_los_demas)}</div>
+    <div class="frase"><b>Frases nuevas en su estilo:</b><br>${(p.frases_nuevas_en_su_estilo||[]).map(f => "· " + esc(f)).join("<br>")}</div>
+    ${lista("Nunca", p.lo_que_nunca_haria)}
+    <div class="frase chips"><b>Medido en su voz:</b> ${Object.entries(p.numeros?.por_registro||{}).map(([k,v]) => `<span class="r-${esc(k)}">${esc(k)}: ${v.palabras_s ?? "—"} pal/s · ${v.sobre_lo_normal_db ?? "—"} dB · rango ${v.rango_st ?? "—"} st</span>`).join("")}</div>`
+    : "<p style='color:var(--suave)'>Todavía no le enseñaste ningún clip.</p>";
+  $("#clips-pj").innerHTML = (d.clips||[]).map(c => `<details><summary>${esc(c.archivo)} · ${c.rol === "calma" ? "calma" : c.rol === "rabia" ? "rabia" : "todo"} · ${c.frases} frases
+      <button class="chico peligro" onclick="event.preventDefault();quitarClip('${esc(c.video)}')">Quitar</button></summary>
+    <table class="tabla"><tr><th>Seg.</th><th>Quién</th><th>Frase</th><th>Cómo</th><th>Recursos</th><th>Por qué da risa</th></tr>
+    ${c.lineas.map(x => `<tr><td>${mmss(x.inicio)}</td><td>${esc(x.hablante)}</td><td>${esc(x.texto)}</td>
+      <td class="r-${esc(x.registro)}">${esc(x.registro)}<br><span style="color:var(--suave)">${x.tono_hz} Hz · ${x.sobresale_db >= 0 ? "+" : ""}${x.sobresale_db ?? 0} dB · ${x.palabras_s} pal/s · ${esc(x.entonacion||"")}</span></td>
+      <td>${(x.recursos||[]).map(esc).join(", ")}${(x.insultos||[]).length ? "<br><b>" + x.insultos.map(esc).join(", ") + "</b>" : ""}</td>
+      <td>${esc(x.por_que_da_risa||"")}</td></tr>`).join("")}</table></details>`).join("") || "<p style='color:var(--suave)'>Ninguno todavía.</p>";
+}
+async function subirClip(archivo) {
+  const datos = new FormData(); datos.append("video", archivo); datos.append("rol", $("#rol-clip").value);
+  const r = await fetch("/api/personaje", {method:"POST", body:datos});
+  if (!r.ok) alert((await r.json()).detail || "No se pudo empezar");
+  $("#archivo-pj").value = ""; pintarPersonaje();
+}
+async function quitarClip(id) {
+  if (!confirm("¿Quitar este clip? Se borra lo que aprendió de él y se rehace la personalidad.")) return;
+  const r = await fetch(`/api/personaje/${encodeURIComponent(id)}`, {method:"DELETE"});
+  if (!r.ok) alert((await r.json()).detail || "No se pudo quitar");
+  pintarPersonaje();
 }
 
 async function cargarLista() {
@@ -357,7 +525,26 @@ $("#btn-detener").onclick = () => api(`/api/proyectos/${encodeURIComponent(actua
 $("#btn-eliminar").onclick = () => eliminarProyecto(actual);
 $("#btn-volver").onclick = () => $("#btn-inicio").click();
 $("#btn-cancelar-subida").onclick = () => subida && subida.abort();
-$("#btn-detener-ref").onclick = () => api("/api/referencias/detener", {method:"POST"}).then(pintarAprender);
+$("#btn-detener-ref").onclick = () => api("/api/referencias/pausar", {method:"POST"}).then(pintarAprender);
+$("#btn-pausar-cerebro").onclick = () => api("/api/estudio/pausar", {method:"POST"}).then(pintarCerebro);
+$("#btn-reanudar-cerebro").onclick = () => api("/api/estudio/reanudar", {method:"POST"}).then(pintarCerebro);
+$("#btn-estudiar").onclick = async () => {
+  const r = await fetch("/api/estudio", {method:"POST"});
+  if (!r.ok) alert((await r.json()).detail || "No se pudo empezar"); pintarCerebro();
+};
+$("#btn-preguntar").onclick = async () => {
+  const q = $("#pregunta").value.trim(); if (!q) return;
+  $("#respuesta").textContent = "Pensando…";
+  const datos = new FormData(); datos.append("pregunta", q);
+  const r = await fetch("/api/preguntar", {method:"POST", body:datos}), j = await r.json();
+  $("#respuesta").textContent = r.ok ? j.respuesta : (j.detail || "No pudo responder");
+};
+$("#btn-personaje").onclick = abrirPersonaje;
+$("#soltar-pj").onclick = () => $("#archivo-pj").click();
+$("#archivo-pj").onchange = e => e.target.files[0] && subirClip(e.target.files[0]);
+["dragover","dragenter"].forEach(ev => $("#soltar-pj").addEventListener(ev, e => { e.preventDefault(); $("#soltar-pj").classList.add("encima"); }));
+["dragleave","drop"].forEach(ev => $("#soltar-pj").addEventListener(ev, e => { e.preventDefault(); $("#soltar-pj").classList.remove("encima"); }));
+$("#soltar-pj").addEventListener("drop", e => e.dataTransfer.files[0] && subirClip(e.dataTransfer.files[0]));
 $("#btn-rehacer").onclick = () => api(`/api/proyectos/${encodeURIComponent(actual)}/rehacer`, {method:"POST"});
 $("#btn-yt").onclick = () => exportar("youtube");
 $("#btn-tt").onclick = () => exportar("tiktok");
