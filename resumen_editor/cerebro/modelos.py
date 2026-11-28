@@ -20,6 +20,12 @@ CATALOGO = {
                      "sherpa-onnx-pyannote-segmentation-3-0"),
     "huella_voz": (f"{BASE}/speaker-recongition-models/wespeaker_en_voxceleb_resnet34_LM.onnx",
                    "wespeaker_en_voxceleb_resnet34_LM.onnx"),
+    # qué se oye: risas, gritos, golpes, ánimo de la música (527 clases de AudioSet)
+    "sonidos": (f"{BASE}/audio-tagging-models/sherpa-onnx-ced-mini-audio-tagging-2024-04-19.tar.bz2",
+                "sherpa-onnx-ced-mini-audio-tagging-2024-04-19"),
+    # caras en pantalla, para saber si la toma es primer plano o plano general (OpenCV, YuNet)
+    "caras": ("https://media.githubusercontent.com/media/opencv/opencv_zoo/main/models/face_detection_yunet/"
+              "face_detection_yunet_2023mar.onnx", "face_detection_yunet_2023mar.onnx"),
 }
 
 

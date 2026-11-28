@@ -41,6 +41,18 @@ def guardar_video(video_id: str, narracion: dict) -> int:
     return guardar_filas(filas)
 
 
+def guardar_texto_pantalla(video_id: str, texto: dict) -> int:
+    """Las tarjetas, títulos, rótulos y frases escritas en pantalla, como ejemplos para la memoria."""
+    vistos, filas = set(), []
+    for e in texto.get("elementos", []):
+        if e["tipo"] in ("marca", "subtitulo") or e["texto"].lower() in vistos:
+            continue
+        vistos.add(e["texto"].lower())
+        filas.append({"video": video_id, "inicio": float(e["inicio"]), "funcion": "texto_pantalla", "recurso": e["tipo"],
+                      "frase": e["texto"], "por_que": f"escrito {e['lugar']} en {e['color']}, {e['dur']} s", "tono": ""})
+    return guardar_filas(filas[:200])
+
+
 def _limpio(texto: str) -> str:
     return texto.replace("'", "")
 
@@ -88,3 +100,13 @@ def buscar(consulta: str, k: int = 8, funcion: str | None = None) -> list[dict]:
 def cuantos() -> int:
     db = _db()
     return db.open_table(TABLA).count_rows() if TABLA in db.table_names() else 0
+
+
+def de_video(video_id: str, k: int = 40) -> list[dict]:
+    """Las filas que guardó de un video (para el informe de lo aprendido)."""
+    db = _db()
+    if TABLA not in db.table_names():
+        return []
+    filas = (db.open_table(TABLA).search().where(f"video = '{_limpio(video_id)}'").limit(k)
+             .select(["funcion", "recurso", "frase", "por_que", "tono"]).to_list())
+    return [{c: r.get(c) for c in ("funcion", "recurso", "frase", "por_que", "tono")} for r in filas]

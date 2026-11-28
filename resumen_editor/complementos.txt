@@ -1,0 +1,3 @@
+# Herramientas que la app instala sola al abrirse (paquete de pip, y el nombre con que se importa)
+rapidocr-onnxruntime rapidocr_onnxruntime   # lee el texto en pantalla (títulos, tarjetas, rótulos)
+praat-parselmouth parselmouth               # Praat: tono, intensidad y entonación de la voz
