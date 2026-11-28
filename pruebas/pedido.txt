@@ -1,1 +1,1 @@
-animar-mapache 6 (X-Pose en CPU)
+animar-mapache 7 (más natural: suavizado, intensidad 1.0, pegado a resolución completa)

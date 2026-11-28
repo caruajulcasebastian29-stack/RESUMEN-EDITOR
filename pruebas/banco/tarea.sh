@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Tarea actual del banco: animar las poses del mapache 3D con LivePortrait (modo animales) en CPU,
-# y probar la voz genérica con variación de ritmo.
+# Tarea actual del banco: mapache 3D con LivePortrait (modo animales) en CPU, versión más natural:
+# movimiento suavizado, intensidad normal (1.0) y la cara pegada sobre la imagen original a resolución completa.
 set -u
 OUT=salida/animacion; mkdir -p $OUT
 python -m pip install -q --upgrade pip
@@ -66,17 +66,62 @@ for f in pathlib.Path("src/utils/dependencies/XPose").rglob("*.py"):
 print("parche cuda->cpu en", n, "archivos")
 PY
 grep -rn "cuda" src/utils/dependencies/XPose --include=*.py | grep -v "is_available" | head -8
-ls assets/examples/driving | head -30 > $GITHUB_WORKSPACE/$OUT/plantillas.txt
+ls assets/examples/driving | head -40 > $GITHUB_WORKSPACE/$OUT/plantillas.txt
+# Movimiento más natural: se suavizan las plantillas (sin tirones cuadro a cuadro)
+python - <<'PY'
+import pickle, numpy as np, glob, os
+from scipy.ndimage import gaussian_filter1d
+def suave(ruta, sigma=1.6):
+    d = pickle.load(open(ruta, "rb"))
+    m = d["motion"]
+    for k in ("exp", "t", "scale"):
+        a = np.stack([x[k] for x in m]).astype(np.float32)
+        a = gaussian_filter1d(a, sigma, axis=0, mode="nearest")
+        for x, v in zip(m, a):
+            x[k] = v
+    clave = "R" if "R" in m[0] else "R_d"
+    R = np.stack([x[clave] for x in m]).astype(np.float32)
+    R = gaussian_filter1d(R, sigma, axis=0, mode="nearest")
+    for x, r in zip(m, R):
+        u, _, vt = np.linalg.svd(r[0]); x[clave] = (u @ vt)[None].astype(np.float32)
+    destino = ruta.replace(".pkl", "_suave.pkl")
+    pickle.dump(d, open(destino, "wb"))
+    print("suavizado", os.path.basename(destino), len(m), "cuadros")
+for n in ("talking", "laugh", "shy", "aggrieved", "open_lip"):
+    suave(f"assets/examples/driving/{n}.pkl")
+PY
 cd $GITHUB_WORKSPACE
-for pose in 01_frente 05_rostro_serio 11_explicando 09_furioso; do
-  for d in $(cd /tmp/lp/assets/examples/driving && ls *.pkl 2>/dev/null | grep -i -E "talk|wink|aggrieved|shake|open" | head -2; cd /tmp/lp/assets/examples/driving && ls *.mp4 | head -1); do
-    echo "== $pose con $d"
-    ( cd /tmp/lp && CUDA_VISIBLE_DEVICES="" timeout 1500 python inference_animals.py -s "$GITHUB_WORKSPACE/recursos/mapache3d/mapache-poses/$pose.png" \
-        -d assets/examples/driving/$d --driving_multiplier 1.75 --no_flag_stitching --flag_force_cpu --no_flag_use_half_precision -o "$GITHUB_WORKSPACE/$OUT/$pose" ) 2>&1 | tail -15
-  done
-done
-# hojas de contacto para revisar sin descargar videos
+# Imagen con margen del mismo fondo, para que al girar la cabeza no aparezcan esquinas negras
+mkdir -p /tmp/poses
+python - <<'PY'
+from PIL import Image
+import numpy as np
+for pose in ("01_frente", "05_rostro_serio", "09_furioso", "11_explicando"):
+    im = Image.open(f"recursos/mapache3d/mapache-poses/{pose}.png").convert("RGB")
+    a = np.array(im)
+    borde = np.concatenate([a[:6].reshape(-1, 3), a[:, :6].reshape(-1, 3), a[:, -6:].reshape(-1, 3)])
+    color = tuple(int(c) for c in np.median(borde, axis=0))
+    W, H = im.size
+    lienzo = Image.new("RGB", (int(W * 1.3), int(H * 1.3)), color)
+    lienzo.paste(im, ((lienzo.width - W) // 2, (lienzo.height - H) // 2))
+    lienzo.save(f"/tmp/poses/{pose}.png")
+    print("margen", pose, color)
+PY
+animar() {  # pose plantilla
+  echo "== $1 con $2"
+  ( cd /tmp/lp && CUDA_VISIBLE_DEVICES="" timeout 2400 python inference_animals.py -s "/tmp/poses/$1.png" \
+      -d assets/examples/driving/$2.pkl --driving_multiplier 1.0 --flag_stitching --flag_pasteback \
+      --flag_force_cpu --no_flag_use_half_precision -o "$GITHUB_WORKSPACE/$OUT/$1" ) 2>&1 | tail -6
+}
+animar 11_explicando talking_suave
+animar 01_frente talking_suave
+animar 09_furioso aggrieved_suave
+animar 05_rostro_serio shy_suave
+animar 01_frente laugh_suave
+animar 11_explicando open_lip_suave
+# hojas de contacto y un cuadro a tamaño real para revisar los dientes
 for v in $(find $OUT -name "*.mp4" ! -name "*concat*"); do
-  ffmpeg -loglevel error -y -i "$v" -vf "fps=4,scale=256:-2,tile=6x2" -frames:v 1 "${v%.mp4}_hoja.jpg"
+  ffmpeg -loglevel error -y -i "$v" -vf "fps=4,scale=320:-2,tile=6x2" -frames:v 1 "${v%.mp4}_hoja.jpg"
+  ffmpeg -loglevel error -y -ss 1.2 -i "$v" -frames:v 1 -q:v 2 "${v%.mp4}_cuadro.jpg"
 done
 ls -la $OUT/*/ 2>/dev/null
