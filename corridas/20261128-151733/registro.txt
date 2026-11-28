@@ -1,0 +1,41 @@
+== Maquina
+4
+               total        used        free      shared  buff/cache   available
+Mem:              15           0           6           0           8          14
+Swap:              2           0           2
+/dev/root       145G   66G   79G  46% /
+== FFmpeg
+
+Running kernel seems to be up-to-date.
+
+Restarting services...
+
+Service restarts being deferred:
+ systemctl restart hosted-compute-agent.service
+
+No containers need to be restarted.
+
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+ffmpeg version 8.0.1-3ubuntu2 Copyright (c) 2000-2025 the FFmpeg developers
+== Ollama
+{"version":"0.40.19"}
+== Descargando qwen3:4b-instruct
+success [K[?25h[?2026l
+== Descargando embeddinggemma
+success [K[?25h[?2026l
+== Descargando qwen3-vl:4b
+success [K[?25h[?2026l
+NAME                     ID              SIZE      MODIFIED               
+qwen3-vl:4b              a1b29c246319    3.3 GB    Less than a second ago    
+embeddinggemma:latest    85462619ee72    621 MB    Less than a second ago    
+qwen3:4b-instruct        0edcdef34593    2.5 GB    Less than a second ago    
+mapache-editor:latest    5391bb16188c    2.5 GB    4 hours ago               
+== Prueba de texto
+7.57 s
+Un resumen de película es una breve descripción que explica los eventos principales y la trama de la película en una sola frase.
+== Tarea
+error: corrupt patch at pruebas/parches/arreglos2.patch:323
+EL PARCHE NO APLICA
+== Fin
