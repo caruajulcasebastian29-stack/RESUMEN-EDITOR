@@ -127,3 +127,77 @@ def _con_experto(papel: str, prompt: str, sistema: str) -> tuple[str, str]:
     return prompt, sistema
 
 
+def _limpiar(texto: str) -> str:
+    """Quita el razonamiento interno que algunos modelos escriben aunque no se les pida."""
+    texto = re.sub(r"<think>.*?</think>", "", texto, flags=re.S)
+    if "</think>" in texto:
+        texto = texto.split("</think>", 1)[1]
+    return texto.strip()
+
+
+def _generar(datos: dict) -> str:
+    """Llama a /api/generate. Si el modelo no admite la opción de razonamiento, la quita y repite."""
+    try:
+        r = _post("/api/generate", datos)
+    except ErrorIA as e:
+        if "think" not in str(e).lower() or "think" not in datos:
+            raise
+        datos = {k: v for k, v in datos.items() if k != "think"}
+        r = _post("/api/generate", datos)
+    return _limpiar(r["response"])
+
+
+def _imagen(ruta: Path | str) -> str:
+    return base64.b64encode(Path(ruta).read_bytes()).decode()
+
+
+def preguntar(prompt: str, *, papel: str = "rapido", sistema: str = "", imagenes=None,
+              temperatura: float = 0.4, contexto: int = 8192, pensar: bool = False) -> str:
+    """Respuesta libre en texto."""
+    prompt, sistema = _con_experto(papel, prompt, sistema)
+    datos = {"model": nombre(papel), "prompt": prompt, "system": sistema, "stream": False,
+             "think": pensar, "keep_alive": "10m",
+             "options": {"temperature": temperatura, "num_ctx": contexto}}
+    if imagenes:
+        datos["images"] = [_imagen(i) for i in imagenes]
+    return _generar(datos)
+
+
+def estructurado(prompt: str, esquema: Type[M], *, papel: str = "rapido", sistema: str = "",
+                 imagenes=None, temperatura: float = 0.2, contexto: int = 8192,
+                 intentos: int = 3) -> M:
+    """Respuesta que cumple un esquema pydantic. Reintenta mostrando el error al modelo."""
+    nota = ""
+    ultimo = None
+    prompt, sistema = _con_experto(papel, prompt, sistema)
+    for _ in range(intentos):
+        datos = {"model": nombre(papel), "prompt": prompt + nota, "system": sistema,
+                 "stream": False, "think": False, "keep_alive": "10m",
+                 "format": esquema.model_json_schema(),
+                 "options": {"temperature": temperatura, "num_ctx": contexto}}
+        if imagenes:
+            datos["images"] = [_imagen(i) for i in imagenes]
+        texto = _generar(datos)
+        try:
+            return esquema.model_validate_json(texto)
+        except ValidationError as e:
+            ultimo = e
+            nota = ("\n\nTu respuesta anterior no cumplía el formato pedido. Error: "
+                    f"{str(e)[:400]}\nResponde otra vez, solo con el JSON correcto.")
+            temperatura = max(0.05, temperatura - 0.1)
+    raise ErrorIA(f"El modelo no devolvió un JSON válido: {ultimo}")
+
+
+def vectores(textos: list[str]) -> list[list[float]]:
+    """Embeddings para la memoria."""
+    salida: list[list[float]] = []
+    for i in range(0, len(textos), 32):
+        r = _post("/api/embed", {"model": MODELOS["embeddings"], "input": textos[i:i + 32]})
+        salida += r["embeddings"]
+    return salida
+
+
+def cronometrar(funcion, *a, **k):
+    t = time.time()
+    r = funcion(*a, **k)
+    return r, time.time() - t
