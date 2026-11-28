@@ -170,23 +170,64 @@ def salud():
         faltan = [m for k, m in ia.MODELOS.items() if k != "experto" and m not in hay and m + ":latest" not in hay]
     from . import complementos
     return {"ollama": ok_ollama, "modelos_faltantes": faltan, "ffmpeg": shutil.which("ffmpeg") is not None,
-            "complementos": complementos.estado()}
+            "complementos": complementos.estado(),
+            "descargando": _descarga["hilo"] is not None and _descarga["hilo"].is_alive()}
+
+
+@app.post("/api/complementos/instalar")
+def instalar_complementos():
+    from . import complementos
+    if not complementos.en_segundo_plano():
+        raise HTTPException(409, "Ya se está instalando.")
+    return {"ok": True}
+
+
+@app.post("/api/complementos/cancelar")
+def cancelar_complementos():
+    from . import complementos
+    complementos.cancelar()
+    return {"ok": True}
+
+
+_descarga = {"hilo": None, "parar": threading.Event()}
 
 
 @app.post("/api/salud/descargar")
 def descargar_modelos():
     from .cerebro import ia
+    if _descarga["hilo"] is not None and _descarga["hilo"].is_alive():
+        raise HTTPException(409, "Ya se están descargando.")
+    _descarga["parar"].clear()
+
+    def aviso(msg, p):
+        if _descarga["parar"].is_set():
+            raise P.Cancelado()
+        _estado_ref(mensaje=msg, progreso=round(p), error=None)
 
     def trabajo():
-        for k, m in ia.MODELOS.items():
-            if k == "experto":  # este no se descarga: lo crea la app al estudiar
-                continue
-            try:
-                ia.descargar_modelo(m, aviso=lambda msg, p: _estado_ref(mensaje=msg, progreso=round(p)))
-            except Exception as e:
-                _estado_ref(error=f"No se pudo descargar {m}: {e}")
-        _estado_ref(mensaje="Modelos listos", progreso=100)
-    threading.Thread(target=trabajo, daemon=True).start()
+        try:
+            for k, m in ia.MODELOS.items():
+                if k == "experto":  # este no se descarga: lo crea la app al estudiar
+                    continue
+                try:
+                    ia.descargar_modelo(m, aviso=aviso)
+                except P.Cancelado:
+                    raise
+                except Exception as e:
+                    _estado_ref(error=f"No se pudo descargar {m}: {e}. Pulsa «Descargarlos ahora» para reintentar.")
+                    return
+            _estado_ref(mensaje="Modelos listos", progreso=100)
+        except P.Cancelado:
+            _estado_ref(mensaje="Descarga cancelada. Lo ya bajado se conserva; puedes reanudarla cuando quieras.",
+                        progreso=0)
+    _descarga["hilo"] = threading.Thread(target=trabajo, daemon=True)
+    _descarga["hilo"].start()
+    return {"ok": True}
+
+
+@app.post("/api/salud/cancelar")
+def cancelar_descarga():
+    _descarga["parar"].set()
     return {"ok": True}
 
 

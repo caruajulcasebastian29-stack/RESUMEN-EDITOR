@@ -243,12 +243,28 @@ async function revisarSalud() {
   const avisos = [];
   if (!s.ffmpeg) avisos.push("Falta FFmpeg. Vuelve a ejecutar el instalador.");
   if (!s.ollama) avisos.push("Ollama no está abierto. Ábrelo desde el menú Inicio (o reinstala) y vuelve a esta ventana.");
-  else if (s.modelos_faltantes.length) avisos.push(`Faltan modelos de IA: ${s.modelos_faltantes.map(esc).join(", ")}. <button onclick="descargarModelos()">Descargarlos ahora</button>`);
+  else if (s.modelos_faltantes.length) avisos.push(s.descargando
+      ? `Descargando modelos de IA (${s.modelos_faltantes.map(esc).join(", ")}). Mira el avance en «Aprender». <button class="chico" onclick="accion('/api/salud/cancelar')">Cancelar descarga</button>`
+      : `Faltan modelos de IA: ${s.modelos_faltantes.map(esc).join(", ")}. <button onclick="descargarModelos()">Descargarlos ahora</button>`);
   const c = s.complementos || {};
-  if (c.instalando) avisos.push(`Instalando herramientas nuevas (${(c.faltan||[]).map(esc).join(", ")}). Tarda unos minutos; no cierres la app.`);
-  else if (c.error && (c.faltan||[]).length) avisos.push(`No se pudieron instalar algunas herramientas nuevas (${c.faltan.map(esc).join(", ")}). Revisa tu internet y vuelve a abrir la app.`);
+  if ((c.faltan||[]).length) {
+    const barra = `<div class="barra"><i style="width:${c.progreso||0}%"></i></div>`;
+    if (c.instalando) avisos.push(`Instalando herramientas nuevas (${c.faltan.map(esc).join(", ")}): ${esc(c.mensaje||"empezando")}. No cierres la app.
+      <button class="chico" onclick="accion('/api/complementos/cancelar')">Cancelar</button>${barra}`);
+    else avisos.push(`${c.cancelado ? "Cancelaste la instalación de" : "No se pudieron instalar"} algunas herramientas nuevas (${c.faltan.map(esc).join(", ")}).
+      ${c.cancelado ? "" : "La app lo vuelve a intentar sola cada minuto y medio."}
+      <button class="chico" onclick="accion('/api/complementos/instalar')">Reintentar ahora</button>
+      ${c.error ? `<details><summary>Ver el detalle del error</summary><pre style="white-space:pre-wrap;font-size:11px">${esc(c.error)}</pre></details>` : ""}`);
+  }
   $("#salud").innerHTML = avisos.join("<br>");
   $("#salud").classList.toggle("oculto", !avisos.length);
+  clearTimeout(tempSalud); tempSalud = setTimeout(revisarSalud, c.instalando || s.descargando ? 3000 : 30000);
+}
+let tempSalud = null;
+async function accion(url) {
+  const r = await fetch(url, {method:"POST"});
+  if (!r.ok) { try { alert((await r.json()).detail); } catch (e) {} }
+  revisarSalud();
 }
 async function descargarModelos() { await api("/api/salud/descargar", {method:"POST"}); abrirAprender(); }
 
@@ -588,7 +604,7 @@ async function actualizarAhora() {
     }
   }, 1500);
 }
-cargarLista(); revisarSalud(); setInterval(revisarSalud, 30000); revisarActualizacion();
+cargarLista(); revisarSalud(); revisarActualizacion();
 </script>
 </body>
 </html>
