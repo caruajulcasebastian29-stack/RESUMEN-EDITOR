@@ -21,7 +21,7 @@ done < pruebas/banco/modelos.txt
 ollama list
 
 echo "== Prueba de texto"
-/usr/bin/time -f "%e s" curl -s localhost:11434/api/generate -d '{"model":"qwen3:4b","prompt":"En una sola frase y en espanol: que es un resumen de pelicula?","stream":false,"think":false}' | python3 -c "import sys,json;print(json.load(sys.stdin)['response'])"
+/usr/bin/time -f "%e s" curl -s localhost:11434/api/generate -d '{"model":"qwen3:4b-instruct","prompt":"En una sola frase y en espanol: que es un resumen de pelicula?","stream":false}' | python3 -c "import sys,json;d=json.load(sys.stdin);print(d.get('response', d))"
 
 if [ -f pruebas/banco/tarea.sh ]; then
   echo "== Tarea"

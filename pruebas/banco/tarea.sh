@@ -8,7 +8,10 @@ python -m pip install -q torch torchvision --index-url https://download.pytorch.
 git clone -q --depth 1 https://github.com/KlingTeam/LivePortrait.git /tmp/lp
 cd /tmp/lp
 grep -v -i "torch\|onnxruntime-gpu" requirements_base.txt > /tmp/req.txt 2>/dev/null || grep -v -i "torch\|onnxruntime-gpu" requirements.txt > /tmp/req.txt
-python -m pip install -q -r /tmp/req.txt onnxruntime "huggingface_hub[cli]" 2>&1 | tail -3
+# las versiones fijas del proyecto no existen para Python 3.12: se instalan los mismos paquetes sin fijar versión
+sed -E 's/[=<>~].*$//' /tmp/req.txt | grep -v -E "^\s*$|^#|gradio" > /tmp/req2.txt
+python -m pip install -q -r /tmp/req2.txt onnxruntime huggingface_hub requests 2>&1 | tail -5
+python -c "import requests, cv2, tyro, imageio, skimage, scipy, yaml; print('dependencias ok')"
 python - <<'PY'
 from huggingface_hub import snapshot_download
 snapshot_download("KwaiVGI/LivePortrait", local_dir="pretrained_weights", allow_patterns=["liveportrait_animals/*", "insightface/*", "liveportrait/base_models/*", "liveportrait/retargeting_models/*", "liveportrait/landmark.onnx"])

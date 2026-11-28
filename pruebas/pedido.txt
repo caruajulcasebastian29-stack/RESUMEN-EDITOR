@@ -1,1 +1,1 @@
-animar-mapache 2
+animar-mapache 3 (dependencias de LivePortrait corregidas)
