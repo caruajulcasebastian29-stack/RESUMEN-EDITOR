@@ -1,0 +1,310 @@
+== Maquina
+4
+               total        used        free      shared  buff/cache   available
+Mem:              15           1          10           0           3          14
+Swap:              2           0           2
+/dev/root       145G   61G   84G  42% /
+== FFmpeg
+
+Running kernel seems to be up-to-date.
+
+Restarting services...
+
+Service restarts being deferred:
+ systemctl restart hosted-compute-agent.service
+
+No containers need to be restarted.
+
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+ffmpeg version 8.0.1-3ubuntu2 Copyright (c) 2000-2025 the FFmpeg developers
+== Ollama
+{"version":"0.40.19"}
+== Descargando qwen3:4b-instruct
+success [K[?25h[?2026l
+NAME                 ID              SIZE      MODIFIED               
+qwen3:4b-instruct    0edcdef34593    2.5 GB    Less than a second ago    
+== Prueba de texto
+6.25 s
+Un resumen de película es una breve descripción que explica los eventos principales y la trama de una película.
+== Tarea
+dependencias ok
+Fetching 18 files:   0%|          | 0/18 [00:00<?, ?it/s]Fetching 18 files:   6%|▌         | 1/18 [00:00<00:16,  1.04it/s]Fetching 18 files:  17%|█▋        | 3/18 [00:01<00:04,  3.40it/s]Fetching 18 files:  28%|██▊       | 5/18 [00:01<00:03,  3.27it/s]Fetching 18 files:  33%|███▎      | 6/18 [00:02<00:04,  2.70it/s]Fetching 18 files:  39%|███▉      | 7/18 [00:02<00:04,  2.30it/s]Fetching 18 files:  44%|████▍     | 8/18 [00:03<00:03,  2.60it/s]Fetching 18 files:  56%|█████▌    | 10/18 [00:04<00:03,  2.29it/s]Fetching 18 files:  67%|██████▋   | 12/18 [00:04<00:02,  2.44it/s]Fetching 18 files:  72%|███████▏  | 13/18 [00:05<00:02,  2.46it/s]Fetching 18 files:  78%|███████▊  | 14/18 [00:05<00:01,  2.56it/s]Fetching 18 files:  83%|████████▎ | 15/18 [00:05<00:01,  2.93it/s]Fetching 18 files:  89%|████████▉ | 16/18 [00:06<00:01,  1.82it/s]Fetching 18 files:  94%|█████████▍| 17/18 [00:07<00:00,  1.97it/s]Fetching 18 files: 100%|██████████| 18/18 [00:08<00:00,  1.59it/s]Fetching 18 files: 100%|██████████| 18/18 [00:08<00:00,  2.18it/s]
+pesos listos
+parche CPU aplicado
+parche embeddings aplicado
+parche recortador CPU aplicado 1
+parche cuda->cpu en 4 archivos
+src/utils/dependencies/XPose/util/misc.py:332:                        memory=torch.cuda.max_memory_allocated() / MB))
+src/utils/dependencies/XPose/util/misc.py:590:        print('world size: {}, world rank: {}, local rank: {}, device_count: {}'.format(args.world_size, args.rank, args.local_rank, torch.cuda.device_count()))
+src/utils/dependencies/XPose/util/misc.py:603:    torch.cuda.set_device(args.local_rank)
+src/utils/dependencies/XPose/models/UniPose/ops/test.py:39:    output_cuda = MSDeformAttnFunction.apply(value.double(), shapes, level_start_index, sampling_locations.double(), attention_weights.double(), im2col_step).detach().cpu()
+src/utils/dependencies/XPose/models/UniPose/ops/test.py:40:    fwdok = torch.allclose(output_cuda, output_pytorch)
+src/utils/dependencies/XPose/models/UniPose/ops/test.py:41:    max_abs_err = (output_cuda - output_pytorch).abs().max()
+src/utils/dependencies/XPose/models/UniPose/ops/test.py:42:    max_rel_err = ((output_cuda - output_pytorch).abs() / output_pytorch.abs()).max()
+src/utils/dependencies/XPose/models/UniPose/ops/test.py:55:    output_cuda = MSDeformAttnFunction.apply(value, shapes, level_start_index, sampling_locations, attention_weights, im2col_step).detach().cpu()
+== 01_frente con aggrieved.pkl
+[00:42:29] Animated video:                  live_portrait_pipeline_animal.py:229
+           /home/runner/work/RESUMEN-EDITOR                                     
+           /RESUMEN-EDITOR/salida/animacion                                     
+           /01_frente/01_frente--aggrieved.                                     
+           mp4                                                                  
+           Animated video with concat:      live_portrait_pipeline_animal.py:230
+           /home/runner/work/RESUMEN-EDITOR                                     
+           /RESUMEN-EDITOR/salida/animacion                                     
+           /01_frente/01_frente--aggrieved_                                     
+           concat.mp4                                                           
+[00:42:30] Animated gif:                    live_portrait_pipeline_animal.py:234
+           /home/runner/work/RESUMEN-EDITOR                                     
+           /RESUMEN-EDITOR/salida/animacion                                     
+           /01_frente/01_frente--aggrieved.                                     
+           gif                                                                  
+== 01_frente con open_lip.pkl
+[00:54:16] Animated video:                  live_portrait_pipeline_animal.py:229
+           /home/runner/work/RESUMEN-EDITOR                                     
+           /RESUMEN-EDITOR/salida/animacion                                     
+           /01_frente/01_frente--open_lip.m                                     
+           p4                                                                   
+           Animated video with concat:      live_portrait_pipeline_animal.py:230
+           /home/runner/work/RESUMEN-EDITOR                                     
+           /RESUMEN-EDITOR/salida/animacion                                     
+           /01_frente/01_frente--open_lip_c                                     
+           oncat.mp4                                                            
+[00:54:17] Animated gif:                    live_portrait_pipeline_animal.py:234
+           /home/runner/work/RESUMEN-EDITOR                                     
+           /RESUMEN-EDITOR/salida/animacion                                     
+           /01_frente/01_frente--open_lip.g                                     
+           if                                                                   
+== 01_frente con d0.mp4
+           motion making and protecting                                         
+           privacy.                                                             
+           Animated video:                  live_portrait_pipeline_animal.py:229
+           /home/runner/work/RESUMEN-EDITOR                                     
+           /RESUMEN-EDITOR/salida/animacion                                     
+           /01_frente/01_frente--d0.mp4                                         
+           Animated video with concat:      live_portrait_pipeline_animal.py:230
+           /home/runner/work/RESUMEN-EDITOR                                     
+           /RESUMEN-EDITOR/salida/animacion                                     
+           /01_frente/01_frente--d0_concat.                                     
+           mp4                                                                  
+[01:06:50] Animated gif:                    live_portrait_pipeline_animal.py:234
+           /home/runner/work/RESUMEN-EDITOR                                     
+           /RESUMEN-EDITOR/salida/animacion                                     
+           /01_frente/01_frente--d0.gif                                         
+== 05_rostro_serio con aggrieved.pkl
+[01:15:48] Animated video:                  live_portrait_pipeline_animal.py:229
+           /home/runner/work/RESUMEN-EDITOR                                     
+           /RESUMEN-EDITOR/salida/animacion                                     
+           /05_rostro_serio/05_rostro_serio                                     
+           --aggrieved.mp4                                                      
+           Animated video with concat:      live_portrait_pipeline_animal.py:230
+           /home/runner/work/RESUMEN-EDITOR                                     
+           /RESUMEN-EDITOR/salida/animacion                                     
+           /05_rostro_serio/05_rostro_serio                                     
+           --aggrieved_concat.mp4                                               
+           Animated gif:                    live_portrait_pipeline_animal.py:234
+           /home/runner/work/RESUMEN-EDITOR                                     
+           /RESUMEN-EDITOR/salida/animacion                                     
+           /05_rostro_serio/05_rostro_serio                                     
+           --aggrieved.gif                                                      
+== 05_rostro_serio con open_lip.pkl
+[01:27:29] Animated video:                  live_portrait_pipeline_animal.py:229
+           /home/runner/work/RESUMEN-EDITOR                                     
+           /RESUMEN-EDITOR/salida/animacion                                     
+           /05_rostro_serio/05_rostro_serio                                     
+           --open_lip.mp4                                                       
+           Animated video with concat:      live_portrait_pipeline_animal.py:230
+           /home/runner/work/RESUMEN-EDITOR                                     
+           /RESUMEN-EDITOR/salida/animacion                                     
+           /05_rostro_serio/05_rostro_serio                                     
+           --open_lip_concat.mp4                                                
+[01:27:30] Animated gif:                    live_portrait_pipeline_animal.py:234
+           /home/runner/work/RESUMEN-EDITOR                                     
+           /RESUMEN-EDITOR/salida/animacion                                     
+           /05_rostro_serio/05_rostro_serio                                     
+           --open_lip.gif                                                       
+== 05_rostro_serio con d0.mp4
+           Animated video:                  live_portrait_pipeline_animal.py:229
+           /home/runner/work/RESUMEN-EDITOR                                     
+           /RESUMEN-EDITOR/salida/animacion                                     
+           /05_rostro_serio/05_rostro_serio                                     
+           --d0.mp4                                                             
+           Animated video with concat:      live_portrait_pipeline_animal.py:230
+           /home/runner/work/RESUMEN-EDITOR                                     
+           /RESUMEN-EDITOR/salida/animacion                                     
+           /05_rostro_serio/05_rostro_serio                                     
+           --d0_concat.mp4                                                      
+[01:40:02] Animated gif:                    live_portrait_pipeline_animal.py:234
+           /home/runner/work/RESUMEN-EDITOR                                     
+           /RESUMEN-EDITOR/salida/animacion                                     
+           /05_rostro_serio/05_rostro_serio                                     
+           --d0.gif                                                             
+== 11_explicando con aggrieved.pkl
+[01:48:51] Animated video:                  live_portrait_pipeline_animal.py:229
+           /home/runner/work/RESUMEN-EDITOR                                     
+           /RESUMEN-EDITOR/salida/animacion                                     
+           /11_explicando/11_explicando--ag                                     
+           grieved.mp4                                                          
+           Animated video with concat:      live_portrait_pipeline_animal.py:230
+           /home/runner/work/RESUMEN-EDITOR                                     
+           /RESUMEN-EDITOR/salida/animacion                                     
+           /11_explicando/11_explicando--ag                                     
+           grieved_concat.mp4                                                   
+[01:48:52] Animated gif:                    live_portrait_pipeline_animal.py:234
+           /home/runner/work/RESUMEN-EDITOR                                     
+           /RESUMEN-EDITOR/salida/animacion                                     
+           /11_explicando/11_explicando--ag                                     
+           grieved.gif                                                          
+== 11_explicando con open_lip.pkl
+[02:00:32] Animated video:                  live_portrait_pipeline_animal.py:229
+           /home/runner/work/RESUMEN-EDITOR                                     
+           /RESUMEN-EDITOR/salida/animacion                                     
+           /11_explicando/11_explicando--op                                     
+           en_lip.mp4                                                           
+           Animated video with concat:      live_portrait_pipeline_animal.py:230
+           /home/runner/work/RESUMEN-EDITOR                                     
+           /RESUMEN-EDITOR/salida/animacion                                     
+           /11_explicando/11_explicando--op                                     
+           en_lip_concat.mp4                                                    
+[02:00:33] Animated gif:                    live_portrait_pipeline_animal.py:234
+           /home/runner/work/RESUMEN-EDITOR                                     
+           /RESUMEN-EDITOR/salida/animacion                                     
+           /11_explicando/11_explicando--op                                     
+           en_lip.gif                                                           
+== 11_explicando con d0.mp4
+           Animated video:                  live_portrait_pipeline_animal.py:229
+           /home/runner/work/RESUMEN-EDITOR                                     
+           /RESUMEN-EDITOR/salida/animacion                                     
+           /11_explicando/11_explicando--d0                                     
+           .mp4                                                                 
+           Animated video with concat:      live_portrait_pipeline_animal.py:230
+           /home/runner/work/RESUMEN-EDITOR                                     
+           /RESUMEN-EDITOR/salida/animacion                                     
+           /11_explicando/11_explicando--d0                                     
+           _concat.mp4                                                          
+[02:13:02] Animated gif:                    live_portrait_pipeline_animal.py:234
+           /home/runner/work/RESUMEN-EDITOR                                     
+           /RESUMEN-EDITOR/salida/animacion                                     
+           /11_explicando/11_explicando--d0                                     
+           .gif                                                                 
+== 09_furioso con aggrieved.pkl
+[02:21:53] Animated video:                  live_portrait_pipeline_animal.py:229
+           /home/runner/work/RESUMEN-EDITOR                                     
+           /RESUMEN-EDITOR/salida/animacion                                     
+           /09_furioso/09_furioso--aggrieve                                     
+           d.mp4                                                                
+           Animated video with concat:      live_portrait_pipeline_animal.py:230
+           /home/runner/work/RESUMEN-EDITOR                                     
+           /RESUMEN-EDITOR/salida/animacion                                     
+           /09_furioso/09_furioso--aggrieve                                     
+           d_concat.mp4                                                         
+[02:21:54] Animated gif:                    live_portrait_pipeline_animal.py:234
+           /home/runner/work/RESUMEN-EDITOR                                     
+           /RESUMEN-EDITOR/salida/animacion                                     
+           /09_furioso/09_furioso--aggrieve                                     
+           d.gif                                                                
+== 09_furioso con open_lip.pkl
+[02:33:37] Animated video:                  live_portrait_pipeline_animal.py:229
+           /home/runner/work/RESUMEN-EDITOR                                     
+           /RESUMEN-EDITOR/salida/animacion                                     
+           /09_furioso/09_furioso--open_lip                                     
+           .mp4                                                                 
+           Animated video with concat:      live_portrait_pipeline_animal.py:230
+           /home/runner/work/RESUMEN-EDITOR                                     
+           /RESUMEN-EDITOR/salida/animacion                                     
+           /09_furioso/09_furioso--open_lip                                     
+           _concat.mp4                                                          
+[02:33:38] Animated gif:                    live_portrait_pipeline_animal.py:234
+           /home/runner/work/RESUMEN-EDITOR                                     
+           /RESUMEN-EDITOR/salida/animacion                                     
+           /09_furioso/09_furioso--open_lip                                     
+           .gif                                                                 
+== 09_furioso con d0.mp4
+           motion making and protecting                                         
+           privacy.                                                             
+           Animated video:                  live_portrait_pipeline_animal.py:229
+           /home/runner/work/RESUMEN-EDITOR                                     
+           /RESUMEN-EDITOR/salida/animacion                                     
+           /09_furioso/09_furioso--d0.mp4                                       
+           Animated video with concat:      live_portrait_pipeline_animal.py:230
+           /home/runner/work/RESUMEN-EDITOR                                     
+           /RESUMEN-EDITOR/salida/animacion                                     
+           /09_furioso/09_furioso--d0_conca                                     
+           t.mp4                                                                
+[02:46:12] Animated gif:                    live_portrait_pipeline_animal.py:234
+           /home/runner/work/RESUMEN-EDITOR                                     
+           /RESUMEN-EDITOR/salida/animacion                                     
+           /09_furioso/09_furioso--d0.gif                                       
+salida/animacion/01_frente/:
+total 13500
+drwxr-xr-x 2 runner runner    4096 Nov 28 02:46 .
+drwxr-xr-x 6 runner runner    4096 Nov 28 02:21 ..
+-rw-r--r-- 1 runner runner 2283907 Nov 28 00:42 01_frente--aggrieved.gif
+-rw-r--r-- 1 runner runner  736382 Nov 28 00:42 01_frente--aggrieved.mp4
+-rw-r--r-- 1 runner runner  786326 Nov 28 00:42 01_frente--aggrieved_concat.mp4
+-rw-r--r-- 1 runner runner   73478 Nov 28 02:46 01_frente--aggrieved_hoja.jpg
+-rw-r--r-- 1 runner runner 2752621 Nov 28 01:06 01_frente--d0.gif
+-rw-r--r-- 1 runner runner  819752 Nov 28 01:06 01_frente--d0.mp4
+-rw-r--r-- 1 runner runner 1051390 Nov 28 01:06 01_frente--d0_concat.mp4
+-rw-r--r-- 1 runner runner   89757 Nov 28 02:46 01_frente--d0_hoja.jpg
+-rw-r--r-- 1 runner runner 3151947 Nov 28 00:54 01_frente--open_lip.gif
+-rw-r--r-- 1 runner runner  955224 Nov 28 00:54 01_frente--open_lip.mp4
+-rw-r--r-- 1 runner runner 1005909 Nov 28 00:54 01_frente--open_lip_concat.mp4
+-rw-r--r-- 1 runner runner   84136 Nov 28 02:46 01_frente--open_lip_hoja.jpg
+-rw-r--r-- 1 runner runner     670 Nov 28 01:06 palette.png
+
+salida/animacion/05_rostro_serio/:
+total 10288
+drwxr-xr-x 2 runner runner    4096 Nov 28 02:46 .
+drwxr-xr-x 6 runner runner    4096 Nov 28 02:21 ..
+-rw-r--r-- 1 runner runner 1999206 Nov 28 01:15 05_rostro_serio--aggrieved.gif
+-rw-r--r-- 1 runner runner  408888 Nov 28 01:15 05_rostro_serio--aggrieved.mp4
+-rw-r--r-- 1 runner runner  445692 Nov 28 01:15 05_rostro_serio--aggrieved_concat.mp4
+-rw-r--r-- 1 runner runner   63017 Nov 28 02:46 05_rostro_serio--aggrieved_hoja.jpg
+-rw-r--r-- 1 runner runner 2420746 Nov 28 01:40 05_rostro_serio--d0.gif
+-rw-r--r-- 1 runner runner  489548 Nov 28 01:40 05_rostro_serio--d0.mp4
+-rw-r--r-- 1 runner runner  711347 Nov 28 01:40 05_rostro_serio--d0_concat.mp4
+-rw-r--r-- 1 runner runner   77032 Nov 28 02:46 05_rostro_serio--d0_hoja.jpg
+-rw-r--r-- 1 runner runner 2727451 Nov 28 01:27 05_rostro_serio--open_lip.gif
+-rw-r--r-- 1 runner runner  522720 Nov 28 01:27 05_rostro_serio--open_lip.mp4
+-rw-r--r-- 1 runner runner  554634 Nov 28 01:27 05_rostro_serio--open_lip_concat.mp4
+-rw-r--r-- 1 runner runner   80485 Nov 28 02:46 05_rostro_serio--open_lip_hoja.jpg
+-rw-r--r-- 1 runner runner     644 Nov 28 01:40 palette.png
+
+salida/animacion/09_furioso/:
+total 15328
+drwxr-xr-x 2 runner runner    4096 Nov 28 02:46 .
+drwxr-xr-x 6 runner runner    4096 Nov 28 02:21 ..
+-rw-r--r-- 1 runner runner 2398761 Nov 28 02:21 09_furioso--aggrieved.gif
+-rw-r--r-- 1 runner runner  937312 Nov 28 02:21 09_furioso--aggrieved.mp4
+-rw-r--r-- 1 runner runner  989027 Nov 28 02:21 09_furioso--aggrieved_concat.mp4
+-rw-r--r-- 1 runner runner   76291 Nov 28 02:46 09_furioso--aggrieved_hoja.jpg
+-rw-r--r-- 1 runner runner 2907052 Nov 28 02:46 09_furioso--d0.gif
+-rw-r--r-- 1 runner runner 1056708 Nov 28 02:46 09_furioso--d0.mp4
+-rw-r--r-- 1 runner runner 1285178 Nov 28 02:46 09_furioso--d0_concat.mp4
+-rw-r--r-- 1 runner runner   93065 Nov 28 02:46 09_furioso--d0_hoja.jpg
+-rw-r--r-- 1 runner runner 3270917 Nov 28 02:33 09_furioso--open_lip.gif
+-rw-r--r-- 1 runner runner 1252099 Nov 28 02:33 09_furioso--open_lip.mp4
+-rw-r--r-- 1 runner runner 1307744 Nov 28 02:33 09_furioso--open_lip_concat.mp4
+-rw-r--r-- 1 runner runner   90891 Nov 28 02:46 09_furioso--open_lip_hoja.jpg
+-rw-r--r-- 1 runner runner     752 Nov 28 02:46 palette.png
+
+salida/animacion/11_explicando/:
+total 14116
+drwxr-xr-x 2 runner runner    4096 Nov 28 02:46 .
+drwxr-xr-x 6 runner runner    4096 Nov 28 02:21 ..
+-rw-r--r-- 1 runner runner 2232345 Nov 28 01:48 11_explicando--aggrieved.gif
+-rw-r--r-- 1 runner runner  808447 Nov 28 01:48 11_explicando--aggrieved.mp4
+-rw-r--r-- 1 runner runner  859407 Nov 28 01:48 11_explicando--aggrieved_concat.mp4
+-rw-r--r-- 1 runner runner   76204 Nov 28 02:46 11_explicando--aggrieved_hoja.jpg
+-rw-r--r-- 1 runner runner 2766111 Nov 28 02:13 11_explicando--d0.gif
+-rw-r--r-- 1 runner runner  937983 Nov 28 02:13 11_explicando--d0.mp4
+-rw-r--r-- 1 runner runner 1165192 Nov 28 02:13 11_explicando--d0_concat.mp4
+-rw-r--r-- 1 runner runner   92768 Nov 28 02:46 11_explicando--d0_hoja.jpg
+-rw-r--r-- 1 runner runner 3109227 Nov 28 02:00 11_explicando--open_lip.gif
+-rw-r--r-- 1 runner runner 1109228 Nov 28 02:00 11_explicando--open_lip.mp4
+-rw-r--r-- 1 runner runner 1162315 Nov 28 02:00 11_explicando--open_lip_concat.mp4
+-rw-r--r-- 1 runner runner   99902 Nov 28 02:46 11_explicando--open_lip_hoja.jpg
+-rw-r--r-- 1 runner runner     763 Nov 28 02:13 palette.png
+== Fin
