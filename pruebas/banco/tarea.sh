@@ -43,6 +43,15 @@ open(p, "w").write(s)
 print("parche embeddings aplicado")
 PY
 export TORCH_FORCE_NO_WEIGHTS_ONLY_LOAD=1
+# Sin GPU: el recortador de animales no recibe la opción de CPU (falla del proyecto); se la damos.
+python - <<'PY'
+p = "src/utils/cropper.py"
+s = open(p).read()
+s = s.replace('flag_force_cpu = kwargs.get("flag_force_cpu", False)', 'flag_force_cpu = kwargs.get("flag_force_cpu", False) or not torch.cuda.is_available()')
+s = s.replace('embeddings_cache_path=self.crop_cfg.xpose_embedding_cache_path,', 'embeddings_cache_path=self.crop_cfg.xpose_embedding_cache_path,\n                    cpu_only=(device == "cpu"),')
+open(p, "w").write(s)
+print("parche recortador CPU aplicado", s.count("cpu_only=(device"))
+PY
 grep -rln "\.cuda()" src/utils/dependencies/XPose | head -5
 ls assets/examples/driving | head -30 > $GITHUB_WORKSPACE/$OUT/plantillas.txt
 cd $GITHUB_WORKSPACE
@@ -50,7 +59,7 @@ for pose in 01_frente 05_rostro_serio 11_explicando 09_furioso; do
   for d in $(cd /tmp/lp/assets/examples/driving && ls *.pkl 2>/dev/null | grep -i -E "talk|wink|aggrieved|shake|open" | head -2; cd /tmp/lp/assets/examples/driving && ls *.mp4 | head -1); do
     echo "== $pose con $d"
     ( cd /tmp/lp && CUDA_VISIBLE_DEVICES="" timeout 1500 python inference_animals.py -s "$GITHUB_WORKSPACE/recursos/mapache3d/mapache-poses/$pose.png" \
-        -d assets/examples/driving/$d --driving_multiplier 1.75 --no_flag_stitching --flag_force_cpu -o "$GITHUB_WORKSPACE/$OUT/$pose" ) 2>&1 | tail -15
+        -d assets/examples/driving/$d --driving_multiplier 1.75 --no_flag_stitching --flag_force_cpu --no_flag_use_half_precision -o "$GITHUB_WORKSPACE/$OUT/$pose" ) 2>&1 | tail -15
   done
 done
 # hojas de contacto para revisar sin descargar videos

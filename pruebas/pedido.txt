@@ -1,1 +1,1 @@
-animar-mapache 4 (embeddings en CPU)
+animar-mapache 5 (recortador en CPU)
