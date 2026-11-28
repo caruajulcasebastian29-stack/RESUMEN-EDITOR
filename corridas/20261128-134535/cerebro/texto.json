@@ -1,0 +1,542 @@
+{
+ "elementos": [
+  {
+   "texto": "'Did Johnnie enlist?'",
+   "lugar": "centro",
+   "inicio": 1.46,
+   "fin": 3.503,
+   "color": "blanco",
+   "alto": 0.081,
+   "tipo": "titulo",
+   "dur": 2.04
+  },
+  {
+   "texto": "He didn't even get",
+   "lugar": "centro",
+   "inicio": 7.631,
+   "fin": 10.717,
+   "color": "blanco",
+   "alto": 0.086,
+   "tipo": "titulo",
+   "dur": 3.09
+  },
+  {
+   "texto": "in line.\"",
+   "lugar": "centro",
+   "inicio": 7.631,
+   "fin": 10.717,
+   "color": "blanco",
+   "alto": 0.074,
+   "tipo": "texto",
+   "dur": 3.09
+  },
+  {
+   "texto": "He's a disgrace to",
+   "lugar": "centro",
+   "inicio": 17.723,
+   "fin": 20.851,
+   "color": "blanco",
+   "alto": 0.092,
+   "tipo": "titulo",
+   "dur": 3.13
+  },
+  {
+   "texto": "the South.",
+   "lugar": "centro",
+   "inicio": 17.723,
+   "fin": 20.851,
+   "color": "blanco",
+   "alto": 0.072,
+   "tipo": "texto",
+   "dur": 3.13
+  },
+  {
+   "texto": "\"Why didn't you",
+   "lugar": "centro",
+   "inicio": 45.621,
+   "fin": 47.832,
+   "color": "gris",
+   "alto": 0.108,
+   "tipo": "titulo",
+   "dur": 2.21
+  },
+  {
+   "texto": "enlist?\"",
+   "lugar": "centro",
+   "inicio": 45.621,
+   "fin": 47.832,
+   "color": "blanco",
+   "alto": 0.089,
+   "tipo": "titulo",
+   "dur": 2.21
+  },
+  {
+   "texto": "They wouldn't take",
+   "lugar": "centro",
+   "inicio": 51.043,
+   "fin": 53.336,
+   "color": "gris",
+   "alto": 0.101,
+   "tipo": "titulo",
+   "dur": 2.29
+  },
+  {
+   "texto": "'Please don't lie -I",
+   "lugar": "arriba",
+   "inicio": 58.841,
+   "fin": 67.973,
+   "color": "blanco",
+   "alto": 0.083,
+   "tipo": "texto",
+   "dur": 9.13
+  },
+  {
+   "texto": "don't want you to",
+   "lugar": "centro",
+   "inicio": 58.841,
+   "fin": 67.973,
+   "color": "blanco",
+   "alto": 0.09,
+   "tipo": "titulo",
+   "dur": 9.13
+  },
+  {
+   "texto": "speak to me again",
+   "lugar": "centro",
+   "inicio": 58.841,
+   "fin": 67.973,
+   "color": "blanco",
+   "alto": 0.081,
+   "tipo": "titulo",
+   "dur": 9.13
+  },
+  {
+   "texto": "until you are in",
+   "lugar": "centro",
+   "inicio": 58.841,
+   "fin": 67.973,
+   "color": "blanco",
+   "alto": 0.075,
+   "tipo": "texto",
+   "dur": 9.13
+  },
+  {
+   "texto": "uniform.'",
+   "lugar": "abajo",
+   "inicio": 58.841,
+   "fin": 67.973,
+   "color": "blanco",
+   "alto": 0.069,
+   "tipo": "texto",
+   "dur": 9.13
+  },
+  {
+   "texto": "H year later.",
+   "lugar": "centro_izquierda",
+   "inicio": 81.234,
+   "fin": 104.295,
+   "color": "gris",
+   "alto": 0.087,
+   "tipo": "texto",
+   "dur": 23.06
+  },
+  {
+   "texto": "In a Union encampment",
+   "lugar": "centro",
+   "inicio": 81.234,
+   "fin": 104.295,
+   "color": "gris",
+   "alto": 0.085,
+   "tipo": "titulo",
+   "dur": 23.06
+  },
+  {
+   "texto": "just North of Chattanooga.",
+   "lugar": "centro",
+   "inicio": 81.234,
+   "fin": 104.295,
+   "color": "gris",
+   "alto": 0.09,
+   "tipo": "titulo",
+   "dur": 23.06
+  },
+  {
+   "texto": "General Thatcher, and",
+   "lugar": "centro",
+   "inicio": 111.301,
+   "fin": 115.721,
+   "color": "naranja",
+   "alto": 0.09,
+   "tipo": "texto",
+   "dur": 4.42
+  },
+  {
+   "texto": "his chief spy, Captain",
+   "lugar": "centro",
+   "inicio": 111.301,
+   "fin": 115.721,
+   "color": "naranja",
+   "alto": 0.086,
+   "tipo": "texto",
+   "dur": 4.42
+  },
+  {
+   "texto": "Anderson.",
+   "lugar": "centro",
+   "inicio": 111.301,
+   "fin": 115.721,
+   "color": "naranja",
+   "alto": 0.083,
+   "tipo": "texto",
+   "dur": 4.42
+  },
+  {
+   "texto": "I know every foot of this",
+   "lugar": "arriba",
+   "inicio": 119.766,
+   "fin": 130.108,
+   "color": "gris",
+   "alto": 0.09,
+   "tipo": "texto",
+   "dur": 10.34
+  },
+  {
+   "texto": "railroad from Marietta to",
+   "lugar": "centro",
+   "inicio": 119.766,
+   "fin": 130.108,
+   "color": "blanco",
+   "alto": 0.076,
+   "tipo": "texto",
+   "dur": 10.34
+  },
+  {
+   "texto": "Chattanooga -and with",
+   "lugar": "centro",
+   "inicio": 119.766,
+   "fin": 130.108,
+   "color": "gris",
+   "alto": 0.093,
+   "tipo": "texto",
+   "dur": 10.34
+  },
+  {
+   "texto": "ten picked men I cannot",
+   "lugar": "centro",
+   "inicio": 119.766,
+   "fin": 130.108,
+   "color": "gris",
+   "alto": 0.086,
+   "tipo": "texto",
+   "dur": 10.34
+  },
+  {
+   "texto": "fail.\"",
+   "lugar": "abajo_izquierda",
+   "inicio": 119.766,
+   "fin": 130.108,
+   "color": "blanco",
+   "alto": 0.079,
+   "tipo": "texto",
+   "dur": 10.34
+  },
+  {
+   "texto": "\"We will enter the South",
+   "lugar": "arriba",
+   "inicio": 135.488,
+   "fin": 145.204,
+   "color": "blanco",
+   "alto": 0.089,
+   "tipo": "texto",
+   "dur": 9.72
+  },
+  {
+   "texto": "as civilians coming from",
+   "lugar": "centro",
+   "inicio": 135.488,
+   "fin": 145.204,
+   "color": "blanco",
+   "alto": 0.068,
+   "tipo": "texto",
+   "dur": 9.72
+  },
+  {
+   "texto": "the neutral state of",
+   "lugar": "centro",
+   "inicio": 135.488,
+   "fin": 145.204,
+   "color": "blanco",
+   "alto": 0.062,
+   "tipo": "texto",
+   "dur": 9.72
+  },
+  {
+   "texto": "Kentucky  to join the",
+   "lugar": "centro",
+   "inicio": 135.488,
+   "fin": 145.204,
+   "color": "gris",
+   "alto": 0.09,
+   "tipo": "texto",
+   "dur": 9.72
+  },
+  {
+   "texto": "Southern cause.",
+   "lugar": "abajo",
+   "inicio": 135.488,
+   "fin": 145.204,
+   "color": "blanco",
+   "alto": 0.079,
+   "tipo": "subtitulo",
+   "dur": 9.72
+  },
+  {
+   "texto": "CHATTANOOGA",
+   "lugar": "arriba_izquierda",
+   "inicio": 145.204,
+   "fin": 149.708,
+   "color": "naranja",
+   "alto": 0.046,
+   "tipo": "rotulo",
+   "dur": 4.5
+  },
+  {
+   "texto": "KINGSTON",
+   "lugar": "centro",
+   "inicio": 145.204,
+   "fin": 149.708,
+   "color": "naranja",
+   "alto": 0.043,
+   "tipo": "rotulo",
+   "dur": 4.5
+  },
+  {
+   "texto": "BIGSHANTY",
+   "lugar": "centro_derecha",
+   "inicio": 145.204,
+   "fin": 149.708,
+   "color": "naranja",
+   "alto": 0.047,
+   "tipo": "rotulo",
+   "dur": 4.5
+  },
+  {
+   "texto": "MAREETTA",
+   "lugar": "abajo_derecha",
+   "inicio": 145.204,
+   "fin": 149.708,
+   "color": "naranja",
+   "alto": 0.04,
+   "tipo": "rotulo",
+   "dur": 4.5
+  },
+  {
+   "texto": "ATLANTA",
+   "lugar": "abajo_derecha",
+   "inicio": 145.204,
+   "fin": 149.708,
+   "color": "naranja",
+   "alto": 0.054,
+   "tipo": "rotulo",
+   "dur": 4.5
+  },
+  {
+   "texto": "CALHOUN",
+   "lugar": "centro",
+   "inicio": 145.204,
+   "fin": 149.708,
+   "color": "naranja",
+   "alto": 0.036,
+   "tipo": "rotulo",
+   "dur": 4.5
+  },
+  {
+   "texto": "*At Big Shanty we will steal",
+   "lugar": "arriba",
+   "inicio": 149.708,
+   "fin": 168.724,
+   "color": "gris",
+   "alto": 0.111,
+   "tipo": "texto",
+   "dur": 19.02
+  },
+  {
+   "texto": "the train while the passengers",
+   "lugar": "arriba",
+   "inicio": 149.708,
+   "fin": 168.724,
+   "color": "blanco",
+   "alto": 0.075,
+   "tipo": "texto",
+   "dur": 19.02
+  },
+  {
+   "texto": "and crew are at dinner, and",
+   "lugar": "centro",
+   "inicio": 149.708,
+   "fin": 168.724,
+   "color": "blanco",
+   "alto": 0.075,
+   "tipo": "texto",
+   "dur": 19.02
+  },
+  {
+   "texto": "proceeding North we will burn",
+   "lugar": "centro",
+   "inicio": 149.708,
+   "fin": 168.724,
+   "color": "blanco",
+   "alto": 0.089,
+   "tipo": "texto",
+   "dur": 19.02
+  },
+  {
+   "texto": "every bridge, cutting off the",
+   "lugar": "centro",
+   "inicio": 149.708,
+   "fin": 168.724,
+   "color": "gris",
+   "alto": 0.089,
+   "tipo": "texto",
+   "dur": 19.02
+  },
+  {
+   "texto": "supplies of the army now",
+   "lugar": "abajo",
+   "inicio": 149.708,
+   "fin": 168.724,
+   "color": "gris",
+   "alto": 0.079,
+   "tipo": "subtitulo",
+   "dur": 19.02
+  },
+  {
+   "texto": "facing you.",
+   "lugar": "abajo_izquierda",
+   "inicio": 149.708,
+   "fin": 168.724,
+   "color": "blanco",
+   "alto": 0.081,
+   "tipo": "texto",
+   "dur": 19.02
+  },
+  {
+   "texto": "\"Then the day you steal",
+   "lugar": "arriba",
+   "inicio": 177.773,
+   "fin": 180.025,
+   "color": "blanco",
+   "alto": 0.094,
+   "tipo": "texto",
+   "dur": 2.25
+  },
+  {
+   "texto": "the train I will have",
+   "lugar": "centro",
+   "inicio": 177.773,
+   "fin": 180.025,
+   "color": "blanco",
+   "alto": 0.068,
+   "tipo": "texto",
+   "dur": 2.25
+  },
+  {
+   "texto": "General Parker advance",
+   "lugar": "centro",
+   "inicio": 177.773,
+   "fin": 180.025,
+   "color": "blanco",
+   "alto": 0.079,
+   "tipo": "texto",
+   "dur": 2.25
+  },
+  {
+   "texto": "to meet you.'",
+   "lugar": "centro",
+   "inicio": 177.773,
+   "fin": 180.025,
+   "color": "blanco",
+   "alto": 0.068,
+   "tipo": "texto",
+   "dur": 2.25
+  }
+ ],
+ "tomas_revisadas_espejo": 10,
+ "tomas_espejadas": 0,
+ "resumen": {
+  "por_minuto": {
+   "titulo": 3.33,
+   "texto": 9.33,
+   "subtitulo": 0.67,
+   "rotulo": 2.0
+  },
+  "titulo": {
+   "cantidad": 10,
+   "duracion_mediana_s": 3.11,
+   "color": "blanco",
+   "lugar": "centro",
+   "tamano_rel": 0.089,
+   "ejemplos": [
+    "'Did Johnnie enlist?'",
+    "He didn't even get",
+    "He's a disgrace to",
+    "\"Why didn't you",
+    "enlist?\"",
+    "They wouldn't take",
+    "don't want you to",
+    "speak to me again",
+    "In a Union encampment",
+    "just North of Chattanooga."
+   ]
+  },
+  "texto": {
+   "cantidad": 28,
+   "duracion_mediana_s": 9.72,
+   "color": "blanco",
+   "lugar": "centro",
+   "tamano_rel": 0.082,
+   "ejemplos": [
+    "in line.\"",
+    "the South.",
+    "'Please don't lie -I",
+    "until you are in",
+    "uniform.'",
+    "H year later.",
+    "General Thatcher, and",
+    "his chief spy, Captain",
+    "Anderson.",
+    "I know every foot of this",
+    "railroad from Marietta to",
+    "Chattanooga -and with"
+   ]
+  },
+  "subtitulo": {
+   "cantidad": 2,
+   "duracion_mediana_s": 14.37,
+   "color": "blanco",
+   "lugar": "abajo",
+   "tamano_rel": 0.079,
+   "ejemplos": [
+    "Southern cause.",
+    "supplies of the army now"
+   ]
+  },
+  "rotulo": {
+   "cantidad": 6,
+   "duracion_mediana_s": 4.5,
+   "color": "naranja",
+   "lugar": "centro",
+   "tamano_rel": 0.044,
+   "ejemplos": [
+    "CHATTANOOGA",
+    "KINGSTON",
+    "BIGSHANTY",
+    "MAREETTA",
+    "ATLANTA",
+    "CALHOUN"
+   ]
+  },
+  "tiempo_con_subtitulos": 0.16,
+  "tomas_espejadas_aprox": 0.0
+ }
+}

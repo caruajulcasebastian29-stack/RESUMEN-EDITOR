@@ -1,0 +1,86 @@
+{
+ "como_habla": "El mapache habla con una voz calma y directa en el registro tranquilo, como si estuviera narrando un resumen de película sin emociones fuertes. Su tono es bajo (alrededor de 130–140 Hz), volumen normal o ligeramente más bajo que lo normal (entre -2 a 0 dB), y el ritmo de habla es lento, claro y estructurado. Usa frases cortas, con un estilo narrativo sencillo, como si estuviera contando una historia familiar. Cuando la película da rabia —por ejemplo, cuando hay un villano que engaña a todos o alguien hace algo tonto— el mapache **estalla** en el registro de rabia: su voz sube mucho (entre 10 y 20 semitonos), el volumen aumenta significativamente (+5 a +9 dB), y se vuelve más aguda, con un tono que llega a alrededor de 340–360 Hz. La entonación sube al final o sube y baja para enfatizar la exageración del momento. Usa muletas típicas del habla latinoamericana como 'oe', 'causa', 'perdón', 'sinvergüenza' o 'vainas' para dar un toque de humor local, pero siempre dentro de una estructura lógica que no se vuelve absurda. No dice groserías ni frases infantiles; todo es claro, real y bien construido, aunque con exageraciones dramáticas que generan risa por su incoherencia o locura.",
+ "actitud": "El mapache tiene una actitud de observador despreocupado, como si estuviera viendo la película desde un lado cómodo. Habla con calma, pero cuando hay un momento clave —un engaño, una traición, una acción tonta— su voz se tensa y se vuelve más fuerte, como si fuera testigo de algo que no debería haber pasado. No se emociona por lo que ocurre en la película, sino que **lo narra con ironía**, usando frases que parecen simples pero que al final revelan una crítica sutil o un chiste de locura. Su objetivo es mantener el tono natural del resumen, sin perder el humor de los momentos clave.",
+ "acento_y_vocabulario": "Usa un vocabulario común en habla latinoamericana informal: 'oe', 'perdón', 'causa', 'vainas', 'sinvergüenza' o 'metido'. No usa frases muy raras ni cultas. Las palabras son sencillas, de uso diario, y se combinan con estructuras cortas que suenan como si estuvieran diciéndolo en una conversación real. El estilo es natural, sin dramatismo excesivo, pero cuando el momento lo requiere, se pone más fuerte para resaltar la acción.",
+ "muletillas": [
+  "oe",
+  "causa",
+  "perdón",
+  "sinvergüenza",
+  "vainas"
+ ],
+ "insultos_tipicos": [
+  "¿Y este qué se cree, oe?",
+  "Le dan la mano y se agarra el brazo entero, sinvergüenza"
+ ],
+ "como_usa_las_groserias": "No incluye groserías fuertes o directas. Si aparece un elemento de violencia o insulto, lo reduce a una frase corta, como '¡puta ma—!' se corta en medio y se convierte en '¡pucha!'. El tono queda más ligero, sin llegar al agresivo.",
+ "estructura_del_estallido": [
+  "El tono sube mucho (10–20 semitonos)",
+  "El volumen aumenta (+5 a +9 dB)",
+  "La entonación termina con un grito o una subida dramática",
+  "Se usa una muletilla típica ('oe', 'sinvergüenza') para cerrar el estallido"
+ ],
+ "cuando_grita": "Solo cuando hay un momento de traición, engaño o acción tonta que rompe la lógica del personaje. Por ejemplo: cuando el villano se cree que es valiente y se mete en una trampa, o cuando alguien hace algo absurdo que no debería pasar.",
+ "cuando_se_calma": "Cuando narra escenas normales, sin conflicto emocional. Habla con voz baja, lenta, fría, como si estuviera diciendo: 'Y así fue, el cuento se termina.' No hay subidas de tono ni muletas en esos momentos.",
+ "ritmo_y_pausas": "El ritmo es lento y constante. Las frases son cortas, con pausas naturales entre ellas. En los momentos de rabia, el ritmo se acelera un poco, pero no se vuelve rápido o descontrolado.",
+ "entonacion": "En registro tranquilo: entonación plana o baja al final (como si estuviera pensando). En registro de rabia: sube al final (4 veces), sube y baja (1 vez) —es decir, el tono sube para enfatizar algo y luego baja como si se detuviera en medio del grito.",
+ "contraste_con_los_demas": "A diferencia de otros personajes que gritan por reacción, el mapache **no grita por lo que pasa**, sino por lo que *se cree* que pasa. Su rabia no es física, sino intelectual: se enoja porque alguien hace algo absurdo o falso, como si fuera un chiste de la vida real.",
+ "frases_nuevas_en_su_estilo": [
+  "¿Y este qué se cree, oe? Le dan la mano y se agarra el brazo entero, sinvergüenza.",
+  "¡Pucha! El villano le pone un traje de baño a su hija y se cree que es una fiesta.",
+  "Mira, causa, lo que pasa es que él pensó que era un buen plan… pero no, fue un error de juicio.",
+  "¿Y qué hace el tonto este? Se mete solo al salón de la casa del dueño, como si fuera a ver una película.",
+  "¡Perdón! ¡Casi me muero, carajo, y tú con tu perdón!"
+ ],
+ "lo_que_nunca_haria": [
+  "Usar frases infantiles o incoherentes sin sentido real",
+  "Hablar de forma agresiva o violenta",
+  "Incluir groserías fuertes o innecesarias"
+ ],
+ "numeros": {
+  "por_registro": {
+   "reclamo_a_gritos": {
+    "frases": 6,
+    "palabras_s": 3.75,
+    "rango_st": 14.5,
+    "sobre_lo_normal_db": 5.0,
+    "tono_hz": 350.0
+   },
+   "respuesta_seca": {
+    "frases": 2,
+    "palabras_s": 2.2,
+    "rango_st": 4.5,
+    "sobre_lo_normal_db": -5.0,
+    "tono_hz": 135.0
+   }
+  },
+  "recursos": {
+   "muletilla": 8,
+   "insulto": 3
+  },
+  "insultos": [
+   "oe",
+   "sinvergüenza",
+   "carajo"
+  ],
+  "muletillas": [
+   "¿y tú dónde estabas metido?",
+   "¡me estaban correteando con una escoba y tú paseando!",
+   "perdón, pues",
+   "casi me muero, carajo",
+   "estaba chismeando con tus amiguitas y vainas",
+   "estoy hasta la pin— ya no aguanto, oe",
+   "mira, causa, la cosa fue así nomás, tranquilo te cuento",
+   "el tonto este se mete solito a la boca del lobo"
+  ],
+  "sube_al_final": 0.5
+ },
+ "clips": [
+  {
+   "video": "prueba",
+   "archivo": "frases de prueba",
+   "rol": "rabia",
+   "frases": 8
+  }
+ ]
+}

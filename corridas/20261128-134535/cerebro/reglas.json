@@ -1,0 +1,613 @@
+{
+ "por_tema": {
+  "cierre": [
+   {
+    "tema": "cierre",
+    "regla": "1. Cierra con una frase fija como '¿Y tú qué piensas?' para generar interacción.",
+    "ejemplo": "En los videos 4 y 5, todos terminan así.",
+    "cuando": "Al final de cada video, después del último plano.",
+    "fuente": "8 fuentes"
+   },
+   {
+    "tema": "cierre",
+    "regla": "2. Cierra con una frase de agradecimiento para mostrar gratitud al público.",
+    "ejemplo": "Video 8: «¡Muchas gracias por tu apoyo!» al final.",
+    "cuando": "Al final del resumen.",
+    "fuente": "8 fuentes"
+   },
+   {
+    "tema": "cierre",
+    "regla": "3. Cierra con el último plano de la película (2,7 segundos), sin texto extra, para mantener la integridad visual.",
+    "ejemplo": "El cierre es el mismo plano que termina la película, sin pantalla final o mensaje.",
+    "cuando": "Al final del video, en 22:11.",
+    "fuente": "8 fuentes"
+   },
+   {
+    "tema": "cierre",
+    "regla": "4. Cierra con un mensaje claro de invitación a suscribirse y acceder a beneficios (como resúmenes privados o biblioteca)",
+    "ejemplo": "En 25:39 se repite la lista de miembros y se menciona que se puede pedir resúmenes.",
+    "cuando": "Al final, en los últimos 10 segundos.",
+    "fuente": "8 fuentes"
+   },
+   {
+    "tema": "cierre",
+    "regla": "5. Cierra con una teoría en broma sobre el futuro de la película para generar curiosidad.",
+    "ejemplo": "Dice que 'Vértigo 3 podría volver en Avengers Doom Day'.",
+    "cuando": "Al final del resumen, después de la historia.",
+    "fuente": "8 fuentes"
+   },
+   {
+    "tema": "cierre",
+    "regla": "6. Cierra con un mensaje de cierre narrativo como 'Y así termina esta historia' para dar estructura.",
+    "ejemplo": "A las 24:10 dice: 'Y así termina esta historia' y pide like y suscripción.",
+    "cuando": "Al final, justo antes de cerrar con el próximo resumen.",
+    "fuente": "8 fuentes"
+   },
+   {
+    "tema": "cierre",
+    "regla": "7. Usa un corte rápido o una frase grosera cortada (como 'estoy hasta la pinga') en momentos clave para generar impacto.",
+    "ejemplo": "En 66–68 s: 'estoy hasta la pinga' + corte fuerte.",
+    "cuando": "Al final de cada lista de desgracias o cuando hay una traición clara.",
+    "fuente": "8 fuentes"
+   },
+   {
+    "tema": "cierre",
+    "regla": "8. Cierra con el final del incendio o escena clave en planos cortos (1–2 segundos) para dar impacto visual.",
+    "ejemplo": "El último plano es el fuego, cortado rápidamente.",
+    "cuando": "Al final de la historia para dar impacto.",
+    "fuente": "8 fuentes"
+   },
+   {
+    "tema": "cierre",
+    "regla": "9. Cierra con una invitación a unirse al canal y menciona ventajas (como pedir resúmenes o tener biblioteca privada)",
+    "ejemplo": "Segundo mensaje de membresía + lista pasando 43 s + cierre con frase.",
+    "cuando": "Al final del video.",
+    "fuente": "8 fuentes"
+   },
+   {
+    "tema": "cierre",
+    "regla": "10. Cierra con una transición clara hacia el próximo video, como 'Nos vemos en el próximo Resumen Brutal', para mantener la serie.",
+    "ejemplo": "Al final: 'Segundo mensaje de membresía' + lista pasando 43 s + cierre con frase.",
+    "cuando": "Al final del video.",
+    "fuente": "8 fuentes"
+   }
+  ],
+  "cortes": [
+   {
+    "tema": "cortes",
+    "regla": "1. Cada cuánto corta según la intensidad de la escena",
+    "ejemplo": "En acción o clímax: corte cada 2-4 segundos (30–40 cortes por minuto). En diálogos o tensión: hasta 38 cortes por minuto.",
+    "cuando": "Cuando hay acción, conflicto o desenlace fuerte.",
+    "fuente": "10 fuentes"
+   },
+   {
+    "tema": "cortes",
+    "regla": "2. Corte cada 15 segundos en escenas largas y oscuras",
+    "ejemplo": "Como en Avatar: un plano cambia cada 15 segundos; se revisa con PySceneDetect para mantener ritmo.",
+    "cuando": "En escenas largas, sin acción rápida, donde el tiempo debe fluir naturalmente.",
+    "fuente": "10 fuentes"
+   },
+   {
+    "tema": "cortes",
+    "regla": "3. Corte cada 2 a 3 segundos en todo el video",
+    "ejemplo": "Promedio de 25–35 cortes por minuto; corte directo sin transiciones, como en videos de Ferdan.",
+    "cuando": "Desde inicio hasta final, especialmente en escenas dinámicas o de acción.",
+    "fuente": "10 fuentes"
+   },
+   {
+    "tema": "cortes",
+    "regla": "4. Corte más rápido en el gancho y desenlace",
+    "ejemplo": "En 0-1 min (gancho): 38 cortes por minuto; en 22–23 min (desenlace): también alto ritmo.",
+    "cuando": "Cuando se quiere captar atención al inicio o cerrar fuerte.",
+    "fuente": "10 fuentes"
+   },
+   {
+    "tema": "cortes",
+    "regla": "5. Corte cada 1.6 a 2 segundos en acción intensa",
+    "ejemplo": "En minutos 16, 19 y 24: hasta 48 cortes por minuto durante caídas o combates.",
+    "cuando": "Durante escenas de acción, caídas o impactos físicos.",
+    "fuente": "10 fuentes"
+   },
+   {
+    "tema": "cortes",
+    "regla": "6. Usa solo cortes directos sin transiciones especiales",
+    "ejemplo": "Solo cambios de plano sin efectos: mantienen claridad visual y ritmo.",
+    "cuando": "En cualquier momento, para evitar distracciones.",
+    "fuente": "10 fuentes"
+   },
+   {
+    "tema": "cortes",
+    "regla": "7. Cada 3 a 4 segundos en escenas lentas o oscuras",
+    "ejemplo": "Un plano de cueva dura casi 3 segundos; se corta cada 2–4 seg.",
+    "cuando": "En entornos oscuros, como cuevas o espacios sin acción.",
+    "fuente": "10 fuentes"
+   },
+   {
+    "tema": "cortes",
+    "regla": "8. Máximo 38 cortes por minuto en diálogos intensos",
+    "ejemplo": "En el minuto 18: 20 cortes en 60 segundos (38 por minuto) durante una discusión.",
+    "cuando": "Cuando hay diálogo rápido o conflicto emocional.",
+    "fuente": "10 fuentes"
+   },
+   {
+    "tema": "cortes",
+    "regla": "9. Pausas naturales del narrador cada 68–70 segundos",
+    "ejemplo": "Pausa de 1.3 segundos en 00:38, 01:45, etc.; se repite 26 veces.",
+    "cuando": "Cuando el narrador se calla o hace pausas naturales del habla.",
+    "fuente": "10 fuentes"
+   },
+   {
+    "tema": "cortes",
+    "regla": "10. Evita cortes relámpagos (menos de 0.4 segundos)",
+    "ejemplo": "Solo un corte relámpago en todo el video, como en video 3.",
+    "cuando": "En escenas con ritmo estable; no usarlos para mantener fluidez.",
+    "fuente": "10 fuentes"
+   }
+  ],
+  "efectos": [
+   {
+    "tema": "efectos",
+    "regla": "1. Usa efectos de voz solo en estallidos emocionales (rabia, tontura)",
+    "ejemplo": "El gato baja la voz: 'estoy hasta la pin—', luego se corta con un sonido fuerte.",
+    "cuando": "En cada estallido de rabia o cuando el personaje es tonto.",
+    "fuente": "8 fuentes"
+   },
+   {
+    "tema": "efectos",
+    "regla": "2. No uses efectos visuales extra (meme, clips ajenos)",
+    "ejemplo": "Ningún meme, clip ajeno o efecto no original.",
+    "cuando": "Para mantener fidelidad a la película original.",
+    "fuente": "8 fuentes"
+   },
+   {
+    "tema": "efectos",
+    "regla": "3. Aplica mosaico pixelado en rostros de casi todos los planos",
+    "ejemplo": "En 00:26, 00:28, 03:04 y 21:13, bloques de mosaico caen sobre ojos o boca.",
+    "cuando": "En la mayoría de los planos, especialmente en escenas con personajes.",
+    "fuente": "8 fuentes"
+   },
+   {
+    "tema": "efectos",
+    "regla": "4. Usa difuminado total para ocultar contenido sensible",
+    "ejemplo": "De 15:20 a 15:41, toda la imagen se difumina.",
+    "cuando": "Cuando hay escenas sensibles o para transiciones.",
+    "fuente": "8 fuentes"
+   },
+   {
+    "tema": "efectos",
+    "regla": "5. Usa planos espejados solo en momentos clave (créditos, elementos visuales)",
+    "ejemplo": "Los créditos se leen al revés: 'Directed by Ridley Scott' en 01:39; el manómetro y el letrero de 'Grand Junction' también.",
+    "cuando": "En escenas de créditos o elementos visuales clave.",
+    "fuente": "8 fuentes"
+   },
+   {
+    "tema": "efectos",
+    "regla": "6. Añade distorsión facial solo en escenas de humor o violencia",
+    "ejemplo": "Una cara se distorsiona en 29:37 para un chiste.",
+    "cuando": "Cuando hay una escena de humor o violencia.",
+    "fuente": "8 fuentes"
+   },
+   {
+    "tema": "efectos",
+    "regla": "7. Usa stickers graciosos para censurar desnudos sin pixelar",
+    "ejemplo": "Un sticker animado con lengua afuera tapa un desnudo.",
+    "cuando": "Cuando hay contenido íntimo que debe ocultarse pero no se vuelve serio.",
+    "fuente": "8 fuentes"
+   },
+   {
+    "tema": "efectos",
+    "regla": "8. Evita efectos animados (como fundidos con movimiento)",
+    "ejemplo": "Solo fundidos sin animación: dos planos seguidos y uno a blanco.",
+    "cuando": "En transiciones o cuando se quiere mantener simplicidad visual.",
+    "fuente": "8 fuentes"
+   },
+   {
+    "tema": "efectos",
+    "regla": "9. No mezcles mosaico con stickers para censura (mantiene coherencia)",
+    "ejemplo": "No usar pixelado + sticker en la misma escena.",
+    "cuando": "Para mantener consistencia visual y evitar confusión.",
+    "fuente": "8 fuentes"
+   },
+   {
+    "tema": "efectos",
+    "regla": "10. Prioriza fidelidad al original: solo cortes, textos y planos reales de la película",
+    "ejemplo": "No se añaden escenas o elementos no presentes en la película.",
+    "cuando": "En cualquier momento del resumen.",
+    "fuente": "8 fuentes"
+   }
+  ],
+  "estructura": [
+   {
+    "tema": "estructura",
+    "regla": "Estructura clara: gancho → presentación → agradecimiento → título → historia → cierre.",
+    "ejemplo": "00:21–00:36 es el 'por fin ha llegado' con actores y premisa.",
+    "cuando": "Desde el inicio hasta el final del video.",
+    "fuente": "video-5-enminutos"
+   },
+   {
+    "tema": "estructura",
+    "regla": "Empieza con una premisa en segunda persona: 'Imagina que decides ir a un viaje...'",
+    "ejemplo": "Ejemplo: 'Imagina que decides ir a un viaje…' antes de decir el título.",
+    "cuando": "En la apertura, al inicio del video.",
+    "fuente": "video-7-ferdan"
+   }
+  ],
+  "gancho": [
+   {
+    "tema": "gancho",
+    "regla": "1. Empieza con un diálogo original de la película (sin marca de agua), mostrado en plano real, para conectar al espectador.",
+    "ejemplo": "En 00:04 se muestra el plano de 01:12, como si fuera una escena clave. Ej: 'De rodillas ya' o 'Encajas en este mundo, Bangley…'",
+    "cuando": "Al inicio del video",
+    "fuente": "7 fuentes"
+   },
+   {
+    "tema": "gancho",
+    "regla": "2. Empieza con una pregunta retórica y premisa clara que genera curiosidad sobre la trama.",
+    "ejemplo": "¿Qué pasa cuando una niña empieza a sentirse sexualmente?",
+    "cuando": "En los primeros 24 segundos",
+    "fuente": "7 fuentes"
+   },
+   {
+    "tema": "gancho",
+    "regla": "3. Presenta el reparto y el tono en los primeros 30 segundos usando planos de toda la película.",
+    "ejemplo": "Dice: 'Jason Kelly, el chico de High School Musical...'",
+    "cuando": "Al inicio del video, antes de mostrar la tarjeta de título",
+    "fuente": "7 fuentes"
+   },
+   {
+    "tema": "gancho",
+    "regla": "4. Empieza con una premisa clara en 28 segundos y añade un chiste breve sobre el tono o estilo.",
+    "ejemplo": "00:09–00:37: presenta el viaje y dice 'Todo va a empezar con…'.",
+    "cuando": "Al inicio del video, antes de contar la historia",
+    "fuente": "7 fuentes"
+   },
+   {
+    "tema": "gancho",
+    "regla": "5. Usa planos de toda la película al inicio para dar una visión general sin revelar detalles.",
+    "ejemplo": "Muestra escenas clave en secuencia rápida (cortes relámpago) en los primeros segundos.",
+    "cuando": "Al inicio del resumen, antes de contar nada",
+    "fuente": "7 fuentes"
+   }
+  ],
+  "humor": [
+   {
+    "tema": "humor",
+    "regla": "Usa jerga peruana como 'manos', 'huevonazo' o 'la que se cree runner'.",
+    "ejemplo": "Dice 'uy contestó el essalud' o 'no ps que troste :c'.",
+    "cuando": "Cuando muestra caras de personajes o habla del personaje en primera persona.",
+    "fuente": "video-6-ferdan"
+   }
+  ],
+  "memes": [
+   {
+    "tema": "memes",
+    "regla": "1. Usa memes cortos y reconocidos (como Simpson o un perro bailando) para conectar con el público.",
+    "ejemplo": "Un perro bailando en 06:04 del video de 'Así pasó'.",
+    "cuando": "En tramos breves, como entre 3 a 5 segundos.",
+    "fuente": "3 fuentes"
+   },
+   {
+    "tema": "memes",
+    "regla": "2. Introduce memes breves y visuales (como un hombre de peluca roja o un programa de TV con disfraces) en momentos clave del relato.",
+    "ejemplo": "El hombre de peluca en 03:37 y el programa de TV en 12:01 del video de 'FerDAN'.",
+    "cuando": "En momentos clave del relato, no muy frecuentemente.",
+    "fuente": "3 fuentes"
+   },
+   {
+    "tema": "memes",
+    "regla": "3. Usa rótulos amarillos con nombres y apodos burlones para destacar personajes o momentos clave.",
+    "ejemplo": "Dice 'el delicioso' para hablar de algo bueno, sin exagerar.",
+    "cuando": "Cuándo menciona personajes o momentos clave.",
+    "fuente": "3 fuentes"
+   },
+   {
+    "tema": "memes",
+    "regla": "4. Pone música de fondo suave y constante que no interrumpa la narración.",
+    "ejemplo": "La música no se corta ni se vuelve fuerte en momentos clave.",
+    "cuando": "Todo el video, para mantener el ritmo tranquilo.",
+    "fuente": "3 fuentes"
+   },
+   {
+    "tema": "memes",
+    "regla": "5. Para censurar contenido sensible, usa un sticker gracioso en vez de borrarlo.",
+    "ejemplo": "Pone un sticker como '¡No se puede ver!' en lugar de borrar algo.",
+    "cuando": "Cuándo hay contenido sensible o que no debe mostrarse directamente.",
+    "fuente": "3 fuentes"
+   }
+  ],
+  "musica": [
+   {
+    "tema": "musica",
+    "regla": "1. No se usa música explícita ni efectos sonoros adicionales.",
+    "ejemplo": "El video no tiene música de fondo ni efectos sonoros; solo hay voz del narrador y el sonido original de la película.",
+    "cuando": "En todo momento del resumen, desde inicio hasta final.",
+    "fuente": "7 fuentes"
+   },
+   {
+    "tema": "musica",
+    "regla": "2. Se usa un sonido de fondo ligero y sin ritmo (como una canción de barrio suave), pero que no interfiera con el doblaje.",
+    "ejemplo": "El clip original tiene música baja y constante en todo momento, pero no domina la voz del narrador.",
+    "cuando": "Durante toda la narración mientras el narrador habla tranquilamente.",
+    "fuente": "7 fuentes"
+   },
+   {
+    "tema": "musica",
+    "regla": "3. El sonido de fondo debe estar por debajo del volumen de la voz del narrador (al menos 17 dB más bajo).",
+    "ejemplo": "El fondo queda a -37 dB, 17 dB por debajo de la voz.",
+    "cuando": "En todas las partes del video.",
+    "fuente": "7 fuentes"
+   },
+   {
+    "tema": "musica",
+    "regla": "4. El sonido de fondo debe ser natural y proveniente del original de la película (no añadido).",
+    "ejemplo": "El fondo es el sonido real de la película, sin música añadida.",
+    "cuando": "En todas las escenas, incluyendo acciones o diálogos.",
+    "fuente": "7 fuentes"
+   },
+   {
+    "tema": "musica",
+    "regla": "5. Si se usa sonido ambiental, debe ser solo el original del film y no modificado.",
+    "ejemplo": "El video utiliza solo el sonido ambiente de la película, sin superponer música ni efectos.",
+    "cuando": "En escenas de acción o diálogo.",
+    "fuente": "7 fuentes"
+   }
+  ],
+  "narracion": [
+   {
+    "tema": "narracion",
+    "regla": "El narrador habla sin pausas ni silencios largos (máximo 0.3 segundos), y dice todo el tiempo lo que pasa.",
+    "ejemplo": "Habla el 100% del tiempo, sin interrupciones ni respiraciones visibles.",
+    "cuando": "Desde el inicio hasta el final, sin pausas regulares.",
+    "fuente": "video-2-enminutos"
+   },
+   {
+    "tema": "narracion",
+    "regla": "Habla a 184 palabras por minuto, sin pausas regulares.",
+    "ejemplo": "Solo 9 pausas en 30 minutos; el 97% del tiempo tiene voz.",
+    "cuando": "Cuando quiere mantener fluidez y ritmo.",
+    "fuente": "video-6-ferdan"
+   },
+   {
+    "tema": "narracion",
+    "regla": "Habla a 186 palabras por minuto, sin pausas regulares, y usa muletillas como 'vemos que' o 'así que'.",
+    "ejemplo": "Dice 'vemos que' 101 veces en el video.",
+    "cuando": "El 98% del tiempo está hablando, solo 7 pausas.",
+    "fuente": "video-7-ferdan"
+   }
+  ],
+  "personaje": [
+   {
+    "tema": "personaje",
+    "regla": "1. Muestra el nombre del personaje en su primera aparición, con letras blancas gruesas y borde negro.",
+    "ejemplo": "Melinda a 00:20, Sheila a 01:05.",
+    "cuando": "Cuando el personaje entra o se muestra por primera vez.",
+    "fuente": "7 fuentes"
+   },
+   {
+    "tema": "personaje",
+    "regla": "2. Usa rótulos blancos gruesos con borde negro en momentos clave de la historia para identificar personajes.",
+    "ejemplo": "Ben (01:53), Aubrey (02:08), Alma (02,49).",
+    "cuando": "Cuando se menciona un personaje o hay una escena importante.",
+    "fuente": "7 fuentes"
+   },
+   {
+    "tema": "personaje",
+    "regla": "3. El narrador habla de forma neutral y directa, sin bromas ni emociones exageradas.",
+    "ejemplo": "No bromea, no usa frases divertidas; el tono es serio y objetivo.",
+    "cuando": "En todo momento del video, especialmente en tramos de exposición.",
+    "fuente": "7 fuentes"
+   },
+   {
+    "tema": "personaje",
+    "regla": "4. El narrador aparece en la esquina inferior (izquierda o derecha), con un fondo claro y sin tapar la imagen original.",
+    "ejemplo": "El chico de pelo rizado con polera negra y calavera, en la esquina inferior izquierda.",
+    "cuando": "En momentos clave: cuando hace comentarios largos o explica algo detallado.",
+    "fuente": "7 fuentes"
+   },
+   {
+    "tema": "personaje",
+    "regla": "5. El narrador tiene un 'cuarto' visual (como una pantalla) para hacer explicaciones más largas.",
+    "ejemplo": "Una pantalla en la esquina dice 'cuarto', y allí se explica algo detallado.",
+    "cuando": "Cuando se necesita explicar algo más largo o complejo.",
+    "fuente": "7 fuentes"
+   },
+   {
+    "tema": "personaje",
+    "regla": "6. El narrador hace una pausa de 1 a 2 segundos cada minuto, especialmente entre cambios de plano o escenas importantes.",
+    "ejemplo": "En los videos 3,4 y 5: hay pausas regulares entre planos.",
+    "cuando": "Cada vez que cambia de plano o se menciona algo clave.",
+    "fuente": "7 fuentes"
+   },
+   {
+    "tema": "personaje",
+    "regla": "7. Evita usar humor o reacciones exageradas al hablar del personaje.",
+    "ejemplo": "No hay memes, ni gestos dramáticos; el tono es objetivo y claro.",
+    "cuando": "En todo momento, especialmente en escenas de exposición.",
+    "fuente": "7 fuentes"
+   },
+   {
+    "tema": "personaje",
+    "regla": "8. Usa pausas breves (0.5 a 4 segundos) con un muñeco animado para dar humor sin hablar directamente.",
+    "ejemplo": "El muñeco se enoja, apunta o llora; dura entre 0.5 y 4 segundos.",
+    "cuando": "Para añadir humor sin romper el tono objetivo.",
+    "fuente": "7 fuentes"
+   },
+   {
+    "tema": "personaje",
+    "regla": "9. Los rótulos de personajes deben estar bien visibles: fondo oscuro, texto blanco, fuente gruesa.",
+    "ejemplo": "Rótulos en video 7 con fondo oscurecido; video 8 con rótulos amarillos (pero menos respaldado).",
+    "cuando": "En escenas clave o diálogos importantes.",
+    "fuente": "7 fuentes"
+   },
+   {
+    "tema": "personaje",
+    "regla": "10. Los rótulos solo se usan cuando el personaje está en pantalla o se menciona, no como decoración.",
+    "ejemplo": "Solo aparecen cuando hay diálogo o una acción clave del personaje.",
+    "cuando": "En momentos de aparición o interacción directa.",
+    "fuente": "7 fuentes"
+   }
+  ],
+  "sonido": [
+   {
+    "tema": "sonido",
+    "regla": "Pone música de fondo sin mencionarla (no se dice qué es).",
+    "ejemplo": "No hay descripción de música; solo se siente como ambiente.",
+    "cuando": "En todo el video, para dar tono.",
+    "fuente": "video-6-ferdan"
+   }
+  ],
+  "texto_pantalla": [
+   {
+    "tema": "texto_pantalla",
+    "regla": "1. Al inicio del video, muestra una tarjeta con título y frase de apertura como 'Esto es...' o 'Hoy vamos a sumergirnos en...'",
+    "ejemplo": "Tarjeta rosada «DIRTY GRANDPA» + frase: 'Esto es… un resumen de la vida de un abuelo raro'.",
+    "cuando": "Al inicio del video",
+    "fuente": "10 fuentes"
+   },
+   {
+    "tema": "texto_pantalla",
+    "regla": "2. En momentos clave, muestra frases cortas y impactantes en letras amarillas o rojas para resaltar lo importante que dice el personaje.",
+    "ejemplo": "'A VECES, LA VIDA ES UNA ZONA DE…'",
+    "cuando": "Cuando el personaje dice algo impactante o clave.",
+    "fuente": "10 fuentes"
+   },
+   {
+    "tema": "texto_pantalla",
+    "regla": "3. Cada vez que se presenta un personaje, muestra una tarjeta grande en blanco sobre fondo oscuro con solo su nombre.",
+    "ejemplo": "'MAX' aparece entre 00:53 y 01:13 con fondo oscuro.",
+    "cuando": "Al presentar cada uno de los amigos del grupo.",
+    "fuente": "10 fuentes"
+   },
+   {
+    "tema": "texto_pantalla",
+    "regla": "4. En tramos clave, muestra subtítulos animados de 2 a 4 palabras, una palabra resaltada en rojo o amarillo.",
+    "ejemplo": "Bloque: 'CASI ME MUERO' — con mayúsculas blancas gruesas y borde negro, al centro.",
+    "cuando": "En tramos del video, no todo el tiempo (hay bloques sin subtítulos).",
+    "fuente": "10 fuentes"
+   },
+   {
+    "tema": "texto_pantalla",
+    "regla": "5. Usa frases cortas en blanco arriba de imágenes cuando se muestra una expresión facial del personaje.",
+    "ejemplo": "'pt eres la kgada', 'adioooos xd' sobre primeros planos de rostros.",
+    "cuando": "Cuando muestra expresiones faciales del personaje.",
+    "fuente": "10 fuentes"
+   },
+   {
+    "tema": "texto_pantalla",
+    "regla": "6. Aparece una tarjeta grande con texto claro sobre imagen en momentos clave, como después del agradecimiento y antes de comenzar la historia.",
+    "ejemplo": "'LA GUERRA DE LOS ÚLTIMOS' en 01:04 — letras grises azuladas, 2 segundos, sin efectos animados.",
+    "cuando": "Después del agradecimiento y antes de comenzar la historia.",
+    "fuente": "10 fuentes"
+   },
+   {
+    "tema": "texto_pantalla",
+    "regla": "7. En momentos clave de la historia (como cambios de escena o saltos de tiempo), muestra tarjetas amarillas con frases como 'MÁS TARDE', 'YA MÁS TARDE' o 'EN ESE MOMENTO'.",
+    "ejemplo": "'EN ESE MOMENTO' en 05:32, antes de una escena clave.",
+    "cuando": "Cada vez que cambia escena o hay un salto de tiempo.",
+    "fuente": "10 fuentes"
+   },
+   {
+    "tema": "texto_pantalla",
+    "regla": "8. Usa listas fijas y desenfocadas en pantalla al inicio y al final del video para resaltar elementos clave.",
+    "ejemplo": "Lista de miembros desenfocada que pasa 18 segundos y luego 43 segundos al final.",
+    "cuando": "Al inicio (00:38–00:56) y al final.",
+    "fuente": "10 fuentes"
+   },
+   {
+    "tema": "texto_pantalla",
+    "regla": "9. Para marcar transiciones nocturnas, muestra elementos visuales repetidos como la luna en momentos clave.",
+    "ejemplo": "La luna aparece en 09:14, 16:41, etc., para indicar que pasa la noche.",
+    "cuando": "En momentos clave de la historia.",
+    "fuente": "10 fuentes"
+   },
+   {
+    "tema": "texto_pantalla",
+    "regla": "10. En tramos breves (por ejemplo, 2 segundos), muestra títulos en blanco sobre negro como 'BURN' o 'NOCHE INFERNAL' para captar atención.",
+    "ejemplo": "'BURN' en blanco sobre negro, aparece en 00:18 por 2 segundos.",
+    "cuando": "Al inicio del video para captar atención.",
+    "fuente": "10 fuentes"
+   }
+  ],
+  "voz": [
+   {
+    "tema": "voz",
+    "regla": "1. Ritmo de habla constante entre 180 y 220 palabras por minuto sin pausas largas.",
+    "ejemplo": "En el video 1, el narrador alcanza 221 palabras por minuto; en el video 5, 186. El ritmo se mantiene uniforme durante todo el resumen.",
+    "cuando": "Durante todo el resumen",
+    "fuente": "5 fuentes"
+   },
+   {
+    "tema": "voz",
+    "regla": "2. Usa un tono relajado y auténtico, como un gato panameño-peruano: tranquilo, con estallidos de groserías cortas y naturales.",
+    "ejemplo": "Dice 'el delicioso' para destacar algo bueno sin exagerar; es un tono personal que no se repite demasiado.",
+    "cuando": "Cuando el narrador expresa algo personal o subjetivo",
+    "fuente": "5 fuentes"
+   },
+   {
+    "tema": "voz",
+    "regla": "3. Cambia constantemente el tono: puede gritar, quejarse o bajar la voz para transmitir emoción.",
+    "ejemplo": "El narrador baja la voz al hablar en confianza y sube de volumen al decir algo impactante.",
+    "cuando": "En todo momento del resumen, especialmente en momentos clave",
+    "fuente": "5 fuentes"
+   },
+   {
+    "tema": "voz",
+    "regla": "4. Habla casi todo el tiempo (96–98% del tiempo), con pausas cortas y regulares de 1 a 2 segundos.",
+    "ejemplo": "El narrador se calla 23 veces en 1,7 segundos o 25 veces cada 64 segundos por 2,1 segundos; el fondo baja ligeramente (entre -13 dB y -32 dB).",
+    "cuando": "Durante todo el video, especialmente al cambiar de tema o explicar algo",
+    "fuente": "5 fuentes"
+   },
+   {
+    "tema": "voz",
+    "regla": "5. No aparece en imagen: solo su voz se escucha en la pista sonora.",
+    "ejemplo": "El narrador no está en cámara; solo su voz está presente, sin interrupciones visuales.",
+    "cuando": "En todo momento del video",
+    "fuente": "5 fuentes"
+   }
+  ],
+  "refuerzo": [
+   {
+    "tema": "refuerzo",
+    "regla": "¿En qué momento del video se alcanza la mayor cantidad de cortes por minuto? → En el minuto 18.",
+    "ejemplo": "(video-4-enminutos · Montaje) Entre 20 y 38 cortes por minuto; el pico (38) en el minuto 18, en una discusión con cortes muy rápidos.",
+    "cuando": "dato que había fallado",
+    "fuente": "video-4-enminutos"
+   },
+   {
+    "tema": "refuerzo",
+    "regla": "¿Qué elemento visual se muestra en el fragmento del video desde 00:33 hasta 00:50? → El texto \"ASIPASOO\" con íconos de redes sociales.",
+    "ejemplo": "(video-8-asi-paso · Lo que se deja fuera (no sirve para nuestra app)) Todo el video — Qué es: Logo «ASÍ PASO» negro y amarillo arriba a la derecha; de 00:33 a 00:50, además, «ASIPASOO» con íconos de redes abajo a la derecha",
+    "cuando": "dato que había fallado",
+    "fuente": "video-8-asi-paso"
+   },
+   {
+    "tema": "refuerzo",
+    "regla": "¿Cuál es el nombre del narrador que aparece en el video-8-asi-paso y qué característica visual lo identifica? → El narrador se llama 'mapache' y se identifica con una polera negra y pelo rizado.",
+    "ejemplo": "(video-8-asi-paso · Recursos visuales (vistos en las hojas)) Avatar del narrador distinto al de FERDAN: chico de pelo rizado con polera negra con calavera. Aparece:",
+    "cuando": "dato que había fallado",
+    "fuente": "video-8-asi-paso"
+   },
+   {
+    "tema": "refuerzo",
+    "regla": "¿Cuánto tiempo dura cada pausa del narrador en el video? → 1.1 segundos",
+    "ejemplo": "(video-1-enminutos · Sonido: pausas regulares del narrador) El narrador se calla 25 veces, cada 54 s aproximadamente, durante 1,1 s (01:06, 02:04, 02:54, 03:48…).",
+    "cuando": "dato que había fallado",
+    "fuente": "video-1-enminutos"
+   },
+   {
+    "tema": "refuerzo",
+    "regla": "¿Cuál de estos videos de referencia tiene el mayor número de clips cortos y rápidos que se usan para resumir la trama? → Babygirl (2024)",
+    "ejemplo": "(comparativa · Comparativa de videos de referencia) Película — Video 1: Burn (2019); Video 2: Babygirl (2024); Video 3: La Adolescente (1979); Video 4: Soulmate; Video 5: La guerra de los últimos; Video 6: Vertigo; Video 7: La boca del diablo; Video 8: Mi abuelo es un peligro (Dirty Grandpa)",
+    "cuando": "dato que había fallado",
+    "fuente": "comparativa"
+   },
+   {
+    "tema": "refuerzo",
+    "regla": "¿Quiénes son los actores que protagonizan 'La Guerra de los Últimos'? → Florentino, Diego, y Lucía.",
+    "ejemplo": "(video-5-enminutos · Estructura) 00:21–00:36 — Qué pasa: «Por fin ha llegado La guerra de los últimos», actores que la protagonizan y premisa",
+    "cuando": "dato que había fallado",
+    "fuente": "video-5-enminutos"
+   }
+  ]
+ }
+}

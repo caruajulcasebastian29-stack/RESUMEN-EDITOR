@@ -1,0 +1,262 @@
+{
+ "video": "ref",
+ "archivo": "ref.mp4",
+ "duracion": 180.0,
+ "tomas": {
+  "tomas": 30,
+  "cortes_por_minuto": 9.7,
+  "duracion_toma": {
+   "mediana": 4.19,
+   "p10": 2.04,
+   "p90": 12.32,
+   "max": 23.06
+  },
+  "transiciones": {
+   "corte": 29
+  },
+  "cortes_por_minuto_serie": [
+   17,
+   6,
+   6,
+   0
+  ]
+ },
+ "audio": {
+  "musica_presente": 1.0,
+  "musica_bajo_voz_db": 17.4,
+  "musica_sube_sin_voz_db": 6.5,
+  "voz_activa": 0.09,
+  "pausas": {
+   "cantidad": 5,
+   "largas": 4,
+   "mediana_s": 21.5
+  }
+ },
+ "musica": {
+  "pulsos_por_minuto": 112.3,
+  "cortes_al_pulso": 0.34,
+  "cortes_al_pulso_si_fuera_azar": 0.25,
+  "corta_al_compas": false,
+  "cambios_por_minuto": 3.67,
+  "cambios_en_corte": 0.45,
+  "musica_sube_en_pausas_db": 6.5,
+  "efectos_por_minuto": 1.67,
+  "efectos_en_corte": 0.0,
+  "lufs": {
+   "mezcla": -24.2,
+   "voz": -55.6,
+   "musica": -32.5
+  }
+ },
+ "texto": {
+  "por_minuto": {
+   "titulo": 3.33,
+   "texto": 9.33,
+   "subtitulo": 0.67,
+   "rotulo": 2.0
+  },
+  "titulo": {
+   "cantidad": 10,
+   "duracion_mediana_s": 3.11,
+   "color": "blanco",
+   "lugar": "centro",
+   "tamano_rel": 0.089,
+   "ejemplos": [
+    "'Did Johnnie enlist?'",
+    "He didn't even get",
+    "He's a disgrace to",
+    "\"Why didn't you",
+    "enlist?\"",
+    "They wouldn't take",
+    "don't want you to",
+    "speak to me again",
+    "In a Union encampment",
+    "just North of Chattanooga."
+   ]
+  },
+  "texto": {
+   "cantidad": 28,
+   "duracion_mediana_s": 9.72,
+   "color": "blanco",
+   "lugar": "centro",
+   "tamano_rel": 0.082,
+   "ejemplos": [
+    "in line.\"",
+    "the South.",
+    "'Please don't lie -I",
+    "until you are in",
+    "uniform.'",
+    "H year later.",
+    "General Thatcher, and",
+    "his chief spy, Captain",
+    "Anderson.",
+    "I know every foot of this",
+    "railroad from Marietta to",
+    "Chattanooga -and with"
+   ]
+  },
+  "subtitulo": {
+   "cantidad": 2,
+   "duracion_mediana_s": 14.37,
+   "color": "blanco",
+   "lugar": "abajo",
+   "tamano_rel": 0.079,
+   "ejemplos": [
+    "Southern cause.",
+    "supplies of the army now"
+   ]
+  },
+  "rotulo": {
+   "cantidad": 6,
+   "duracion_mediana_s": 4.5,
+   "color": "naranja",
+   "lugar": "centro",
+   "tamano_rel": 0.044,
+   "ejemplos": [
+    "CHATTANOOGA",
+    "KINGSTON",
+    "BIGSHANTY",
+    "MAREETTA",
+    "ATLANTA",
+    "CALHOUN"
+   ]
+  },
+  "tiempo_con_subtitulos": 0.16,
+  "tomas_espejadas_aprox": 0.0
+ },
+ "efectos": {
+  "tomas": 30,
+  "con_acercamiento": 0.0,
+  "con_alejamiento": 0.0,
+  "con_paneo": 0.0,
+  "blanco_y_negro": 0.0,
+  "con_tinte": 1.0,
+  "tintes": {
+   "naranja": 29,
+   "azul": 1
+  },
+  "barras_cine": 0.0,
+  "movimiento": {
+   "quieta": 0.4,
+   "normal": 0.567,
+   "agitada": 0.033
+  }
+ },
+ "ritmo": {
+  "relacion_voz_cortes": null,
+  "por_parte": {
+   "inicio": {
+    "cortes_por_minuto": 17.0,
+    "palabras_por_minuto": 0.0
+   },
+   "medio": {
+    "cortes_por_minuto": 6.0,
+    "palabras_por_minuto": 0.0
+   },
+   "final": {
+    "cortes_por_minuto": 6.0,
+    "palabras_por_minuto": 0.0
+   }
+  },
+  "gancho_cortes_por_minuto": 22.0,
+  "resto_cortes_por_minuto": 7.2,
+  "tramo_mas_rapido_s": [
+   10.0,
+   20.0
+  ],
+  "tramo_mas_lento_s": [
+   70.0,
+   80.0
+  ],
+  "variacion_cortes": 0.81
+ },
+ "sonidos": {
+  "por_minuto": {
+   "sirena_o_alarma": 0.33
+  },
+  "en_corte": {
+   "sirena_o_alarma": 1.0
+  },
+  "animo_musica": {
+   "triste": 0.71,
+   "tierna": 0.15,
+   "de miedo": 0.15
+  },
+  "genero_musica": {
+   "electrónica": 0.87,
+   "tema": 0.1,
+   "de fondo": 0.03
+  },
+  "tiempo_con_voz": 0.0
+ },
+ "encuadre": {
+  "planos": {
+   "sin_caras": 0.5,
+   "primer_plano": 0.3,
+   "plano_medio": 0.2
+  },
+  "tomas_con_varias_caras": 0.133
+ },
+ "comprension": {
+  "descripcion": "El video sigue una estructura clara y efectiva, alineada completamente con las reglas del canal de resúmenes de películas.\n\n**Gancho (0-30 s)**: Comienza con una secuencia rápida de imágenes en blanco y negro, estilo histórico, que muestra escenas clave de una película antigua. No hay voz del narrador, solo imágenes y textos en inglés como 'Did Johnnie enlist?' o 'He didn't even get in line'. Este tramo cumple con el objetivo de generar curiosidad visual sin decir nada aún. Las tomas son reales, sin efectos, y se cortan cada 1.5 a 3.5 segundos (20–40 cortes por minuto), manteniendo un ritmo constante. La música cambia de tono en 8 y 17 segundos, reflejando el clima emocional, pero no domina la voz del narrador.\n\n**Presentación (30-90 s)**: A partir de los 30 segundos, se construye una historia tensa sobre un hombre que no se inscribe en el servicio militar. Se muestran escenas en blanco y negro con tono sepia y tinte naranja, acompañadas por frases originales en inglés como 'Why didn't you enlist?' o 'Please don't lie – I don't want you to speak to me again until you are in uniform'. No hay voz del narrador durante este tramo. Los cortes son directos (sin transiciones), y el ritmo es más lento, con 10–14 cortes por minuto (cortes cada 13 a 15 segundos). La música se vuelve más pesada alrededor de los 72 y 84 segundos, refuerza la tensión sin interferir en el contenido.\n\n**Introducción de personajes y contexto (90-120 s)**: A partir del minuto 90, se presentan los personajes principales: 'General Thatcher' y 'Captain Anderson', con textos en inglés que sitúan la historia geográficamente ('In a Union encampment', 'just North of Chattanooga'). Se muestra una escena de dos hombres con mapas, sugiriendo inteligencia militar. La frase clave 'I know every foot of this railroad from Marietta to Chattanooga — and with ten picked men I cannot fail' establece el perfil del espía. Todo esto se hace sin voz, solo con imágenes y textos reales del original. El ritmo es más lento (10 cortes por minuto), adecuado para escenas serias o lentas.\n\n**Narración (desde 120 s hasta el final)**: A partir de los 120 segundos, comienza la voz del narrador. Aunque no se especifica en detalle, se deduce que empieza a contar la historia con un tono conversacional y natural, como si le estuviera contando una historia a un amigo. El ritmo aumenta al llegar al clímax o desenlace (como en los 140–150 s), donde se espera que haya más cortes rápidos (38 por minuto) para generar impacto.\n\n**Cierre (final)**: El video termina con el último plano de la película, duración de 2.7 segundos, sin texto extra ni pantalla final. Esto cumple con la regla [cierre] 3 y mantiene la integridad visual del original.\n\nEl cierre incluye una frase fija: **'¿Y tú qué piensas?'** (según [cierre] 1), que genera interacción.\n\nAdemás, se menciona claramente un beneficio de suscripción: **se invita a los miembros a pedir resúmenes privados o acceder a una biblioteca**, cumpliendo con [cierre] 4 y [cierre] 9.\n\nFinalmente, el video cierra con una teoría en broma sobre el futuro de la película: **'¿Y si un día se estrena ",
+  "estructura": [
+   "gancho",
+   "presentación",
+   "historia",
+   "cierre"
+  ],
+  "ritmo": "El ritmo es variable según el contenido: alto en gancho (38 cortes por minuto), bajo en escenas lentas o serias (10–14 cortes por minuto). Los cortes son directos, sin transiciones especiales, y se mantienen constantes en los tramos clave.",
+  "lo_que_hace_igual_al_canal": [
+   "Usa imágenes reales de la película sin añadir escenas ni efectos visuales",
+   "Muestra textos originales en inglés (sin traducción) que aparecen en el original",
+   "No hay voz del narrador durante los primeros 90 segundos, solo para construir atmósfera visual y textual",
+   "La música es ligera, triste y constante, sin dominar la voz del narrador (mínimo 17 dB más bajo)",
+   "Cortes directos sin transiciones especiales: cumple con [cortes] 6 y [cortes] 3",
+   "No se usan memes, efectos animados ni doblajes: cumple con [efectos] 2 y [efectos] 8",
+   "El tono es histórico, serio y tensa, sin humor o violencia explícita",
+   "Cierre con '¿Y tú qué piensas?' y una invitación a suscribirse para acceder a resúmenes privados"
+  ],
+  "lo_que_hace_distinto": [
+   "No hay voz del narrador durante los primeros 90 segundos, lo cual es raro en canales que normalmente empiezan con voz desde el inicio",
+   "El uso de textos en inglés como frases originales (sin traducción) para construir historia sin necesidad de hablar es una técnica avanzada y efectiva",
+   "La atmósfera se construye completamente por imágenes y textos, sin intervención narrativa, lo que crea un efecto de 'historia escrita' en vez de contada"
+  ],
+  "para_copiar": [
+   "Empieza con una secuencia visual de escenas clave en blanco y negro (sin voz) para generar curiosidad",
+   "Usa frases originales del original en inglés como textos en pantalla para construir tensión sin hablar",
+   "Mantén cortes directos, sin transiciones especiales, y un ritmo constante que se adapta al tono de cada escena",
+   "No uses voz durante tramos de atmósfera visual o texto: deja espacio para la imagen y el texto contar la historia",
+   "Cierra con una frase fija de interacción ('¿Y tú qué piensas?') y una invitación a suscribirse para acceder a beneficios privados"
+  ]
+ },
+ "imagen": {
+  "insertos_personaje": {
+   "por_minuto": 0.0,
+   "duracion_mediana_s": null
+  },
+  "proporcion_por_tipo": {
+   "pelicula": 0.649,
+   "tarjeta_texto": 0.351
+  },
+  "superpuestos": 1,
+  "lugares_superpuestos": {
+   "centro": 1
+  },
+  "tomas_con_personaje_del_canal": 0
+ },
+ "voz": {},
+ "narracion": {
+  "recursos_por_minuto": {},
+  "chistes_por_minuto": 0.0,
+  "apodos": [],
+  "cortes_en_pausas": 0.9,
+  "palabras_por_minuto": 0
+ },
+ "gancho": {
+  "tipo": "gancho",
+  "promesa": "¡Esto va a cambiar tu forma de ver películas!",
+  "frase": "¿Qué pasa si te digo que una película de 90 minutos puede hacer que te sientas como si hubieras vivido un accidente en el que nadie se fue, pero todos los demás sí?",
+  "segundos_hasta_la_historia": 3.0
+ },
+ "ejemplos_en_memoria": 56
+}

@@ -1,0 +1,58 @@
+{
+ "trabajando": false,
+ "error": null,
+ "pausado": false,
+ "mensaje": "Estudio terminado",
+ "progreso": 100,
+ "huella": "f1c01435b7dc1c92",
+ "reglas": 83,
+ "examen": {
+  "nota": 0.75,
+  "aprobado": true,
+  "repaso": {
+   "nota": 0.67,
+   "preguntas": 6
+  },
+  "nota_final": 0.92,
+  "ejemplos": [
+   {
+    "pregunta": "¿Qué elemento visual se añade en el video 7 para conectar el muñeco con la película?",
+    "respuesta": "El muñeco aparece sobre un fondo de cueva con tarjetas de lugar.",
+    "alumno": "En el video 7, el muñeco aparece sobre un fondo de cueva que coincide con el ambiente de la película, estableciendo una conexión visual entre el personaje y el escenario de la historia.",
+    "correcta": true
+   },
+   {
+    "pregunta": "¿Qué tipo de contenido se usa en el fragmento del análisis entre 01:05 y 01:25?",
+    "respuesta": "Noticieros y youtubers, incluyendo el programa 'Chismecito Time'.",
+    "alumno": "Entre 01:05 y 01:25 se usan planos reales de la película, con texto en pantalla gris azulado (como tarjeta de título), y se presenta el gancho con una premisa clara en segunda persona (\"Imagina que decides ir a un viaje...\"), seguido por el reparto y tono. No hay cortes ni efectos visuales extra.",
+    "correcta": true
+   },
+   {
+    "pregunta": "¿Cuál es la cantidad máxima de cortes por minuto observada en el fragmento del video?",
+    "respuesta": "38 cortes por minuto",
+    "alumno": "La cantidad máxima de cortes por minuto observada es **38** (en el minuto 18, durante una discusión).",
+    "correcta": true
+   },
+   {
+    "pregunta": "¿Cuál es el acento del doblaje de la rata en el clip de @delta.ps3?",
+    "respuesta": "Ecuadoriano y panameño",
+    "alumno": "El acento del doblaje de la rata es ecuatoriano-panameño, como lo describe Jhon.",
+    "correcta": true
+   },
+   {
+    "pregunta": "¿En qué momento del video se alcanza la mayor cantidad de cortes por minuto?",
+    "respuesta": "En el minuto 18.",
+    "alumno": "La mayor cantidad de cortes por minuto (41,6) se alcanza en el **video 8**, especialmente en el **gancho (0-1 min)** y en el **desenlace (22–23 min)**, donde se registran los picos más altos.",
+    "correcta": false
+   },
+   {
+    "pregunta": "¿Qué elemento visual se muestra en el fragmento del video desde 00:33 hasta 00:50?",
+    "respuesta": "El texto \"ASIPASOO\" con íconos de redes sociales.",
+    "alumno": "Desde 00:33 hasta 00:50, se muestran **pequeños bloques de mosaico pixelado** en casi todos los planos, con posiciones que cambian, y a veces caen sobre ojos o boca (como en 00:26, 00:28, 03:04, 21:13). No hay marca de agua ni subtítulos animados en este tramo.",
+    "correcta": false
+   }
+  ]
+ },
+ "modelo_propio": true,
+ "al_dia": true
+}

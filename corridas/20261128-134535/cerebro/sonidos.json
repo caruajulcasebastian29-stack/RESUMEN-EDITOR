@@ -1,0 +1,30 @@
+{
+ "eventos": [
+  {
+   "tipo": "sirena_o_alarma",
+   "inicio": 177.0,
+   "fin": 179.0,
+   "fuerza": 0.19,
+   "en_corte": true
+  }
+ ],
+ "resumen": {
+  "por_minuto": {
+   "sirena_o_alarma": 0.33
+  },
+  "en_corte": {
+   "sirena_o_alarma": 1.0
+  },
+  "animo_musica": {
+   "triste": 0.71,
+   "tierna": 0.15,
+   "de miedo": 0.15
+  },
+  "genero_musica": {
+   "electrónica": 0.87,
+   "tema": 0.1,
+   "de fondo": 0.03
+  },
+  "tiempo_con_voz": 0.0
+ }
+}

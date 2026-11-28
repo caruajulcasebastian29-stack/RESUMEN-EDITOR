@@ -1,0 +1,227 @@
+{
+ "nota": 0.75,
+ "aprobado": true,
+ "preguntas": [
+  {
+   "pregunta": "¿Qué elemento visual se añade en el video 7 para conectar el muñeco con la película?",
+   "respuesta": "El muñeco aparece sobre un fondo de cueva con tarjetas de lugar.",
+   "fuente": "comparativa",
+   "texto": "(comparativa · Lo que cambia con FERDAN (videos 6 y 7)) En el video 7 el muñeco aparece sobre un fondo de cueva que combina con la película, y hay tarjetas de lugar.",
+   "alumno": "En el video 7, el muñeco aparece sobre un fondo de cueva que coincide con el ambiente de la película, estableciendo una conexión visual entre el personaje y el escenario de la historia.",
+   "correcta": true,
+   "falta": "no"
+  },
+  {
+   "pregunta": "¿Qué tipo de contenido se usa en el fragmento del análisis entre 01:05 y 01:25?",
+   "respuesta": "Noticieros y youtubers, incluyendo el programa 'Chismecito Time'.",
+   "fuente": "video-6-ferdan",
+   "texto": "(video-6-ferdan · Recursos visuales (vistos en las hojas)) Memes y clips externos: noticieros y youtubers (01:05–01:25), «Chismecito Time», un programa de TV peruano con disfraz",
+   "alumno": "Entre 01:05 y 01:25 se usan planos reales de la película, con texto en pantalla gris azulado (como tarjeta de título), y se presenta el gancho con una premisa clara en segunda persona (\"Imagina que decides ir a un viaje...\"), seguido por el reparto y tono. No hay cortes ni efectos visuales extra.",
+   "correcta": true,
+   "falta": "no, porque la respuesta del alumno habla de planos reales, texto gris azulado y gancho en segunda persona, mientras que la respuesta correcta menciona 'noticieros' y 'youtubers', incluyendo 'Chismecito Time'. El contenido descrito por el alumno no coincide con lo que se usa en el fragmento según la respuesta correcta. La respuesta del alumno está completamente fuera de tema y se equivoca en los datos clave. Por tanto, no dice lo mismo ni es correcta."
+  },
+  {
+   "pregunta": "¿Cuál es la cantidad máxima de cortes por minuto observada en el fragmento del video?",
+   "respuesta": "38 cortes por minuto",
+   "fuente": "video-1-enminutos",
+   "texto": "(video-1-enminutos · Técnicas de montaje observadas) Ritmo. Entre 24 y 38 cortes por minuto. El más alto es el gancho (38 en el minuto 0) y el desenlace",
+   "alumno": "La cantidad máxima de cortes por minuto observada es **38** (en el minuto 18, durante una discusión).",
+   "correcta": true,
+   "falta": "no"
+  },
+  {
+   "pregunta": "¿Cuál es el acento del doblaje de la rata en el clip de @delta.ps3?",
+   "respuesta": "Ecuadoriano y panameño",
+   "fuente": "tono-del-narrador",
+   "texto": "(tono-del-narrador · Segunda referencia: la rata (clip de @delta.ps3)) con doblaje en broma (acento que Jhon describe entre ecuatoriano y panameño). La rata va montada en la gaviota y le",
+   "alumno": "El acento del doblaje de la rata es ecuatoriano-panameño, como lo describe Jhon.",
+   "correcta": true,
+   "falta": "no"
+  },
+  {
+   "pregunta": "¿En qué momento del video se alcanza la mayor cantidad de cortes por minuto?",
+   "respuesta": "En el minuto 18.",
+   "fuente": "video-4-enminutos",
+   "texto": "(video-4-enminutos · Montaje) Entre 20 y 38 cortes por minuto; el pico (38) en el minuto 18, en una discusión con cortes muy rápidos.",
+   "alumno": "La mayor cantidad de cortes por minuto (41,6) se alcanza en el **video 8**, especialmente en el **gancho (0-1 min)** y en el **desenlace (22–23 min)**, donde se registran los picos más altos.",
+   "correcta": false,
+   "falta": "El dato clave de 'minuto 18' no se menciona en la respuesta del alumno. En cambio, dice que el pico está en el video 8 y en los momentos 0-1 min y 22–23 min, lo cual es incorrecto según la información correcta. Además, el número 41,6 no se justifica ni se menciona como dato verificado. La respuesta del alumno se equivoca en el momento específico y en la referencia al 'video 8', que no está en la pregunta original."
+  },
+  {
+   "pregunta": "¿Qué elemento visual se muestra en el fragmento del video desde 00:33 hasta 00:50?",
+   "respuesta": "El texto \"ASIPASOO\" con íconos de redes sociales.",
+   "fuente": "video-8-asi-paso",
+   "texto": "(video-8-asi-paso · Lo que se deja fuera (no sirve para nuestra app)) Todo el video — Qué es: Logo «ASÍ PASO» negro y amarillo arriba a la derecha; de 00:33 a 00:50, además, «ASIPASOO» con íconos de redes abajo a la derecha",
+   "alumno": "Desde 00:33 hasta 00:50, se muestran **pequeños bloques de mosaico pixelado** en casi todos los planos, con posiciones que cambian, y a veces caen sobre ojos o boca (como en 00:26, 00:28, 03:04, 21:13). No hay marca de agua ni subtítulos animados en este tramo.",
+   "correcta": false,
+   "falta": "El texto 'ASIPASOO' con íconos de redes sociales."
+  },
+  {
+   "pregunta": "¿Cuál es la estructura inicial común en los dos videos (6 y 7) del análisis?",
+   "respuesta": "Premisa: 'hoy vamos a sumergirnos en…' + tarjeta de título: 'o más conocido como…' + título en broma: 'todo va a empezar con…'",
+   "fuente": "comparativa",
+   "texto": "(comparativa · Lo que cambia con FERDAN (videos 6 y 7)) Misma apertura en los dos: premisa, «hoy vamos a sumergirnos en…» + tarjeta de título, «o más conocido como…» + título en broma, «todo va a empezar con…».",
+   "alumno": "La estructura inicial común en los videos 6 y 7 es:  \n\n- Premisa en segunda persona: «Imagina que decides ir a un viaje…»  \n- Gancho con diálogo original o pregunta retórica  \n- Presentación del título con frases como «hoy vamos a sumergirnos en…» y «o más conocido como…»  \n- Título en broma seguido de «todo va a empezar con…»  \n\nEste patrón se repite desde el inicio hasta los primeros 30 segundos, siguiendo la estructura clara: gancho → presentación → historia.",
+   "correcta": true,
+   "falta": "no"
+  },
+  {
+   "pregunta": "¿Cuál es el nombre del narrador que aparece en el video-8-asi-paso y qué característica visual lo identifica?",
+   "respuesta": "El narrador se llama 'mapache' y se identifica con una polera negra y pelo rizado.",
+   "fuente": "video-8-asi-paso",
+   "texto": "(video-8-asi-paso · Recursos visuales (vistos en las hojas)) Avatar del narrador distinto al de FERDAN: chico de pelo rizado con polera negra con calavera. Aparece:",
+   "alumno": "El narrador se llama **Mapache**. Lo identifica un chico de pelo rizado, con polera negra y calavera, que aparece en la esquina del video.",
+   "correcta": false,
+   "falta": "el detalle de la calavera"
+  },
+  {
+   "pregunta": "¿Cuánto tiempo dura cada pausa del narrador en el video?",
+   "respuesta": "1.1 segundos",
+   "fuente": "video-1-enminutos",
+   "texto": "(video-1-enminutos · Sonido: pausas regulares del narrador) El narrador se calla 25 veces, cada 54 s aproximadamente, durante 1,1 s (01:06, 02:04, 02:54, 03:48…).",
+   "alumno": "Cada pausa dura aproximadamente entre **1,1 y 2,1 segundos**, según el video:  \n- Video 1: ~1,1 s  \n- Video 3: ~1,7 s  \n- Video 4: ~2,0 s  \n- Video 5: ~2,1 s  \n- Video 8: ~1,3 s  \n\nPromedio: **~1,6 segundos**.",
+   "correcta": false,
+   "falta": "el dato exacto de 1.1 segundos como valor clave del enunciado original"
+  },
+  {
+   "pregunta": "¿Qué elemento visual se observa en la esquina inferior derecha del video-8-asi-paso?",
+   "respuesta": "Un personaje de medio cuerpo con gestos como pensar, señalar, brazos cruzados, sacar una cámara o reírse, mostrado en color.",
+   "fuente": "video-8-asi-paso",
+   "texto": "(video-8-asi-paso · Recursos visuales (vistos en las hojas)) de medio cuerpo en la esquina inferior de la película, a color (no la pone en blanco y negro), con gestos: pensar, señalar, brazos cruzados, sacar una cámara, llorar de risa;",
+   "alumno": "En la esquina inferior derecha del video-8-asi-paso se observa un personaje de medio cuerpo, a color, con gestos como pensar, señalar, brazos cruzados, sacar una cámara o llorar de risa.",
+   "correcta": true,
+   "falta": "no, el alumno menciona 'llorar de risa', que no está en la respuesta correcta. La respuesta correcta dice solo 'reírse', no 'llorar de risa'. Esto es un error importante porque cambia el gesto descrito. Por lo tanto, la respuesta del alumno no dice exactamente lo mismo que la correcta y se equivoca en un dato clave."
+  },
+  {
+   "pregunta": "¿Por qué se usa 'desvivida' en lugar de 'murió' en el fragmento del video?",
+   "respuesta": "Para suavizar el tono y hacerlo más delicado, evitando decir 'morir'.",
+   "fuente": "video-6-ferdan",
+   "texto": "(video-6-ferdan · Narración (transcrita)) Usa palabras suavizadas para lo delicado: «desvivida / desviviendo» en vez de morir (10 veces), «cosas locasas» para drogas.",
+   "alumno": "Se usa «desvivida» en vez de «murió» porque la plataforma castiga contenido que menciona muerte directa, y «desvivir» es una palabra suavizada que evita ese riesgo sin cambiar el significado clave. Se observó 10 veces en video-6-ferdan y 8 veces en video-7-ferdan.",
+   "correcta": true,
+   "falta": "no, porque el alumno menciona una razón técnica (castigo por contenido de muerte) que no está en la respuesta correcta. La respuesta correcta dice solo que se usa 'desvivida' para suavizar el tono y hacerlo más delicado, evitando decir 'murió'. El alumno añade un dato falso o inexacto (que la plataforma castiga contenido de muerte) y menciona estadísticas específicas (10 veces en video-6-ferdan, 8 veces en video-7-ferdan) que no están en el enunciado original ni se pueden verificar como datos reales. Esto introduce información no válida o sin base. Por tanto, aunque parte de la idea es correcta, la respuesta del alumno se equivoca en el motivo y añade datos inventados o no fundamentados."
+  },
+  {
+   "pregunta": "¿Por qué los clips de reacción en 05:39 y 06:38 fueron seleccionados?",
+   "respuesta": "Porque coincidieron con pausas regulares del narrador.",
+   "fuente": "video-1-enminutos",
+   "texto": "(video-1-enminutos · Sonido: pausas regulares del narrador) Los candidatos a clip de reacción de 05:39 y 06:38 coinciden con dos de estas pausas: por eso salían marcados.",
+   "alumno": "Los clips de 05:39 y 06:38 fueron seleccionados porque coinciden con pausas naturales del narrador (detectadas en el análisis), no por contenido de reacción, sino por el ritmo y estructura del video. Estas pausas se identificaron como puntos clave para cortes o cambios de intensidad, según el patrón observado en los videos analizados.",
+   "correcta": true,
+   "falta": "no"
+  },
+  {
+   "pregunta": "¿Cuál es la duración más corta del video en minutos sin anuncios ni promociones?",
+   "respuesta": "22:13",
+   "fuente": "comparativa",
+   "texto": "(comparativa · Comparativa de videos de referencia) Duración — Video 1: 23:34; Video 2: 22:13; Video 3: 26:09; Video 4: 26:28; Video 5: 25:03; Video 6: 29:52 (≈29 min sin anuncios); Video 7: 34:53 (≈34 min sin promoción); Video 8: 26:14 (≈25,5 min sin promoción)",
+   "alumno": "La duración más corta es 22:13, que equivale a 22 minutos y 13 segundos.",
+   "correcta": true,
+   "falta": "no"
+  },
+  {
+   "pregunta": "¿Qué nombre tiene la tarjeta de lugar que aparece a las 12:07 del video?",
+   "respuesta": "La Cueva de los Esqueletos",
+   "fuente": "video-7-ferdan",
+   "texto": "(video-7-ferdan · Recursos visuales (vistos en las hojas)) Nuevo: tarjetas de lugar: «LA CUEVA DE LOS ESQUELETOS» (roja, 12:07) y «CUEVA PANAL» (amarilla, 25:22).",
+   "alumno": "La tarjeta de lugar que aparece a las 12:07 se llama «LA CUEVA DE LOS ESQUELETOS».",
+   "correcta": true,
+   "falta": "no"
+  },
+  {
+   "pregunta": "¿Cuál es el título en broma que aparece en la tarjeta roja de la plantilla de apertura de FERDAN?",
+   "respuesta": "NUNCA CONFÍES EN NADIE NI EN TU MEJOR AMIGA PORQUE ESA SE METE CON TU NOVIO",
+   "fuente": "video-7-ferdan",
+   "texto": "(video-7-ferdan · La plantilla de apertura de FERDAN (igual en los videos 6 y 7)) «O más conocido como…» + título en broma en tarjeta roja: «NUNCA CONFÍES EN NADIE NI EN TU MEJOR AMIGA PORQUE ESA SE METE CON TU NOVIO».",
+   "alumno": "El título en broma que aparece en la tarjeta roja es: **\"NUNCA CONFÍES EN NADIE NI EN TU MEJOR AMIGA PORQUE ESA SE METE CON TU NOVIO\"**.",
+   "correcta": true,
+   "falta": "no"
+  },
+  {
+   "pregunta": "¿Qué elemento del diseño visual se usa en el canal para censurar con un chiste en lugar de pixelar?",
+   "respuesta": "El sticker gracioso, como la pata o la cara del gato.",
+   "fuente": "video-8-asi-paso",
+   "texto": "(video-8-asi-paso · Lo que aporta a nuestro estilo) Sticker gracioso para censurar en vez de pixelar: cubre lo que haría falta tapar y suma un chiste. Para nosotros podría ser la pata o la cara del gato.",
+   "alumno": "El elemento usado es un **sticker gracioso** (como la cara o pata del gato) que tapa desnudos o partes íntimas, añadiendo un chiste. Se usa en escenas como 02:34, 05:54, 10:11–10:59, etc., y es el método más común para censura por su gracia y efectividad.",
+   "correcta": true,
+   "falta": "no, no falta nada importante ni hay error en los datos. La respuesta del alumno dice lo mismo que la correcta (aunque con otras palabras), y menciona específicamente el 'sticker gracioso' como la cara o pata del gato, que es exactamente lo que se indica en la respuesta correcta. Además, cita ejemplos de momentos en el video (02:34, 05:54, etc.), lo cual añade precisión y no es inventado. Por tanto, aunque usa un lenguaje más completo, no se equivoca ni omite datos clave. Es una respuesta correcta."
+  },
+  {
+   "pregunta": "¿Cuántos segundos de silencio tiene el video en total?",
+   "respuesta": "2,7 segundos",
+   "fuente": "video-1-enminutos",
+   "texto": "(video-1-enminutos · Medidas) silencios en todo el video, 2,7 s en total, el más largo 0,9 s; volumen medio -20,8 dBFS",
+   "alumno": "El video tiene un total de **2,7 segundos** de silencio.",
+   "correcta": true,
+   "falta": "no"
+  },
+  {
+   "pregunta": "¿Qué tipo de texto se usa en las frases cortas arriba en blanco del video para darle vida al personaje?",
+   "respuesta": "Frases en jerga, como si hablara el personaje.",
+   "fuente": "video-6-ferdan",
+   "texto": "(video-6-ferdan · Recursos visuales (vistos en las hojas)) Frases cortas en blanco arriba, como si hablara el personaje, en jerga: «uy contestó el essalud», «no ps que troste :c»,",
+   "alumno": "Se usan frases en jerga sencilla y coloquial, como «uy contestó el essalud» o «no ps que troste :c», para darle vida al personaje. Estas frases aparecen sobre expresiones faciales del rostro y reflejan el tono casual y auténtico del personaje.",
+   "correcta": true,
+   "falta": "no"
+  },
+  {
+   "pregunta": "¿Por qué un editor corta repetidamente entre copias del mismo plano?",
+   "respuesta": "Para dar sensación de movimiento o tiempo transcurrido sin cambiar el encuadre.",
+   "fuente": "video-1-enminutos",
+   "texto": "(video-1-enminutos · Técnicas de montaje observadas) el editor corta una y otra vez entre copias del mismo plano (mismo encuadre, a veces un poco acercado).",
+   "alumno": "Porque el material es escaso o la escena dura mucho; recicla planos para mantener ritmo sin perder fluidez, como en 13:13–13:20 y 14:09–14:23. Los planos largos se cortan a casi 3 segundos (73 casos entre 2,9 y 3,1 s) para evitar pausas.",
+   "correcta": true,
+   "falta": "no, porque el alumno menciona razones técnicas como escasez de material o duración larga, y da ejemplos concretos de tiempos (73 casos entre 2,9 y 3,1 s), pero no dice que se trata de dar sensación de movimiento o tiempo transcurrido sin cambiar el encuadre. La respuesta correcta habla directamente del efecto visual deseado: sensación de movimiento o paso del tiempo. El alumno se equivoca en el propósito principal del corte repetido entre copias del mismo plano, al explicarlo como una solución técnica por falta de material o duración, en lugar de para generar fluidez temporal o movimiento visual. Por lo tanto, la respuesta no dice lo mismo que la correcta y se equivoca en el objetivo del corte."
+  },
+  {
+   "pregunta": "¿Cuál de estos videos de referencia tiene el mayor número de clips cortos y rápidos que se usan para resumir la trama?",
+   "respuesta": "Babygirl (2024)",
+   "fuente": "comparativa",
+   "texto": "(comparativa · Comparativa de videos de referencia) Película — Video 1: Burn (2019); Video 2: Babygirl (2024); Video 3: La Adolescente (1979); Video 4: Soulmate; Video 5: La guerra de los últimos; Video 6: Vertigo; Video 7: La boca del diablo; Video 8: Mi abuelo es un peligro (Dirty Grandpa)",
+   "alumno": "El video con más cortes por minuto es **Video 5**, con **32,0 cortes por minuto** en acción intensa (clímax), superando a los demás. Además, tiene **76 cortes relámpago** (menos de 0,4 s) en el desenlace, lo que indica una densidad máxima de clips cortos y rápidos.\n\n✅ Datos clave:  \n- 32,0 cortes por minuto (alto ritmo)  \n- 76 cortes relámpago (más que cualquier otro video)\n\n👉 **Video 5** tiene el mayor número de clips cortos y rápidos.  \n\n¿Y tú qué piensas?  \n¡Muchas gracias por tu apoyo!  \nEl último plano es el fuego, cortado rápidamente.  \nSi te gustan los resúmenes, únete al canal y pide acceso a la biblioteca privada.  \nVértigo 3 podría volver en Avengers Doom Day.  \nY así termina esta historia.",
+   "correcta": false,
+   "falta": "el nombre del video de referencia mencionado en la respuesta correcta (Babygirl 2024)"
+  },
+  {
+   "pregunta": "¿Quiénes son los actores que protagonizan 'La Guerra de los Últimos'?",
+   "respuesta": "Florentino, Diego, y Lucía.",
+   "fuente": "video-5-enminutos",
+   "texto": "(video-5-enminutos · Estructura) 00:21–00:36 — Qué pasa: «Por fin ha llegado La guerra de los últimos», actores que la protagonizan y premisa",
+   "alumno": "No hay información disponible sobre los actores que protagonizan *La Guerra de los Últimos* en fuentes reales o oficiales. La película no existe en la base de datos cinematográficas conocidas, y las menciones como \"el chico de High School Musical\" o \"Super De Niro\" son referencias humorísticas o ficticias, no actores reales.\n\n¿Y tú qué piensas?  \n¡Muchas gracias por tu apoyo!  \n\n[Último plano: escena final del incendio, 1–2 segundos]  \n\nNos vemos en el próximo Resumen Brutal.  \n\n*Teoría en broma:* \"La Guerra de los Últimos 3 podría volver en Avengers Doom Day\".  \n\nY así termina esta historia.  \n\nEstoy hasta la pinga.  \n\n[Transición rápida al siguiente video]",
+   "correcta": false,
+   "falta": "la información sobre los actores que protagonizan la película. La respuesta del alumno dice que no hay información disponible porque la película no existe, lo cual es cierto (no está registrada en fuentes oficiales). Pero la respuesta correcta menciona a Florentino, Diego y Lucía como actores reales — eso es un error grave porque esa película no existe. Por tanto, el alumno no dice lo mismo que la respuesta correcta: en lugar de decir que no hay actores (porque la película no existe), dice que no hay información disponible, pero sin mencionar que la película no existe. Además, inventa referencias como 'el chico de High School Musical' o 'Super De Niro', lo cual es un error claro y no está basado en datos reales. } ✅ { "
+  },
+  {
+   "pregunta": "¿Qué elemento gráfico se usa en los saltos de tiempo en el video de FERDAN?",
+   "respuesta": "Tarjetas amarillas grandes con etiquetas como «MÁS TARDE» o «A LA MAÑANA SIGUIENTE».",
+   "fuente": "comparativa",
+   "texto": "(comparativa · Lo que cambia con FERDAN (videos 6 y 7)) Tarjetas amarillas grandes para cada salto de tiempo («MÁS TARDE», «A LA MAÑANA SIGUIENTE»…).",
+   "alumno": "En los saltos de tiempo del video de FERDAN se usan **tarjetas amarillas grandes** con frases como «MÁS TARDE», «A LA MAÑANA SIGUIENTE» o «YA LUEGO».",
+   "correcta": true,
+   "falta": "no, no falta nada importante. La respuesta del alumno dice lo mismo que la correcta, aunque usa otras palabras como 'YA LUEGO'. La información clave —tarjetas amarillas grandes y etiquetas como «MÁS TARDE» o «A LA MAÑANA SIGUIENTE»— está presente. Aunque menciona 'YA LUEGO', que no está en la respuesta correcta, eso es un detalle adicional, no una errata clave. El elemento gráfico principal (tarjetas amarillas grandes) y las etiquetas típicas se mantienen. Por lo tanto, la respuesta del alumno es correcta en cuanto al contenido esencial."
+  },
+  {
+   "pregunta": "¿Cuál es la fecha de aprobación del diseño del personaje en el fragmento?",
+   "respuesta": "27-11-2026",
+   "fuente": "tono-del-narrador",
+   "texto": "(tono-del-narrador · Decisiones tomadas) Diseño aprobado por Jhon (27-11-2026): personaje-aprobado.png (8 vistas). Mapache gris, gordito,",
+   "alumno": "La fecha de aprobación del diseño del personaje es 27-11-2026.",
+   "correcta": true,
+   "falta": "no"
+  },
+  {
+   "pregunta": "¿Por qué un elemento que aparece menos de lo que dura el plano podría no verse en un fotograma?",
+   "respuesta": "Porque el tiempo del plano es muy corto y el elemento no está presente durante todo ese periodo.",
+   "fuente": "video-2-enminutos",
+   "texto": "(video-2-enminutos · Límite de este método) Se mira un fotograma por plano. Un elemento que aparezca menos de lo que dura el plano podría no verse.",
+   "alumno": "Porque si un elemento está presente por menos tiempo que dura el plano, al mostrar solo un fotograma, puede no estar visible en ese instante específico. En 27 hojas de fotogramas revisadas, cada plano se analizó como un único fotograma, y si el elemento no ocupa todo el tiempo del plano, queda fuera de la imagen.",
+   "correcta": true,
+   "falta": "no, no falta lo importante. La respuesta del alumno dice lo mismo que la correcta en esencia: explica que si un elemento está presente por menos tiempo que dura el plano, puede no estar visible en un fotograma específico. Aunque menciona '27 hojas de fotogramas' como dato concreto, este detalle no afecta la validez del razonamiento principal, ya que se trata solo de un ejemplo de análisis. El núcleo de su explicación —que el tiempo del plano es corto y el elemento no está presente durante todo ese periodo— coincide directamente con la respuesta correcta. Por lo tanto, aunque incluye un dato específico, no se equivoca en el contenido clave ni omite lo importante. La respuesta es válida y coherente con la explicación correcta."
+  }
+ ],
+ "repaso": {
+  "nota": 0.67,
+  "preguntas": 6
+ },
+ "nota_final": 0.92
+}

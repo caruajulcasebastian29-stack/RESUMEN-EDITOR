@@ -1,0 +1,192 @@
+{
+ "tomas": [
+  {
+   "n": 1,
+   "caras": 1,
+   "plano": "primer_plano",
+   "alto": 0.304
+  },
+  {
+   "n": 2,
+   "caras": 0,
+   "plano": "sin_caras",
+   "alto": 0.0
+  },
+  {
+   "n": 3,
+   "caras": 1,
+   "plano": "primer_plano",
+   "alto": 0.296
+  },
+  {
+   "n": 4,
+   "caras": 1,
+   "plano": "primer_plano",
+   "alto": 0.3
+  },
+  {
+   "n": 5,
+   "caras": 0,
+   "plano": "sin_caras",
+   "alto": 0.0
+  },
+  {
+   "n": 6,
+   "caras": 1,
+   "plano": "primer_plano",
+   "alto": 0.305
+  },
+  {
+   "n": 7,
+   "caras": 1,
+   "plano": "primer_plano",
+   "alto": 0.291
+  },
+  {
+   "n": 8,
+   "caras": 1,
+   "plano": "primer_plano",
+   "alto": 0.311
+  },
+  {
+   "n": 9,
+   "caras": 0,
+   "plano": "sin_caras",
+   "alto": 0.0
+  },
+  {
+   "n": 10,
+   "caras": 1,
+   "plano": "primer_plano",
+   "alto": 0.324
+  },
+  {
+   "n": 11,
+   "caras": 1,
+   "plano": "primer_plano",
+   "alto": 0.295
+  },
+  {
+   "n": 12,
+   "caras": 0,
+   "plano": "sin_caras",
+   "alto": 0.0
+  },
+  {
+   "n": 13,
+   "caras": 2,
+   "plano": "plano_medio",
+   "alto": 0.12
+  },
+  {
+   "n": 14,
+   "caras": 0,
+   "plano": "sin_caras",
+   "alto": 0.0
+  },
+  {
+   "n": 15,
+   "caras": 2,
+   "plano": "plano_medio",
+   "alto": 0.235
+  },
+  {
+   "n": 16,
+   "caras": 0,
+   "plano": "sin_caras",
+   "alto": 0.0
+  },
+  {
+   "n": 17,
+   "caras": 2,
+   "plano": "primer_plano",
+   "alto": 0.261
+  },
+  {
+   "n": 18,
+   "caras": 0,
+   "plano": "sin_caras",
+   "alto": 0.0
+  },
+  {
+   "n": 19,
+   "caras": 1,
+   "plano": "plano_medio",
+   "alto": 0.111
+  },
+  {
+   "n": 20,
+   "caras": 0,
+   "plano": "sin_caras",
+   "alto": 0.0
+  },
+  {
+   "n": 21,
+   "caras": 0,
+   "plano": "sin_caras",
+   "alto": 0.0
+  },
+  {
+   "n": 22,
+   "caras": 0,
+   "plano": "sin_caras",
+   "alto": 0.0
+  },
+  {
+   "n": 23,
+   "caras": 1,
+   "plano": "plano_medio",
+   "alto": 0.134
+  },
+  {
+   "n": 24,
+   "caras": 0,
+   "plano": "sin_caras",
+   "alto": 0.0
+  },
+  {
+   "n": 25,
+   "caras": 1,
+   "plano": "plano_medio",
+   "alto": 0.154
+  },
+  {
+   "n": 26,
+   "caras": 0,
+   "plano": "sin_caras",
+   "alto": 0.0
+  },
+  {
+   "n": 27,
+   "caras": 0,
+   "plano": "sin_caras",
+   "alto": 0.0
+  },
+  {
+   "n": 28,
+   "caras": 0,
+   "plano": "sin_caras",
+   "alto": 0.0
+  },
+  {
+   "n": 29,
+   "caras": 2,
+   "plano": "plano_medio",
+   "alto": 0.159
+  },
+  {
+   "n": 30,
+   "caras": 0,
+   "plano": "sin_caras",
+   "alto": 0.0
+  }
+ ],
+ "resumen": {
+  "planos": {
+   "sin_caras": 0.5,
+   "primer_plano": 0.3,
+   "plano_medio": 0.2
+  },
+  "tomas_con_varias_caras": 0.133
+ }
+}
